@@ -1,6 +1,8 @@
 "use client";
 
 import Link from "next/link";
+import { useEffect, useMemo, useRef, useState } from "react";
+import { AnimatePresence, motion } from "framer-motion";
 import Image from "next/image";
 import { useEffect, useMemo, useState } from "react";
 import { HERO_SLIDES, type HeroSlide } from "@/lib/homeContent";
@@ -33,19 +35,34 @@ export function HeroSlider({
 }) {
   const data = useMemo(() => slides ?? HERO_SLIDES, [slides]);
   const [index, setIndex] = useState(0);
+  const directionRef = useRef(1); // 1 = forward, -1 = backward
 
-  const goPrev = () => setIndex((i) => clampIndex(i - 1, data.length));
-  const goNext = () => setIndex((i) => clampIndex(i + 1, data.length));
+  const goPrev = () => {
+    directionRef.current = -1;
+    setIndex((i) => clampIndex(i - 1, data.length));
+  };
+  const goNext = () => {
+    directionRef.current = 1;
+    setIndex((i) => clampIndex(i + 1, data.length));
+  };
 
   useEffect(() => {
     if (data.length <= 1) return;
     const id = window.setInterval(() => {
+      directionRef.current = 1;
       setIndex((i) => clampIndex(i + 1, data.length));
     }, autoMs);
     return () => window.clearInterval(id);
   }, [autoMs, data.length]);
 
   const active = data[index] ?? data[0];
+  const direction = directionRef.current;
+
+  const variants = {
+    enter: (d: number) => ({ x: d * 60, opacity: 0 }),
+    center: { x: 0, opacity: 1 },
+    exit: (d: number) => ({ x: d * -60, opacity: 0 }),
+  };
 
   return (
     <section className="w-full px-4 pt-10 md:px-6">
@@ -76,6 +93,21 @@ export function HeroSlider({
         <div className="relative grid gap-8 p-8 md:grid-cols-[1.1fr_0.9fr] md:p-12">
           <div className="flex flex-col justify-center gap-4">
             <div className="inline-flex w-fit items-center gap-2 rounded-full border border-sky-200 bg-sky-50 px-4 py-2 text-xs font-semibold uppercase tracking-widest text-sky-700">
+        <div className="relative grid min-h-[420px] gap-8 p-8 md:grid-cols-[1.2fr_0.8fr] md:min-h-[440px] md:p-12">
+          <div className="flex flex-col justify-center gap-4 overflow-hidden">
+            <AnimatePresence mode="wait" custom={direction}>
+              <motion.div
+                key={index}
+                custom={direction}
+                variants={variants}
+                initial="enter"
+                animate="center"
+                exit="exit"
+                transition={{ duration: 0.35, ease: "easeInOut" }}
+                className="flex flex-col gap-4"
+              >
+            <div className="inline-flex w-fit items-center gap-2 rounded-full border border-white/10 bg-white/5 px-4 py-2 text-xs font-semibold uppercase tracking-widest text-sky-200">
+
               <span className="h-2 w-2 rounded-full bg-sky-400" />
               {active.eyebrow}
             </div>
@@ -100,6 +132,8 @@ export function HeroSlider({
                 Check credit score
               </Link>
             </div>
+              </motion.div>
+            </AnimatePresence>
           </div>
 
           <div className="flex flex-col justify-center gap-4">
@@ -131,7 +165,10 @@ export function HeroSlider({
                     key={i}
                     type="button"
                     aria-label={`Go to slide ${i + 1}`}
-                    onClick={() => setIndex(i)}
+                    onClick={() => {
+                      directionRef.current = i > index ? 1 : -1;
+                      setIndex(i);
+                    }}
                     className={[
                       "h-2.5 w-2.5 rounded-full transition",
                       i === index ? "bg-sky-400" : "bg-slate-300 hover:bg-slate-400",
