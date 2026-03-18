@@ -2,8 +2,7 @@ import { PARTNERS } from "@/lib/homeContent";
 
 export function Partners() {
   return (
-    <section className="w-full px-4 pt-16 md:px-6">
-      <div className="rounded-3xl border border-slate-200 bg-white/80 p-8 shadow-sm md:p-10">
+      <div className="rounded-3xl p-8 md:p-10">
         <div className="flex flex-col items-start justify-between gap-4 md:flex-row md:items-center">
           <h2 className="text-3xl font-semibold tracking-tight text-slate-900 md:text-4xl">
             Partners
@@ -24,7 +23,7 @@ export function Partners() {
           ))}
         </div>
       </div>
-    </section>
+    
   );
 }
 
