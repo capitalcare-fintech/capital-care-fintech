@@ -1,13 +1,10 @@
 "use client";
 
 import Link from "next/link";
-<<<<<<< HEAD
 import { useEffect, useMemo, useRef, useState } from "react";
 import { AnimatePresence, motion } from "framer-motion";
-=======
 import Image from "next/image";
 import { useEffect, useMemo, useState } from "react";
->>>>>>> 9b91331b6a45af289b467592cab5a410a01c2954
 import { HERO_SLIDES, type HeroSlide } from "@/lib/homeContent";
 
 function clampIndex(next: number, len: number) {
@@ -93,7 +90,9 @@ export function HeroSlider({
           </>
         ) : null}
 
-<<<<<<< HEAD
+        <div className="relative grid gap-8 p-8 md:grid-cols-[1.1fr_0.9fr] md:p-12">
+          <div className="flex flex-col justify-center gap-4">
+            <div className="inline-flex w-fit items-center gap-2 rounded-full border border-sky-200 bg-sky-50 px-4 py-2 text-xs font-semibold uppercase tracking-widest text-sky-700">
         <div className="relative grid min-h-[420px] gap-8 p-8 md:grid-cols-[1.2fr_0.8fr] md:min-h-[440px] md:p-12">
           <div className="flex flex-col justify-center gap-4 overflow-hidden">
             <AnimatePresence mode="wait" custom={direction}>
@@ -108,11 +107,7 @@ export function HeroSlider({
                 className="flex flex-col gap-4"
               >
             <div className="inline-flex w-fit items-center gap-2 rounded-full border border-white/10 bg-white/5 px-4 py-2 text-xs font-semibold uppercase tracking-widest text-sky-200">
-=======
-        <div className="relative grid gap-8 p-8 md:grid-cols-[1.1fr_0.9fr] md:p-12">
-          <div className="flex flex-col justify-center gap-4">
-            <div className="inline-flex w-fit items-center gap-2 rounded-full border border-sky-200 bg-sky-50 px-4 py-2 text-xs font-semibold uppercase tracking-widest text-sky-700">
->>>>>>> 9b91331b6a45af289b467592cab5a410a01c2954
+
               <span className="h-2 w-2 rounded-full bg-sky-400" />
               {active.eyebrow}
             </div>
@@ -149,7 +144,7 @@ export function HeroSlider({
                   alt={active.imageAlt}
                   fill
                   sizes="(max-width: 768px) 100vw, 38vw"
-                  className="object-cover"
+                  className="object-full"
                   priority
                 />
               </div>
