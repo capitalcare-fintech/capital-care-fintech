@@ -6,10 +6,10 @@ export function getDB() {
   if (pool) return pool;
 
   pool = mysql.createPool({
-    host: "localhost",
-    user: "root",
-    password: "arsh032206",
-    database: "capitalcare_db",
+    host: process.env.DB_HOST ?? "localhost",
+    user: process.env.DB_USER ?? "root",
+    password: process.env.DB_PASS ?? "arsh032206",
+    database: process.env.DB_NAME ?? "capitalcare_db",
     waitForConnections: true,
     connectionLimit: 10,
     queueLimit: 0,
