@@ -133,12 +133,18 @@ export function Navbar() {
 
             const open = openLabel === item.label;
             return (
-              <div key={item.label} className="relative">
+              <div
+                key={item.label}
+                className="relative"
+                onMouseEnter={() => setOpenLabel(item.label)}
+                onMouseLeave={() => setOpenLabel((prev) => (prev === item.label ? null : prev))}
+              >
                 <button
                   type="button"
                   className="inline-flex items-center gap-1.5 rounded-full px-4 py-2 text-sm font-medium text-slate-700 hover:bg-slate-100 hover:text-slate-900"
                   aria-haspopup="menu"
                   aria-expanded={open}
+                  onFocus={() => setOpenLabel(item.label)}
                   onClick={() =>
                     setOpenLabel((prev) => (prev === item.label ? null : item.label))
                   }

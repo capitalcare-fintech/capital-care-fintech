@@ -2,10 +2,6 @@
 
 import Image from "next/image";
 import Link from "next/link";
-<<<<<<< HEAD
-import Image from "next/image";
-=======
->>>>>>> 1f0f4a15d6625fd1895528dc3d02d6542adc6415
 import { useEffect, useMemo, useRef, useState } from "react";
 import { AnimatePresence, motion } from "framer-motion";
 import { HERO_SLIDES, type HeroSlide } from "@/lib/homeContent";
@@ -98,12 +94,8 @@ export function HeroSlider({
           </>
         ) : null}
 
-<<<<<<< HEAD
         <div className="relative grid min-h-[420px] gap-8 p-8 md:grid-cols-[1.1fr_0.9fr] md:min-h-[440px] md:p-12">
           {/* Left: animated text content */}
-=======
-        <div className="relative grid min-h-105 gap-8 p-8 md:grid-cols-[1.2fr_0.8fr] md:min-h-110 md:p-12">
->>>>>>> 1f0f4a15d6625fd1895528dc3d02d6542adc6415
           <div className="flex flex-col justify-center gap-4 overflow-hidden">
             <AnimatePresence mode="wait" custom={direction}>
               <motion.div
@@ -126,10 +118,6 @@ export function HeroSlider({
                 <p className="max-w-xl text-pretty text-base leading-7 text-slate-600 md:text-lg">
                   {active.description}
                 </p>
-<<<<<<< HEAD
-=======
-
->>>>>>> 1f0f4a15d6625fd1895528dc3d02d6542adc6415
                 <div className="mt-2 flex flex-wrap items-center gap-3">
                   <Link
                     href={active.ctaHref}
