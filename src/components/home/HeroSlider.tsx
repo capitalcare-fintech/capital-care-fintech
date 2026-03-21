@@ -1,10 +1,9 @@
 "use client";
 
+import Image from "next/image";
 import Link from "next/link";
 import { useEffect, useMemo, useRef, useState } from "react";
 import { AnimatePresence, motion } from "framer-motion";
-import Image from "next/image";
-import { useEffect, useMemo, useState } from "react";
 import { HERO_SLIDES, type HeroSlide } from "@/lib/homeContent";
 
 function clampIndex(next: number, len: number) {
@@ -41,6 +40,7 @@ export function HeroSlider({
     directionRef.current = -1;
     setIndex((i) => clampIndex(i - 1, data.length));
   };
+
   const goNext = () => {
     directionRef.current = 1;
     setIndex((i) => clampIndex(i + 1, data.length));
@@ -48,14 +48,18 @@ export function HeroSlider({
 
   useEffect(() => {
     if (data.length <= 1) return;
+
     const id = window.setInterval(() => {
       directionRef.current = 1;
       setIndex((i) => clampIndex(i + 1, data.length));
     }, autoMs);
+
     return () => window.clearInterval(id);
   }, [autoMs, data.length]);
 
   const active = data[index] ?? data[0];
+  if (!active) return null;
+
   const direction = directionRef.current;
 
   const variants = {
@@ -90,10 +94,7 @@ export function HeroSlider({
           </>
         ) : null}
 
-        <div className="relative grid gap-8 p-8 md:grid-cols-[1.1fr_0.9fr] md:p-12">
-          <div className="flex flex-col justify-center gap-4">
-            <div className="inline-flex w-fit items-center gap-2 rounded-full border border-sky-200 bg-sky-50 px-4 py-2 text-xs font-semibold uppercase tracking-widest text-sky-700">
-        <div className="relative grid min-h-[420px] gap-8 p-8 md:grid-cols-[1.2fr_0.8fr] md:min-h-[440px] md:p-12">
+        <div className="relative grid min-h-105 gap-8 p-8 md:grid-cols-[1.2fr_0.8fr] md:min-h-110 md:p-12">
           <div className="flex flex-col justify-center gap-4 overflow-hidden">
             <AnimatePresence mode="wait" custom={direction}>
               <motion.div
@@ -106,32 +107,31 @@ export function HeroSlider({
                 transition={{ duration: 0.35, ease: "easeInOut" }}
                 className="flex flex-col gap-4"
               >
-            <div className="inline-flex w-fit items-center gap-2 rounded-full border border-white/10 bg-white/5 px-4 py-2 text-xs font-semibold uppercase tracking-widest text-sky-200">
+                <div className="inline-flex w-fit items-center gap-2 rounded-full border border-sky-200 bg-sky-50 px-4 py-2 text-xs font-semibold uppercase tracking-widest text-sky-700">
+                  <span className="h-2 w-2 rounded-full bg-sky-400" />
+                  {active.eyebrow}
+                </div>
+                <h1 className="text-balance text-3xl font-semibold leading-tight tracking-tight text-slate-900 md:text-5xl">
+                  {active.title}
+                </h1>
+                <p className="max-w-xl text-pretty text-base leading-7 text-slate-600 md:text-lg">
+                  {active.description}
+                </p>
 
-              <span className="h-2 w-2 rounded-full bg-sky-400" />
-              {active.eyebrow}
-            </div>
-            <h1 className="text-balance text-3xl font-semibold leading-tight tracking-tight text-slate-900 md:text-5xl">
-              {active.title}
-            </h1>
-            <p className="max-w-xl text-pretty text-base leading-7 text-slate-600 md:text-lg">
-              {active.description}
-            </p>
-
-            <div className="mt-2 flex flex-wrap items-center gap-3">
-              <Link
-                href={active.ctaHref}
-                className="rounded-full bg-linear-to-r from-sky-400 to-indigo-500 px-5 py-2.5 text-sm font-semibold text-slate-950 hover:brightness-110"
-              >
-                {active.ctaLabel}
-              </Link>
-              <Link
-                href="/credit-score"
-                className="rounded-full border border-sky-200 bg-white px-5 py-2.5 text-sm font-semibold text-slate-700 hover:bg-sky-50"
-              >
-                Check credit score
-              </Link>
-            </div>
+                <div className="mt-2 flex flex-wrap items-center gap-3">
+                  <Link
+                    href={active.ctaHref}
+                    className="rounded-full bg-linear-to-r from-sky-400 to-indigo-500 px-5 py-2.5 text-sm font-semibold text-slate-950 hover:brightness-110"
+                  >
+                    {active.ctaLabel}
+                  </Link>
+                  <Link
+                    href="/credit-score"
+                    className="rounded-full border border-sky-200 bg-white px-5 py-2.5 text-sm font-semibold text-slate-700 hover:bg-sky-50"
+                  >
+                    Check credit score
+                  </Link>
+                </div>
               </motion.div>
             </AnimatePresence>
           </div>
@@ -144,7 +144,7 @@ export function HeroSlider({
                   alt={active.imageAlt}
                   fill
                   sizes="(max-width: 768px) 100vw, 38vw"
-                  className="object-full"
+                  className="object-cover"
                   priority
                 />
               </div>
@@ -183,4 +183,3 @@ export function HeroSlider({
     </section>
   );
 }
-
