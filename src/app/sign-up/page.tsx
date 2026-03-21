@@ -87,12 +87,12 @@ export default function SignUpPage() {
 
   return (
     <div className="mx-auto w-full max-w-md px-4 py-16">
-      <div className="rounded-2xl border border-white/10 bg-white/5 p-8">
-        <h1 className="mb-2 text-2xl font-bold text-white">Create account</h1>
-        <p className="mb-8 text-sm text-white/60">Sign up to get started with CapitalCare</p>
+      <div className="rounded-2xl border border-sky-100 bg-white p-8 shadow-[0_8px_30px_-12px_rgba(14,165,233,0.25)]">
+        <h1 className="mb-2 text-2xl font-bold text-slate-900">Create account</h1>
+        <p className="mb-8 text-sm text-slate-500">Sign up to get started with CapitalCare</p>
 
         {serverError && (
-          <div className="mb-4 rounded-xl bg-red-500/10 px-4 py-3 text-sm text-red-400">
+          <div className="mb-4 rounded-xl bg-red-50 border border-red-200 px-4 py-3 text-sm text-red-600">
             {serverError}
           </div>
         )}
@@ -100,20 +100,20 @@ export default function SignUpPage() {
         <form onSubmit={handleSubmit} className="grid gap-5" noValidate>
           {/* Full Name */}
           <div className="grid gap-1.5">
-            <label className="text-sm font-medium text-white/80">Full Name</label>
+            <label className="text-sm font-medium text-slate-700">Full Name</label>
             <input
               type="text"
               value={form.fullName}
               onChange={(e) => set("fullName", e.target.value)}
               placeholder="John Doe"
-              className="rounded-xl border border-white/10 bg-white/5 px-4 py-2.5 text-sm text-white placeholder-white/30 outline-none focus:border-sky-400 focus:ring-1 focus:ring-sky-400"
+              className="rounded-xl border border-slate-200 bg-slate-50 px-4 py-2.5 text-sm text-slate-900 placeholder-slate-400 outline-none focus:border-sky-400 focus:ring-2 focus:ring-sky-100"
             />
-            {errors.fullName && <p className="text-xs text-red-400">{errors.fullName}</p>}
+            {errors.fullName && <p className="text-xs text-red-500">{errors.fullName}</p>}
           </div>
 
           {/* Phone + OTP send */}
           <div className="grid gap-1.5">
-            <label className="text-sm font-medium text-white/80">Phone Number</label>
+            <label className="text-sm font-medium text-slate-700">Phone Number</label>
             <div className="flex gap-2">
               <input
                 type="tel"
@@ -121,23 +121,23 @@ export default function SignUpPage() {
                 onChange={(e) => set("phone", e.target.value)}
                 placeholder="9876543210"
                 maxLength={10}
-                className="flex-1 rounded-xl border border-white/10 bg-white/5 px-4 py-2.5 text-sm text-white placeholder-white/30 outline-none focus:border-sky-400 focus:ring-1 focus:ring-sky-400"
+                className="flex-1 rounded-xl border border-slate-200 bg-slate-50 px-4 py-2.5 text-sm text-slate-900 placeholder-slate-400 outline-none focus:border-sky-400 focus:ring-2 focus:ring-sky-100"
               />
               <button
                 type="button"
                 onClick={sendOtp}
-                className="rounded-xl bg-white/10 px-4 py-2.5 text-sm font-semibold text-white hover:bg-white/15"
+                className="rounded-xl border border-sky-200 bg-sky-50 px-4 py-2.5 text-sm font-semibold text-sky-700 hover:bg-sky-100"
               >
                 {otpSent ? "Resend" : "Send OTP"}
               </button>
             </div>
-            {errors.phone && <p className="text-xs text-red-400">{errors.phone}</p>}
+            {errors.phone && <p className="text-xs text-red-500">{errors.phone}</p>}
           </div>
 
           {/* OTP verify */}
           {otpSent && (
             <div className="grid gap-1.5">
-              <label className="text-sm font-medium text-white/80">OTP</label>
+              <label className="text-sm font-medium text-slate-700">OTP</label>
               <div className="flex gap-2">
                 <input
                   type="text"
@@ -145,46 +145,46 @@ export default function SignUpPage() {
                   onChange={(e) => set("otp", e.target.value)}
                   placeholder="Enter OTP"
                   maxLength={6}
-                  className="flex-1 rounded-xl border border-white/10 bg-white/5 px-4 py-2.5 text-sm text-white placeholder-white/30 outline-none focus:border-sky-400 focus:ring-1 focus:ring-sky-400"
+                  className="flex-1 rounded-xl border border-slate-200 bg-slate-50 px-4 py-2.5 text-sm text-slate-900 placeholder-slate-400 outline-none focus:border-sky-400 focus:ring-2 focus:ring-sky-100"
                 />
                 <button
                   type="button"
                   onClick={verifyOtp}
                   disabled={otpVerified}
-                  className="rounded-xl bg-white/10 px-4 py-2.5 text-sm font-semibold text-white hover:bg-white/15 disabled:opacity-50"
+                  className="rounded-xl border border-sky-200 bg-sky-50 px-4 py-2.5 text-sm font-semibold text-sky-700 hover:bg-sky-100 disabled:opacity-50"
                 >
                   {otpVerified ? "Verified ✓" : "Verify"}
                 </button>
               </div>
-              {errors.otp && <p className="text-xs text-red-400">{errors.otp}</p>}
+              {errors.otp && <p className="text-xs text-red-500">{errors.otp}</p>}
             </div>
           )}
 
           {/* Password */}
           <div className="grid gap-1.5">
-            <label className="text-sm font-medium text-white/80">Password</label>
+            <label className="text-sm font-medium text-slate-700">Password</label>
             <input
               type="password"
               value={form.password}
               onChange={(e) => set("password", e.target.value)}
               placeholder="Min. 6 characters"
-              className="rounded-xl border border-white/10 bg-white/5 px-4 py-2.5 text-sm text-white placeholder-white/30 outline-none focus:border-sky-400 focus:ring-1 focus:ring-sky-400"
+              className="rounded-xl border border-slate-200 bg-slate-50 px-4 py-2.5 text-sm text-slate-900 placeholder-slate-400 outline-none focus:border-sky-400 focus:ring-2 focus:ring-sky-100"
             />
-            {errors.password && <p className="text-xs text-red-400">{errors.password}</p>}
+            {errors.password && <p className="text-xs text-red-500">{errors.password}</p>}
           </div>
 
           <button
             type="submit"
             disabled={loading}
-            className="rounded-xl bg-linear-to-r from-sky-400 to-indigo-500 py-3 text-sm font-semibold text-slate-950 hover:brightness-110 disabled:opacity-60"
+            className="rounded-xl bg-linear-to-r from-sky-400 to-indigo-500 py-3 text-sm font-semibold text-white hover:brightness-110 disabled:opacity-60"
           >
             {loading ? "Creating account..." : "Create Account"}
           </button>
         </form>
 
-        <p className="mt-6 text-center text-sm text-white/50">
+        <p className="mt-6 text-center text-sm text-slate-500">
           Already have an account?{" "}
-          <Link href="/sign-in" className="text-sky-400 hover:underline">
+          <Link href="/sign-in" className="font-medium text-sky-600 hover:underline">
             Sign in
           </Link>
         </p>
