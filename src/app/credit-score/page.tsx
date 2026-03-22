@@ -216,7 +216,7 @@ export default function CreditScorePage() {
                       setFormData({ ...formData, firstName: e.target.value })
                     }
                     className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-                    placeholder="John"
+                    placeholder="Aarav"
                   />
                 </div>
 
@@ -231,7 +231,7 @@ export default function CreditScorePage() {
                       setFormData({ ...formData, lastName: e.target.value })
                     }
                     className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-                    placeholder="Doe"
+                    placeholder="Sharma"
                   />
                 </div>
 
