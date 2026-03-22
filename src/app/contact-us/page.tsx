@@ -47,9 +47,9 @@ const INFO = [
   {
     icon: HiOutlinePhone,
     title: "Phone Support",
-    lines: ["+91 98765 43210", "Toll-free: 1800-123-4567"],
+    lines: ["+91 92055 59500", "Toll-free: 1800-123-4567"],
     color: "bg-indigo-50 text-indigo-500",
-    href: "tel:+919876543210",
+    href: "tel:+919205559500",
   },
   {
     icon: HiOutlineMail,

@@ -56,13 +56,14 @@ export function InDemandLoans() {
             ].join(" ")}
           >
             <div className="relative overflow-hidden rounded-2xl bg-white/90 p-2">
+            {/* <div className="relative h-40 w-full rounded-xl bg-gray-100 flex items-center justify-center"> */}
               <div className="relative h-40 w-full overflow-hidden rounded-xl">
                 <Image
                   src={card.image}
                   alt={card.imageAlt}
                   fill
                   sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 25vw"
-                  className="object-cover transition duration-300 group-hover:scale-105"
+                  className="object-contain transition duration-300 group-hover:scale-105"
                 />
               </div>
             </div>

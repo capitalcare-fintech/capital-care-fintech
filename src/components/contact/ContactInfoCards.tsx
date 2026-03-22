@@ -20,8 +20,8 @@ const CARDS = [
   {
     icon: FaPhone,
     label: "Phone no:",
-    value: "+91-7291919151",
-    href: "tel:+917291919151",
+    value: "+91-92055 59500",
+    href: "tel:+9192055 59500",
     description: "Call us for any issues. Our team will resolve your query as soon as possible.",
     accent: "from-indigo-400 to-violet-400",
     iconBg: "bg-indigo-50 text-indigo-500",
@@ -30,8 +30,8 @@ const CARDS = [
   {
     icon: FaWhatsapp,
     label: "WhatsApp:",
-    value: "7291919151",
-    href: "https://wa.me/917291919151",
+    value: "9205559500",
+    href: "https://wa.me/919205559500",
     description: "You can chat with us directly on WhatsApp for quick support.",
     accent: "from-green-400 to-emerald-400",
     iconBg: "bg-green-50 text-green-600",
