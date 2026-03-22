@@ -1,11 +1,11 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, Suspense } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 import Link from "next/link";
 import { setSignedIn } from "@/lib/authClient";
 
-export default function SignInPage() {
+function SignInForm() {
   const router = useRouter();
   const params = useSearchParams();
 
@@ -66,64 +66,72 @@ export default function SignInPage() {
 
   return (
     <div className="mx-auto w-full max-w-md px-4 py-16">
-      <div className="rounded-2xl border border-white/10 bg-white/5 p-8">
-        <h1 className="mb-2 text-2xl font-bold text-white">Welcome back</h1>
-        <p className="mb-8 text-sm text-white/60">Sign in to your CapitalCare account</p>
+      <div className="rounded-2xl border border-sky-100 bg-white p-8 shadow-[0_8px_30px_-12px_rgba(14,165,233,0.25)]">
+        <h1 className="mb-2 text-2xl font-bold text-slate-900">Welcome back</h1>
+        <p className="mb-8 text-sm text-slate-500">Sign in to your CapitalCare account</p>
 
         {successMsg && (
-          <div className="mb-4 rounded-xl bg-green-500/10 px-4 py-3 text-sm text-green-400">
+          <div className="mb-4 rounded-xl bg-green-50 border border-green-200 px-4 py-3 text-sm text-green-700">
             {successMsg}
           </div>
         )}
 
         {serverError && (
-          <div className="mb-4 rounded-xl bg-red-500/10 px-4 py-3 text-sm text-red-400">
+          <div className="mb-4 rounded-xl bg-red-50 border border-red-200 px-4 py-3 text-sm text-red-600">
             {serverError}
           </div>
         )}
 
         <form onSubmit={handleSubmit} className="grid gap-5" noValidate>
           <div className="grid gap-1.5">
-            <label className="text-sm font-medium text-white/80">Phone Number</label>
+            <label className="text-sm font-medium text-slate-700">Phone Number</label>
             <input
               type="tel"
               value={form.phone}
               onChange={(e) => set("phone", e.target.value)}
               placeholder="9876543210"
               maxLength={10}
-              className="rounded-xl border border-white/10 bg-white/5 px-4 py-2.5 text-sm text-white placeholder-white/30 outline-none focus:border-sky-400 focus:ring-1 focus:ring-sky-400"
+              className="rounded-xl border border-slate-200 bg-slate-50 px-4 py-2.5 text-sm text-slate-900 placeholder-slate-400 outline-none focus:border-sky-400 focus:ring-2 focus:ring-sky-100"
             />
-            {errors.phone && <p className="text-xs text-red-400">{errors.phone}</p>}
+            {errors.phone && <p className="text-xs text-red-500">{errors.phone}</p>}
           </div>
 
           <div className="grid gap-1.5">
-            <label className="text-sm font-medium text-white/80">Password</label>
+            <label className="text-sm font-medium text-slate-700">Password</label>
             <input
               type="password"
               value={form.password}
               onChange={(e) => set("password", e.target.value)}
               placeholder="Your password"
-              className="rounded-xl border border-white/10 bg-white/5 px-4 py-2.5 text-sm text-white placeholder-white/30 outline-none focus:border-sky-400 focus:ring-1 focus:ring-sky-400"
+              className="rounded-xl border border-slate-200 bg-slate-50 px-4 py-2.5 text-sm text-slate-900 placeholder-slate-400 outline-none focus:border-sky-400 focus:ring-2 focus:ring-sky-100"
             />
-            {errors.password && <p className="text-xs text-red-400">{errors.password}</p>}
+            {errors.password && <p className="text-xs text-red-500">{errors.password}</p>}
           </div>
 
           <button
             type="submit"
             disabled={loading}
-            className="rounded-xl bg-linear-to-r from-sky-400 to-indigo-500 py-3 text-sm font-semibold text-slate-950 hover:brightness-110 disabled:opacity-60"
+            className="rounded-xl bg-linear-to-r from-sky-400 to-indigo-500 py-3 text-sm font-semibold text-white hover:brightness-110 disabled:opacity-60"
           >
             {loading ? "Signing in..." : "Sign In"}
           </button>
         </form>
 
-        <p className="mt-6 text-center text-sm text-white/50">
+        <p className="mt-6 text-center text-sm text-slate-500">
           Don&apos;t have an account?{" "}
-          <Link href="/sign-up" className="text-sky-400 hover:underline">
+          <Link href="/sign-up" className="font-medium text-sky-600 hover:underline">
             Sign up
           </Link>
         </p>
       </div>
     </div>
+  );
+}
+
+export default function SignInPage() {
+  return (
+    <Suspense>
+      <SignInForm />
+    </Suspense>
   );
 }
