@@ -75,7 +75,7 @@ export function Reviews() {
 
                     {/* Quote */}
                     <blockquote className="mb-6 min-h-20 text-sm leading-6 text-slate-600">
-                      "{r.quote}"
+                      &ldquo;{r.quote}&rdquo;
                     </blockquote>
 
                     {/* Divider */}

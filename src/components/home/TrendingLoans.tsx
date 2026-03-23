@@ -21,7 +21,7 @@ const LOANS = [
     desc: "Meet personal expenses instantly with minimal documentation.",
     bg: "bg-indigo-50 border-indigo-200",
     iconBg: "bg-indigo-100 text-indigo-600",
-    href: "/loans",
+    href: "/personal-loan",
   },
   {
     icon: HiOutlineAcademicCap,

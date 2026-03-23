@@ -2,7 +2,7 @@
 
 import Image from "next/image";
 import Link from "next/link";
-import { useEffect, useMemo, useRef, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { AnimatePresence, motion } from "framer-motion";
 import { HERO_SLIDES, type HeroSlide } from "@/lib/homeContent";
 
@@ -34,15 +34,15 @@ export function HeroSlider({
 }) {
   const data = useMemo(() => slides ?? HERO_SLIDES, [slides]);
   const [index, setIndex] = useState(0);
-  const directionRef = useRef(1);
+  const [direction, setDirection] = useState(1);
 
   const goPrev = () => {
-    directionRef.current = -1;
+    setDirection(-1);
     setIndex((i) => clampIndex(i - 1, data.length));
   };
 
   const goNext = () => {
-    directionRef.current = 1;
+    setDirection(1);
     setIndex((i) => clampIndex(i + 1, data.length));
   };
 
@@ -50,7 +50,7 @@ export function HeroSlider({
     if (data.length <= 1) return;
 
     const id = window.setInterval(() => {
-      directionRef.current = 1;
+      setDirection(1);
       setIndex((i) => clampIndex(i + 1, data.length));
     }, autoMs);
 
@@ -59,8 +59,6 @@ export function HeroSlider({
 
   const active = data[index] ?? data[0];
   if (!active) return null;
-
-  const direction = directionRef.current;
 
   const variants = {
     enter: (d: number) => ({ x: d * 60, opacity: 0 }),
@@ -94,7 +92,7 @@ export function HeroSlider({
           </>
         ) : null}
 
-        <div className="relative grid min-h-[420px] gap-8 p-8 md:grid-cols-[1.1fr_0.9fr] md:min-h-[440px] md:p-12">
+        <div className="relative grid min-h-105 gap-8 p-8 md:grid-cols-[1.1fr_0.9fr] md:min-h-110 md:p-12">
           {/* Left: animated text content */}
           <div className="flex flex-col justify-center gap-4 overflow-hidden">
             <AnimatePresence mode="wait" custom={direction}>
@@ -145,7 +143,7 @@ export function HeroSlider({
                   alt={active.imageAlt}
                   fill
                   sizes="(max-width: 768px) 100vw, 38vw"
-                  className="object-cover"
+                  className="object-fit"
                   priority
                 />
               </div>
@@ -167,7 +165,7 @@ export function HeroSlider({
                     type="button"
                     aria-label={`Go to slide ${i + 1}`}
                     onClick={() => {
-                      directionRef.current = i > index ? 1 : -1;
+                      setDirection(i > index ? 1 : -1);
                       setIndex(i);
                     }}
                     className={[
