@@ -88,27 +88,19 @@ export default function PersonalLoanPage() {
               </p>
             </div>
 
-            <aside className="rounded-3xl border border-sky-200 bg-white/90 p-6 shadow-[0_16px_45px_-28px_rgba(14,165,233,0.45)]">
+            <aside className="rounded-3xl border border-sky-200 h-full bg-white/90 p-6 shadow-[0_16px_45px_-28px_rgba(14,165,233,0.45)]">
               <h2 className="text-lg text-slate-800 md:text-xl">
                 Check Low Interest <span className="font-semibold">Personal Loan</span> offers
               </h2>
-              <div className="mt-4 flex items-center gap-3 text-sm md:text-base">
-                <span>+91</span>
-                <input
-                  type="tel"
-                  placeholder="Mobile Number"
-                  className="h-10 w-full rounded-xl border border-slate-300 px-4 text-sm md:h-12 md:text-base"
-                />
-              </div>
-              <Link
-                href={applyHref}
-                className="mt-5 inline-flex h-10 w-full items-center justify-center rounded-full bg-linear-to-r from-sky-400 to-indigo-500 text-sm font-semibold text-slate-950 hover:brightness-110 md:h-12 md:text-lg"
-              >
-                Continue
-              </Link>
-              <p className="mt-4 text-xs text-slate-700 md:text-sm">
-                By submitting, you agree to our Privacy Policy, Terms and Conditions, and Credit Score Policy.
+              <p className="mt-6 text-sm text-slate-600 md:text-base">
+                Find the best personal loan offers with low interest rates and flexible repayment options.
               </p>
+              <Link
+                href={"/personal-loan/options"}
+                className="mt-5 inline-flex h-10 w-full items-center justify-center rounded-full bg-linear-to-r from-sky-400 to-indigo-500 text-sm font-semibold text-white hover:brightness-110 md:h-12 md:text-lg"
+              >
+                Check Offers
+              </Link>
             </aside>
           </div>
         </section>
