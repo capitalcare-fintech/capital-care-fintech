@@ -49,18 +49,18 @@ function IconChevronDown({ className }: { className?: string }) {
   );
 }
 
-function IconHome({ className }: { className?: string }) {
-  return (
-    <svg viewBox="0 0 20 20" fill="none" aria-hidden="true" className={className}>
-      <path
-        d="M3.5 9.2L10 3.75L16.5 9.2V16.25C16.5 16.94 15.94 17.5 15.25 17.5H12.25C11.56 17.5 11 16.94 11 16.25V13.25C11 12.56 10.44 12 9.75 12H10.25C9.56 12 9 12.56 9 13.25V16.25C9 16.94 8.44 17.5 7.75 17.5H4.75C4.06 17.5 3.5 16.94 3.5 16.25V9.2Z"
-        stroke="currentColor"
-        strokeWidth="1.6"
-        strokeLinejoin="round"
-      />
-    </svg>
-  );
-}
+// function IconHome({ className }: { className?: string }) {
+//   return (
+//     <svg viewBox="0 0 20 20" fill="none" aria-hidden="true" className={className}>
+//       <path
+//         d="M3.5 9.2L10 3.75L16.5 9.2V16.25C16.5 16.94 15.94 17.5 15.25 17.5H12.25C11.56 17.5 11 16.94 11 16.25V13.25C11 12.56 10.44 12 9.75 12H10.25C9.56 12 9 12.56 9 13.25V16.25C9 16.94 8.44 17.5 7.75 17.5H4.75C4.06 17.5 3.5 16.94 3.5 16.25V9.2Z"
+//         stroke="currentColor"
+//         strokeWidth="1.6"
+//         strokeLinejoin="round"
+//       />
+//     </svg>
+//   );
+// }
 
 export function Navbar() {
   const items = useMemo(() => NAV_ITEMS, []);
@@ -68,6 +68,7 @@ export function Navbar() {
   const [openLabel, setOpenLabel] = useState<string | null>(null);
   const [mobileOpen, setMobileOpen] = useState(false);
   const rootRef = useRef<HTMLElement | null>(null);
+  const closeTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
 
   useEffect(() => {
     const onDown = (e: MouseEvent) => {
@@ -76,6 +77,14 @@ export function Navbar() {
     };
     window.addEventListener("pointerdown", onDown);
     return () => window.removeEventListener("pointerdown", onDown);
+  }, []);
+
+  useEffect(() => {
+    return () => {
+      if (closeTimerRef.current) {
+        clearTimeout(closeTimerRef.current);
+      }
+    };
   }, []);
 
   useEffect(() => {
@@ -96,7 +105,7 @@ export function Navbar() {
       }}
       className="sticky top-0 z-40 border-b border-slate-200/80 bg-white/80 backdrop-blur"
     >
-      <div className="mx-auto flex w-full max-w-6xl items-center justify-between px-4 py-4">
+      <div className="flex w-full items-center justify-between px-4 py-4 md:px-8 lg:px-12">
         <div className="flex items-center gap-2">
           <Link
             href="/"
@@ -136,12 +145,20 @@ export function Navbar() {
               <div
                 key={item.label}
                 className="relative"
-                onMouseEnter={() => setOpenLabel(item.label)}
-                onMouseLeave={() => setOpenLabel((prev) => (prev === item.label ? null : prev))}
+                onMouseEnter={() => {
+                  if (closeTimerRef.current) {
+                    clearTimeout(closeTimerRef.current);
+                    closeTimerRef.current = null;
+                  }
+                  setOpenLabel(item.label);
+                }}
+                onMouseLeave={() => {
+                  closeTimerRef.current = setTimeout(() => setOpenLabel(null), 150);
+                }}
               >
                 <button
                   type="button"
-                  className="inline-flex items-center gap-1.5 rounded-full px-4 py-2 text-sm font-medium text-slate-700 hover:bg-slate-100 hover:text-slate-900"
+                  className="inline-flex items-center gap-1.5 rounded-full px-4 py-2 text-sm font-medium text-slate-700 hover:bg-slate-100 hover:text-slate-900 cursor-pointer"
                   aria-haspopup="menu"
                   aria-expanded={open}
                   onFocus={() => setOpenLabel(item.label)}
@@ -233,7 +250,7 @@ export function Navbar() {
 
       {mobileOpen ? (
         <div className="border-t border-slate-200 bg-white/90 backdrop-blur md:hidden">
-          <div className="mx-auto w-full max-w-6xl px-4 py-4">
+          <div className="w-full px-4 py-4 md:px-8 lg:px-12">
             <div className="grid gap-2">
               {items.map((item) => {
                 if (!isDropdown(item)) {

@@ -1,4 +1,5 @@
 import { HeroSlider } from "@/components/home/HeroSlider";
+import { CreditScorePopup } from "@/components/home/CreditScorePopup";
 import { StatsSection } from "@/components/home/StatsSection";
 import { TrendingLoans } from "@/components/home/TrendingLoans";
 import { WhyChooseUs } from "@/components/home/WhyChooseUs";
@@ -12,6 +13,7 @@ import { Partners } from "@/components/home/Partners";
 export default function Home() {
   return (
     <>
+      <CreditScorePopup />
       <HeroSlider />
       <StatsSection />
       <TrendingLoans />

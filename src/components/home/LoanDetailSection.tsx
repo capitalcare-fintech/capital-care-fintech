@@ -31,7 +31,7 @@ const LOANS: LoanDetail[] = [
     description:
       "From medical emergencies to dream vacations — a personal loan puts money in your hands when you need it most. No end-use restrictions, instant disbursal.",
     features: ["Up to ₹25 Lakhs", "Disbursal in 2 hrs", "Zero prepayment charges", "100% online process"],
-    href: "/loans",
+    href: "/personal-loan",
     accent: "bg-indigo-400",
     bg: "bg-indigo-50",
     reverse: true,
@@ -77,7 +77,7 @@ export function LoanDetailSection() {
       </motion.div>
 
       <div className="flex flex-col gap-10">
-        {LOANS.map(({ title, description, features, href, reverse, accent, bg }, i) => (
+        {LOANS.map(({ title, description, features, href, reverse, accent, bg }) => (
           <motion.div
             key={title}
             initial={{ opacity: 0, y: 32 }}

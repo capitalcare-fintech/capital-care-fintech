@@ -22,7 +22,7 @@ export const NAV_ITEMS: NavItem[] = [
   {
     label: "Loans",
     items: [
-      { label: "Personal Loan", href: "/loans" },
+      { label: "Personal Loan", href: "/personal-loan" },
       { label: "Business Loan", href: "/loans" },
       { label: "In-demand Loans", href: "/#in-demand-loans" },
     ],
@@ -56,8 +56,8 @@ export const HERO_SLIDES: HeroSlide[] = [
     title: "Fast approvals, transparent rates.",
     description:
       "Compare loan options built for your goals — from short-term needs to long-term growth.",
-    ctaLabel: "Explore loans",
-    ctaHref: "/loans",
+    ctaLabel: "Explore personal loan",
+    ctaHref: "/personal-loan",
     image: heroLoanImage,
     imageAlt: "Loan approval and financing illustration",
   },
@@ -85,7 +85,7 @@ export const IN_DEMAND_LOANS: InDemandCard[] = [
   {
     title: "Personal",
     subtitle: "Instant to 24h",
-    href: "/loans",
+    href: "/personal-loan",
     image: inDemandPersonalImage,
     imageAlt: "Personal loan form illustration",
   },
