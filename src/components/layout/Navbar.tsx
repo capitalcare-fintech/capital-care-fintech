@@ -1,9 +1,14 @@
 "use client";
 
 import Link from "next/link";
+import { usePathname } from "next/navigation";
 import { useEffect, useMemo, useRef, useState } from "react";
+import { HiOutlineMoon, HiOutlineSun } from "react-icons/hi";
 import { NAV_ITEMS, type NavItem } from "@/lib/homeContent";
 import { useAuth } from "@/lib/useAuth";
+import { useSidebar } from "@/context/SidebarProvider";
+import { useTheme } from "@/context/ThemeProvider";
+import { isPartnerAppRoute } from "@/lib/partnerRoutes";
 
 function isDropdown(item: NavItem): item is Extract<NavItem, { items: unknown }> {
   return "items" in item;
@@ -49,26 +54,18 @@ function IconChevronDown({ className }: { className?: string }) {
   );
 }
 
-// function IconHome({ className }: { className?: string }) {
-//   return (
-//     <svg viewBox="0 0 20 20" fill="none" aria-hidden="true" className={className}>
-//       <path
-//         d="M3.5 9.2L10 3.75L16.5 9.2V16.25C16.5 16.94 15.94 17.5 15.25 17.5H12.25C11.56 17.5 11 16.94 11 16.25V13.25C11 12.56 10.44 12 9.75 12H10.25C9.56 12 9 12.56 9 13.25V16.25C9 16.94 8.44 17.5 7.75 17.5H4.75C4.06 17.5 3.5 16.94 3.5 16.25V9.2Z"
-//         stroke="currentColor"
-//         strokeWidth="1.6"
-//         strokeLinejoin="round"
-//       />
-//     </svg>
-//   );
-// }
-
 export function Navbar() {
+  const pathname = usePathname();
+  const isPartnerDashboard = isPartnerAppRoute(pathname);
   const items = useMemo(() => NAV_ITEMS, []);
   const { signedIn, signOut } = useAuth();
   const [openLabel, setOpenLabel] = useState<string | null>(null);
   const [mobileOpen, setMobileOpen] = useState(false);
   const rootRef = useRef<HTMLElement | null>(null);
   const closeTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+  const { open: sidebarOpen, setOpen: setSidebarOpen, toggle: toggleSidebar } =
+    useSidebar();
+  const { theme, toggleTheme, mounted: themeMounted } = useTheme();
 
   useEffect(() => {
     const onDown = (e: MouseEvent) => {
@@ -92,24 +89,88 @@ export function Navbar() {
       if (e.key === "Escape") {
         setOpenLabel(null);
         setMobileOpen(false);
+        if (isPartnerDashboard) setSidebarOpen(false);
       }
     };
     window.addEventListener("keydown", onKey);
     return () => window.removeEventListener("keydown", onKey);
-  }, []);
+  }, [isPartnerDashboard, setSidebarOpen]);
+
+  if (isPartnerDashboard) {
+    const darkOn = themeMounted && theme === "dark";
+    return (
+      <header
+        ref={(el) => {
+          rootRef.current = el;
+        }}
+        className="sticky top-0 z-50 border-b border-slate-200 bg-white/90 shadow-sm backdrop-blur transition-colors duration-300 dark:border-slate-700 dark:bg-slate-900/90"
+      >
+        <div className="mx-auto flex max-w-7xl items-center justify-between px-4 py-3 md:px-8">
+          <div className="flex items-center gap-3">
+            <button
+              type="button"
+              onClick={() => toggleSidebar()}
+              className="rounded-lg p-2 text-slate-600 transition hover:bg-slate-100 dark:text-slate-300 dark:hover:bg-slate-800"
+              aria-label={sidebarOpen ? "Close menu" : "Open menu"}
+              aria-expanded={sidebarOpen}
+              aria-controls="partner-dashboard-sidebar"
+            >
+              <IconMenu className="h-5 w-5" />
+            </button>
+            <Link href="/" className="flex items-center gap-2">
+              <span className="inline-flex h-8 w-8 items-center justify-center rounded-xl bg-linear-to-br from-sky-400 to-indigo-500 text-xs font-bold text-white">
+                CC
+              </span>
+              <div className="leading-tight">
+                <p className="text-sm font-bold text-slate-900 dark:text-slate-100">CapitalCare</p>
+                <p className="text-[10px] text-slate-400 dark:text-slate-500">
+                  Bharose ka dusra naam
+                </p>
+              </div>
+            </Link>
+            <span className="hidden rounded-full border border-sky-200 bg-sky-50 px-3 py-0.5 text-xs font-bold uppercase tracking-widest text-sky-700 dark:border-sky-800 dark:bg-sky-950/60 dark:text-sky-300 md:inline-flex">
+              Dashboard
+            </span>
+          </div>
+
+          <div className="flex items-center gap-2">
+            <HiOutlineSun className="h-4 w-4 text-slate-400 dark:text-slate-500" aria-hidden />
+            <button
+              type="button"
+              onClick={() => toggleTheme()}
+              className={[
+                "relative h-6 w-11 shrink-0 rounded-full transition-colors duration-300",
+                darkOn ? "bg-indigo-500" : "bg-slate-200 dark:bg-slate-600",
+              ].join(" ")}
+              aria-label={darkOn ? "Switch to light mode" : "Switch to dark mode"}
+              aria-pressed={darkOn}
+            >
+              <span
+                className={[
+                  "absolute top-0.5 h-5 w-5 rounded-full bg-white shadow transition-transform duration-300 ease-out",
+                  darkOn ? "translate-x-5" : "translate-x-0.5",
+                ].join(" ")}
+              />
+            </button>
+            <HiOutlineMoon className="h-4 w-4 text-slate-400 dark:text-slate-500" aria-hidden />
+          </div>
+        </div>
+      </header>
+    );
+  }
 
   return (
     <header
       ref={(el) => {
         rootRef.current = el;
       }}
-      className="sticky top-0 z-40 border-b border-slate-200/80 bg-white/80 backdrop-blur"
+      className="sticky top-0 z-40 border-b border-slate-200/80 bg-white/80 backdrop-blur transition-colors duration-300 dark:border-slate-700/80 dark:bg-slate-900/80"
     >
       <div className="flex w-full items-center justify-between px-4 py-4 md:px-8 lg:px-12">
         <div className="flex items-center gap-2">
           <Link
             href="/"
-            className="flex items-center gap-2 rounded-xl px-2 py-1 text-sm font-semibold tracking-tight text-slate-900 hover:bg-slate-100"
+            className="flex items-center gap-2 rounded-xl px-2 py-1 text-sm font-semibold tracking-tight text-slate-900 hover:bg-slate-100 dark:text-slate-100 dark:hover:bg-slate-800"
           >
             <span className="inline-flex h-8 w-8 items-center justify-center rounded-xl bg-linear-to-br from-sky-400 to-indigo-500 text-slate-950">
               CC
@@ -119,21 +180,13 @@ export function Navbar() {
         </div>
 
         <nav className="hidden items-center gap-2 md:flex" aria-label="Primary">
-          {/* <Link
-            href="/"
-            aria-label="Home"
-            className="inline-flex h-10 w-10 items-center justify-center rounded-full border border-white/10 bg-white/5 text-white/85 hover:bg-white/10 hover:text-white"
-          >
-            <IconHome className="h-5 w-5" />
-          </Link> */}
-
           {items.map((item) => {
             if (!isDropdown(item)) {
               return (
                 <Link
                   key={item.label}
                   href={item.href}
-                  className="rounded-full px-4 py-2 text-sm font-medium text-slate-700 hover:bg-slate-100 hover:text-slate-900"
+                  className="rounded-full px-4 py-2 text-sm font-medium text-slate-700 hover:bg-slate-100 hover:text-slate-900 dark:text-slate-200 dark:hover:bg-slate-800 dark:hover:text-white"
                 >
                   {item.label}
                 </Link>
@@ -170,7 +223,7 @@ export function Navbar() {
                   <IconChevronDown
                     className={[
                       "h-4 w-4 transition-transform",
-                      open ? "rotate-180 text-slate-900" : "text-slate-500",
+                      open ? "rotate-180 text-slate-900 dark:text-white" : "text-slate-500",
                     ].join(" ")}
                   />
                 </button>
@@ -178,7 +231,7 @@ export function Navbar() {
                 {open ? (
                   <div
                     role="menu"
-                    className="absolute left-0 mt-2 w-60 overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-xl shadow-sky-500/10"
+                    className="absolute left-0 mt-2 w-60 overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-xl shadow-sky-500/10 dark:border-slate-700 dark:bg-slate-900"
                   >
                     <div className="p-2">
                       {item.items.map((sub) => (
@@ -187,7 +240,7 @@ export function Navbar() {
                           href={sub.href}
                           role="menuitem"
                           onClick={() => setOpenLabel(null)}
-                          className="block rounded-xl px-3 py-2 text-sm text-slate-700 hover:bg-slate-100 hover:text-slate-900"
+                          className="block rounded-xl px-3 py-2 text-sm text-slate-700 hover:bg-slate-100 hover:text-slate-900 dark:text-slate-200 dark:hover:bg-slate-800 dark:hover:text-white"
                         >
                           {sub.label}
                         </Link>
@@ -201,17 +254,9 @@ export function Navbar() {
         </nav>
 
         <div className="flex items-center gap-2">
-          {/* <Link
-            href="/"
-            aria-label="Home"
-            className="inline-flex h-10 w-10 items-center justify-center rounded-xl border border-white/10 bg-white/5 text-white/85 hover:bg-white/10 hover:text-white md:hidden"
-          >
-            <IconHome className="h-5 w-5" />
-          </Link> */}
-
           <button
             type="button"
-            className="inline-flex h-10 w-10 items-center justify-center rounded-xl border border-slate-200 bg-white text-slate-700 hover:bg-slate-100 hover:text-slate-900 md:hidden"
+            className="inline-flex h-10 w-10 items-center justify-center rounded-xl border border-slate-200 bg-white text-slate-700 hover:bg-slate-100 hover:text-slate-900 md:hidden dark:border-slate-700 dark:bg-slate-900 dark:text-slate-200 dark:hover:bg-slate-800"
             aria-label={mobileOpen ? "Close menu" : "Open menu"}
             aria-expanded={mobileOpen}
             onClick={() => setMobileOpen((v) => !v)}
@@ -232,7 +277,7 @@ export function Navbar() {
               <>
                 <Link
                   href="/sign-in"
-                  className="rounded-full border border-slate-200 bg-white px-4 py-2 text-sm font-semibold text-slate-700 hover:bg-slate-100"
+                  className="rounded-full border border-slate-200 bg-white px-4 py-2 text-sm font-semibold text-slate-700 hover:bg-slate-100 dark:border-slate-700 dark:bg-slate-900 dark:text-slate-200 dark:hover:bg-slate-800"
                 >
                   Sign in
                 </Link>
@@ -259,7 +304,7 @@ export function Navbar() {
                       key={item.label}
                       href={item.href}
                       onClick={() => setMobileOpen(false)}
-                      className="rounded-2xl border border-slate-200 bg-white px-4 py-3 text-sm font-semibold text-slate-700 hover:bg-slate-100"
+                      className="rounded-2xl border border-slate-200 bg-white px-4 py-3 text-sm font-semibold text-slate-700 hover:bg-slate-100 dark:border-slate-700 dark:bg-slate-900 dark:text-slate-200 dark:hover:bg-slate-800"
                     >
                       {item.label}
                     </Link>
@@ -269,9 +314,9 @@ export function Navbar() {
                 return (
                   <details
                     key={item.label}
-                    className="group overflow-hidden rounded-2xl border border-slate-200 bg-white"
+                    className="group overflow-hidden rounded-2xl border border-slate-200 bg-white dark:border-slate-700 dark:bg-slate-900"
                   >
-                    <summary className="flex cursor-pointer list-none items-center justify-between px-4 py-3 text-sm font-semibold text-slate-700 hover:bg-slate-100">
+                    <summary className="flex cursor-pointer list-none items-center justify-between px-4 py-3 text-sm font-semibold text-slate-700 hover:bg-slate-100 dark:text-slate-200 dark:hover:bg-slate-800">
                       <span>{item.label}</span>
                       <IconChevronDown className="h-4 w-4 text-slate-500 transition-transform group-open:rotate-180" />
                     </summary>
@@ -281,7 +326,7 @@ export function Navbar() {
                           key={sub.label}
                           href={sub.href}
                           onClick={() => setMobileOpen(false)}
-                          className="rounded-xl px-3 py-2 text-sm font-medium text-slate-700 hover:bg-slate-100 hover:text-slate-900"
+                          className="rounded-xl px-3 py-2 text-sm font-medium text-slate-700 hover:bg-slate-100 hover:text-slate-900 dark:text-slate-200 dark:hover:bg-slate-800 dark:hover:text-white"
                         >
                           {sub.label}
                         </Link>
@@ -291,7 +336,7 @@ export function Navbar() {
                 );
               })}
 
-              <div className="mt-2 rounded-2xl border border-slate-200 bg-white p-2">
+              <div className="mt-2 rounded-2xl border border-slate-200 bg-white p-2 dark:border-slate-700 dark:bg-slate-900">
                 {signedIn ? (
                   <button
                     type="button"
@@ -308,7 +353,7 @@ export function Navbar() {
                     <Link
                       href="/sign-in"
                       onClick={() => setMobileOpen(false)}
-                      className="rounded-xl border border-slate-200 bg-white px-4 py-3 text-center text-sm font-semibold text-slate-700 hover:bg-slate-100"
+                      className="rounded-xl border border-slate-200 bg-white px-4 py-3 text-center text-sm font-semibold text-slate-700 hover:bg-slate-100 dark:border-slate-700 dark:bg-slate-900 dark:text-slate-200 dark:hover:bg-slate-800"
                     >
                       Sign in
                     </Link>
@@ -329,4 +374,3 @@ export function Navbar() {
     </header>
   );
 }
-
