@@ -316,7 +316,7 @@ export default function PersonalLoanPage() {
   };
 
   return (
-    <main className="min-h-screen bg-gray-50 px-4 py-10">
+    <main className="min-h-screen bg-linear-to-b from-blue-50 to-white px-4 py-10">
       <div className="mx-auto max-w-3xl">
         {/* Header */}
         <div className="mb-8">
@@ -328,11 +328,11 @@ export default function PersonalLoanPage() {
         <div className="mb-10 rounded-lg bg-white p-4 shadow-sm">
           <div className="mb-2 flex items-center justify-between">
             <span className="text-xs font-semibold text-gray-600 uppercase tracking-wide">Step {step} of 6</span>
-            <span className="text-sm font-semibold text-indigo-600">{progress}%</span>
+            <span className="text-sm font-semibold text-blue-600">{progress}%</span>
           </div>
           <div className="h-2 w-full rounded-full bg-gray-200 overflow-hidden">
             <div
-              className="h-2 rounded-full bg-indigo-600 transition-all duration-500"
+              className="h-2 rounded-full bg-blue-600 transition-all duration-500"
               style={{ width: `${progress}%` }}
             />
           </div>
@@ -365,7 +365,7 @@ export default function PersonalLoanPage() {
                         value={formData.fullName}
                         onChange={(e) => updateField("fullName", e.target.value)}
                         placeholder="As per PAN"
-                        className="w-full rounded-lg border border-gray-300 px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500"
+                          className="w-full rounded-lg border border-gray-300 px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
                       />
                     </div>
 
@@ -376,7 +376,7 @@ export default function PersonalLoanPage() {
                         value={formData.email}
                         onChange={(e) => updateField("email", e.target.value)}
                         placeholder="your@email.com"
-                        className="w-full rounded-lg border border-gray-300 px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500"
+                        className="w-full rounded-lg border border-gray-300 px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
                       />
                     </div>
 
@@ -387,7 +387,7 @@ export default function PersonalLoanPage() {
                         value={formData.mobile}
                         onChange={(e) => updateField("mobile", e.target.value)}
                         placeholder="10-digit mobile"
-                        className="w-full rounded-lg border border-gray-300 px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500"
+                        className="w-full rounded-lg border border-gray-300 px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
                       />
                     </div>
 
@@ -396,7 +396,7 @@ export default function PersonalLoanPage() {
                       <select
                         value={formData.gender}
                         onChange={(e) => updateField("gender", e.target.value)}
-                        className="w-full rounded-lg border border-gray-300 px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500"
+                        className="w-full rounded-lg border border-gray-300 px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
                       >
                         <option value="">Select</option>
                         <option value="male">Male</option>
@@ -411,7 +411,7 @@ export default function PersonalLoanPage() {
                         type="date"
                         value={formData.dob}
                         onChange={(e) => updateField("dob", e.target.value)}
-                        className="w-full rounded-lg border border-gray-300 px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500"
+                        className="w-full rounded-lg border border-gray-300 px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
                       />
                     </div>
                   </div>
@@ -419,7 +419,7 @@ export default function PersonalLoanPage() {
                   <button
                     type="button"
                     onClick={handleSendOtp}
-                    className="w-full rounded-lg bg-indigo-600 px-4 py-2.5 font-semibold text-white text-sm hover:bg-indigo-700 transition"
+                    className="w-full rounded-lg bg-blue-600 px-4 py-2.5 font-semibold text-white text-sm hover:bg-blue-700 transition"
                   >
                     Send OTP
                   </button>
@@ -428,9 +428,9 @@ export default function PersonalLoanPage() {
 
               {(otpStage === "sent" || otpStage === "verified") && (
                 <div className="space-y-4">
-                  <div className="rounded-lg bg-blue-50 border border-blue-200 p-3 flex gap-2">
+                  <div className="rounded-lg bg-sky-50 border border-sky-200 p-3 flex gap-2">
                     <InfoIcon />
-                    <p className="text-sm text-blue-800">
+                    <p className="text-sm text-sky-900">
                       OTP sent to <strong>{formData.mobile}</strong>
                       {generatedOtp && (
                         <span className="block text-xs mt-1">Test OTP: <strong>{generatedOtp}</strong></span>
@@ -439,9 +439,9 @@ export default function PersonalLoanPage() {
                   </div>
 
                   {otpStage === "verified" ? (
-                    <div className="rounded-lg bg-green-50 border border-green-200 p-3 flex gap-2">
+                    <div className="rounded-lg bg-emerald-50 border border-emerald-200 p-3 flex gap-2">
                       <CheckIcon />
-                      <p className="text-sm text-green-800">OTP verified successfully</p>
+                      <p className="text-sm text-emerald-800">OTP verified successfully</p>
                     </div>
                   ) : (
                     <>
@@ -453,14 +453,14 @@ export default function PersonalLoanPage() {
                           onChange={(e) => setEnteredOtp(e.target.value.slice(0, 4))}
                           placeholder="0000"
                           maxLength={4}
-                          className="w-full rounded-lg border border-gray-300 px-3 py-2 text-center text-lg tracking-widest font-semibold focus:outline-none focus:ring-2 focus:ring-indigo-500"
+                          className="w-full rounded-lg border border-gray-300 px-3 py-2 text-center text-lg tracking-widest font-semibold focus:outline-none focus:ring-2 focus:ring-blue-500"
                         />
                       </div>
 
                       <button
                         type="button"
                         onClick={handleVerifyOtp}
-                        className="w-full rounded-lg bg-indigo-600 px-4 py-2.5 font-semibold text-white text-sm hover:bg-indigo-700 transition"
+                        className="w-full rounded-lg bg-blue-600 px-4 py-2.5 font-semibold text-white text-sm hover:bg-blue-700 transition"
                       >
                         Verify OTP
                       </button>
@@ -488,7 +488,7 @@ export default function PersonalLoanPage() {
                   <button
                     key={opt.value}
                     onClick={() => handleEmploymentSelect(opt.value as EmploymentType)}
-                    className="rounded-lg border-2 border-gray-200 p-4 text-left hover:border-indigo-500 hover:bg-indigo-50 transition"
+                    className="rounded-lg border-2 border-gray-200 p-4 text-left hover:border-blue-500 hover:bg-blue-50 transition"
                   >
                     <p className="font-semibold text-gray-900 text-sm">{opt.label}</p>
                     <p className="text-xs text-gray-600 mt-1">{opt.desc}</p>
@@ -514,7 +514,7 @@ export default function PersonalLoanPage() {
                       <select
                         value={formData.yearlyIncome}
                         onChange={(e) => updateField("yearlyIncome", e.target.value)}
-                        className="w-full rounded-lg border border-gray-300 px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500"
+                        className="w-full rounded-lg border border-gray-300 px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
                       >
                         <option value="">Select range</option>
                         <option value="3-5">₹3 - ₹5 Lacs</option>
@@ -531,7 +531,7 @@ export default function PersonalLoanPage() {
                         value={formData.employerName}
                         onChange={(e) => updateField("employerName", e.target.value)}
                         placeholder="Your company"
-                        className="w-full rounded-lg border border-gray-300 px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500"
+                        className="w-full rounded-lg border border-gray-300 px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
                       />
                     </div>
                   </>
@@ -545,7 +545,7 @@ export default function PersonalLoanPage() {
                         value={formData.annualTurnover}
                         onChange={(e) => updateField("annualTurnover", e.target.value)}
                         placeholder="₹"
-                        className="w-full rounded-lg border border-gray-300 px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500"
+                        className="w-full rounded-lg border border-gray-300 px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
                       />
                     </div>
 
@@ -555,7 +555,7 @@ export default function PersonalLoanPage() {
                         value={formData.businessDetails}
                         onChange={(e) => updateField("businessDetails", e.target.value)}
                         placeholder="Type, firm name, etc."
-                        className="w-full rounded-lg border border-gray-300 px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500"
+                        className="w-full rounded-lg border border-gray-300 px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
                       />
                     </div>
                   </>
@@ -569,7 +569,7 @@ export default function PersonalLoanPage() {
                         value={formData.professionType}
                         onChange={(e) => updateField("professionType", e.target.value)}
                         placeholder="e.g., Doctor, CA, Lawyer"
-                        className="w-full rounded-lg border border-gray-300 px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500"
+                        className="w-full rounded-lg border border-gray-300 px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
                       />
                     </div>
 
@@ -579,7 +579,7 @@ export default function PersonalLoanPage() {
                         value={formData.annualTurnover}
                         onChange={(e) => updateField("annualTurnover", e.target.value)}
                         placeholder="₹"
-                        className="w-full rounded-lg border border-gray-300 px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500"
+                        className="w-full rounded-lg border border-gray-300 px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
                       />
                     </div>
                   </>
@@ -597,7 +597,7 @@ export default function PersonalLoanPage() {
                 <button
                   type="button"
                   onClick={handleNextStep}
-                  className="flex-1 rounded-lg bg-indigo-600 px-4 py-2.5 font-semibold text-white text-sm hover:bg-indigo-700 transition"
+                  className="flex-1 rounded-lg bg-blue-600 px-4 py-2.5 font-semibold text-white text-sm hover:bg-blue-700 transition"
                 >
                   Continue
                 </button>
@@ -620,7 +620,7 @@ export default function PersonalLoanPage() {
                     value={formData.city}
                     onChange={(e) => updateField("city", e.target.value)}
                     placeholder="Your city"
-                    className="w-full rounded-lg border border-gray-300 px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500"
+                    className="w-full rounded-lg border border-gray-300 px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
                   />
                 </div>
 
@@ -630,7 +630,7 @@ export default function PersonalLoanPage() {
                     value={formData.pinCode}
                     onChange={(e) => updateField("pinCode", e.target.value)}
                     placeholder="6-digit PIN"
-                    className="w-full rounded-lg border border-gray-300 px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500"
+                    className="w-full rounded-lg border border-gray-300 px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
                   />
                 </div>
               </div>
@@ -648,8 +648,8 @@ export default function PersonalLoanPage() {
                       onClick={() => updateField("residenceType", opt.value)}
                       className={`rounded-lg border-2 p-3 text-sm font-semibold transition ${
                         formData.residenceType === opt.value
-                          ? "border-indigo-600 bg-indigo-50 text-indigo-900"
-                          : "border-gray-200 text-gray-900 hover:border-indigo-300"
+                          ? "border-blue-600 bg-blue-50 text-blue-900"
+                          : "border-gray-200 text-gray-900 hover:border-blue-300"
                       }`}
                     >
                       {opt.label}
@@ -669,7 +669,7 @@ export default function PersonalLoanPage() {
                 <button
                   type="button"
                   onClick={handleNextStep}
-                  className="flex-1 rounded-lg bg-indigo-600 px-4 py-2.5 font-semibold text-white text-sm hover:bg-indigo-700 transition"
+                  className="flex-1 rounded-lg bg-blue-600 px-4 py-2.5 font-semibold text-white text-sm hover:bg-blue-700 transition"
                 >
                   Continue
                 </button>
@@ -692,7 +692,7 @@ export default function PersonalLoanPage() {
                   onChange={(e) => updateField("panNumber", e.target.value.toUpperCase())}
                   placeholder="AAABP1234A"
                   maxLength={10}
-                  className="w-full rounded-lg border border-gray-300 px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 font-mono"
+                  className="w-full rounded-lg border border-gray-300 px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 font-mono"
                 />
               </div>
 
@@ -712,8 +712,8 @@ export default function PersonalLoanPage() {
                       onClick={() => updateField("desiredLoanAmount", amount)}
                       className={`rounded-lg border-2 p-3 text-center text-sm font-semibold transition ${
                         formData.desiredLoanAmount === amount
-                          ? "border-indigo-600 bg-indigo-50 text-indigo-900"
-                          : "border-gray-200 text-gray-900 hover:border-indigo-300"
+                          ? "border-blue-600 bg-blue-50 text-blue-900"
+                          : "border-gray-200 text-gray-900 hover:border-blue-300"
                       }`}
                     >
                       {amount}
@@ -734,7 +734,7 @@ export default function PersonalLoanPage() {
                   type="button"
                   onClick={handleNextStep}
                   disabled={loading}
-                  className="flex-1 rounded-lg bg-indigo-600 px-4 py-2.5 font-semibold text-white text-sm hover:bg-indigo-700 transition disabled:opacity-50"
+                  className="flex-1 rounded-lg bg-blue-600 px-4 py-2.5 font-semibold text-white text-sm hover:bg-blue-700 transition disabled:opacity-50"
                 >
                   {loading ? "Checking..." : "View Offers"}
                 </button>
@@ -745,15 +745,15 @@ export default function PersonalLoanPage() {
           {/* Step 6: Loan Offers */}
           {step === 6 && creditScore !== null && (
             <div className="space-y-6">
-              <div className="rounded-lg bg-indigo-50 border border-indigo-200 p-4">
-                <p className="text-xs font-semibold text-indigo-600 uppercase tracking-wide">Your Score</p>
-                <p className="text-3xl font-bold text-indigo-900 mt-2">{creditScore}</p>
+              <div className="rounded-lg bg-sky-50 border border-sky-200 p-4">
+                <p className="text-xs font-semibold text-sky-600 uppercase tracking-wide">Your Score</p>
+                <p className="text-3xl font-bold text-blue-900 mt-2">{creditScore}</p>
               </div>
 
               {eligibleOffers.length === 0 ? (
-                <div className="rounded-lg bg-amber-50 border border-amber-300 p-4 flex gap-2">
+                <div className="rounded-lg bg-red-50 border border-red-200 p-4 flex gap-2">
                   <AlertIcon />
-                  <p className="text-sm text-amber-800">No offers available. Please try again later.</p>
+                  <p className="text-sm text-red-700">No offers available. Please try again later.</p>
                 </div>
               ) : (
                 <div className="space-y-4">
@@ -762,8 +762,8 @@ export default function PersonalLoanPage() {
                   {eligibleOffers.map((offer) => (
                     <div key={offer.name} className="rounded-lg border border-gray-200 overflow-hidden hover:shadow-md transition">
                       {/* Provider Header */}
-                      <div className="bg-gradient-to-r from-indigo-50 to-blue-50 px-4 py-3 border-b border-gray-200 flex items-center gap-3">
-                        <div className="flex h-10 w-10 items-center justify-center rounded-full bg-indigo-600 text-white font-semibold text-xs">
+                      <div className="bg-linear-to-r from-sky-50 to-blue-50 px-4 py-3 border-b border-gray-200 flex items-center gap-3">
+                        <div className="flex h-10 w-10 items-center justify-center rounded-full bg-blue-600 text-white font-semibold text-xs">
                           {offer.logo}
                         </div>
                         <h3 className="font-semibold text-gray-900 text-sm">{offer.name}</h3>
@@ -784,7 +784,7 @@ export default function PersonalLoanPage() {
                             <TrendingUpIcon />
                             Approval
                           </p>
-                          <p className="font-semibold text-green-600">{offer.approvalChance}</p>
+                          <p className="font-semibold text-emerald-600">{offer.approvalChance}</p>
                         </div>
 
                         <div>
@@ -792,7 +792,7 @@ export default function PersonalLoanPage() {
                             <PercentIcon />
                             Rate
                           </p>
-                          <p className="font-semibold text-indigo-600">{offer.interestRate}</p>
+                          <p className="font-semibold text-blue-600">{offer.interestRate}</p>
                         </div>
 
                         <div>
@@ -803,10 +803,10 @@ export default function PersonalLoanPage() {
 
                       {/* Action Buttons */}
                       <div className="bg-gray-50 px-4 py-3 border-t border-gray-200 flex gap-2">
-                        <button className="flex-1 rounded-lg bg-indigo-600 px-3 py-2 text-white font-semibold text-xs hover:bg-indigo-700 transition">
+                        <button className="flex-1 rounded-lg bg-blue-600 px-3 py-2 text-white font-semibold text-xs hover:bg-blue-700 transition">
                           Apply Now
                         </button>
-                        <button className="px-3 py-2 text-indigo-600 font-semibold text-xs hover:text-indigo-700 transition">
+                        <button className="px-3 py-2 text-blue-600 font-semibold text-xs hover:text-blue-700 transition">
                           Details
                         </button>
                       </div>
