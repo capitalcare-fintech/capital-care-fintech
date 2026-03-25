@@ -7,6 +7,7 @@ import {
   HiOutlineUser,
 } from "react-icons/hi";
 import { LoanProductCard } from "@/components/loan/LoanProductCard";
+import { useRequireAuth } from "@/lib/useRequireAuth";
 
 const easeOut: [number, number, number, number] = [0.25, 0.1, 0.25, 1];
 
@@ -41,6 +42,8 @@ const LOAN_OPTIONS = [
 ];
 
 export default function AddLeadSelectLoanPage() {
+  const { ready } = useRequireAuth("/add-lead");
+  if (!ready) return null;
   return (
     <div className="min-h-[calc(100vh-3.5rem)] bg-slate-50 py-16 transition-colors duration-300">
       <motion.div

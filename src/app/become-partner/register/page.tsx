@@ -1,11 +1,12 @@
 "use client";
 
-import { Suspense, useState } from "react";
+import { Suspense, useState, useEffect } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 import Link from "next/link";
 import { motion } from "framer-motion";
 import { HiOutlineDeviceMobile, HiOutlineArrowLeft } from "react-icons/hi";
 import { Stepper } from "@/components/partner/Stepper";
+import { getSignedIn } from "@/lib/authClient";
 
 const easeOut: [number, number, number, number] = [0.25, 0.1, 0.25, 1];
 
@@ -13,6 +14,11 @@ function MobileVerifyForm() {
   const router = useRouter();
   const params = useSearchParams();
   const type = params.get("type") ?? "individual";
+
+  // Already logged in → skip straight to dashboard
+  useEffect(() => {
+    if (getSignedIn()) router.replace("/partner-dashboard");
+  }, [router]);
 
   const [mobile, setMobile] = useState("");
   const [error, setError] = useState("");

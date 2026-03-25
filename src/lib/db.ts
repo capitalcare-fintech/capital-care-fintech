@@ -82,8 +82,11 @@ function buildPoolConfig(): PoolOptions {
     connectionLimit: Number.isFinite(connectionLimit) ? connectionLimit : 10,
     queueLimit: 0,
     enableKeepAlive: true,
-    keepAliveInitialDelay: 0,
+    keepAliveInitialDelay: 10000,   // send keepalive after 10s idle
     connectTimeout: Number.isFinite(connectTimeout) ? connectTimeout : 20000,
+    // Railway proxy drops idle connections — reduce pool size to avoid exhaustion
+    idleTimeout: 60000,             // release idle connections after 60s
+    maxIdle: 5,
     ...(family ? { family } : {}),
     ...(ssl ? { ssl } : {}),
   };
