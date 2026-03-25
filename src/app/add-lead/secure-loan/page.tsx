@@ -1,5 +1,5 @@
 import { redirect } from "next/navigation";
 
-export default function AddLeadSecurePage() {
+export default function AddLeadSecureLoanPage() {
   redirect("/secure-loan");
 }

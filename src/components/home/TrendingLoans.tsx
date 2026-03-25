@@ -37,7 +37,7 @@ const LOANS = [
     desc: "Collateral-backed loans with lower interest rates.",
     bg: "bg-emerald-50 border-emerald-200",
     iconBg: "bg-emerald-100 text-emerald-600",
-    href: "/loans",
+    href: "/become-partner#loan-products",
   },
   {
     icon: HiOutlineLightningBolt,
