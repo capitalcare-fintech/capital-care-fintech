@@ -2,6 +2,7 @@
 
 import { useRouter } from "next/navigation";
 import { motion } from "framer-motion";
+import { useRequireAuth } from "@/lib/useRequireAuth";
 import {
   HiOutlineOfficeBuilding, HiOutlineUser, HiOutlineCheckCircle,
   HiOutlineBriefcase, HiOutlineUserGroup, HiOutlineTrendingUp,
@@ -75,6 +76,8 @@ function SectionHeading({ title, desc }: { title: string; desc: string }) {
 
 export default function BecomePartnerPage() {
   const router = useRouter();
+  const { ready } = useRequireAuth("/become-partner");
+  if (!ready) return null;
 
   return (
     <div className="w-full">
