@@ -13,8 +13,7 @@ import { FaHandshake } from "react-icons/fa";
 
 const easeOut: [number, number, number, number] = [0.25, 0.1, 0.25, 1];
 
-const BUSINESS_TYPES = [
-  { icon: HiOutlineOfficeBuilding, title: "Proprietorship", subtitle: "Single owner business entity", highlighted: false, href: "/become-partner/register?type=proprietorship" },
+const BUSINESS_TYPES = [  { icon: HiOutlineOfficeBuilding, title: "Proprietorship", subtitle: "Single owner business entity", highlighted: false, href: "/become-partner/register?type=proprietorship" },
   { icon: HiOutlineUser, title: "Individual", subtitle: "Personal account for self", highlighted: true, href: "/become-partner/register?type=individual" },
 ];
 

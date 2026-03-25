@@ -15,10 +15,13 @@ export async function POST(req: NextRequest) {
 
     const db = getDB();
 
-    const [rows] = await db.query(
+    const [rows] = (await db.query(
       "SELECT id, fullName, phone, password FROM users WHERE phone = ?",
-      [phone]
-    ) as [Array<{ id: number; fullName: string; phone: string; password: string }>, unknown];
+      [phone],
+    )) as unknown as [
+      Array<{ id: number; fullName: string; phone: string; password: string }>,
+      unknown,
+    ];
 
     if (rows.length === 0) {
       return NextResponse.json(
