@@ -1,10 +1,12 @@
 "use client";
 
+import Image from "next/image";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useEffect, useMemo, useRef, useState } from "react";
 import { HiOutlineMoon, HiOutlineSun } from "react-icons/hi";
 import { NAV_ITEMS, type NavItem } from "@/lib/homeContent";
+import capitalCareLogo from "@/assets/logo/capitalCareLogo.png";
 import { useAuth } from "@/lib/useAuth";
 import { useSidebar } from "@/context/SidebarProvider";
 import { useTheme } from "@/context/ThemeProvider";
@@ -117,16 +119,13 @@ export function Navbar() {
             >
               <IconMenu className="h-5 w-5" />
             </button>
-            <Link href="/" className="flex items-center gap-2">
-              <span className="inline-flex h-8 w-8 items-center justify-center rounded-xl bg-linear-to-br from-sky-400 to-indigo-500 text-xs font-bold text-white">
-                CC
-              </span>
-              <div className="leading-tight">
-                <p className="text-sm font-bold text-slate-900 dark:text-slate-100">CapitalCare</p>
-                <p className="text-[10px] text-slate-400 dark:text-slate-500">
-                  Bharose ka dusra naam
-                </p>
-              </div>
+            <Link href="/" className="flex items-center p-4">
+              <Image
+                src={capitalCareLogo}
+                alt="Capital Care"
+                priority
+                className="h-10 w-auto object-contain"
+              />
             </Link>
             <span className="hidden rounded-full border border-sky-200 bg-sky-50 px-3 py-0.5 text-xs font-bold uppercase tracking-widest text-sky-700 dark:border-sky-800 dark:bg-sky-950/60 dark:text-sky-300 md:inline-flex">
               Dashboard
@@ -170,12 +169,14 @@ export function Navbar() {
         <div className="flex items-center gap-2">
           <Link
             href="/"
-            className="flex items-center gap-2 rounded-xl px-2 py-1 text-sm font-semibold tracking-tight text-slate-900 hover:bg-slate-100 dark:text-slate-100 dark:hover:bg-slate-800"
+            className="rounded-xl hover:bg-slate-100 dark:hover:bg-slate-800"
           >
-            <span className="inline-flex h-8 w-8 items-center justify-center rounded-xl bg-linear-to-br from-sky-400 to-indigo-500 text-slate-950">
-              CC
-            </span>
-            <span>CapitalCare</span>
+            <Image
+              src={capitalCareLogo}
+              alt="Capital Care"
+              priority
+              className="h-8 w-auto object-contain"
+            />
           </Link>
         </div>
 
