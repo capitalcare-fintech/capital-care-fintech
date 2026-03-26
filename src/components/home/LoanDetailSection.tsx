@@ -1,7 +1,11 @@
 "use client";
 
+import Image, { type StaticImageData } from "next/image";
 import Link from "next/link";
 import { motion } from "framer-motion";
+import businessLoanImage from "@/assets/exploreProducts/businessLoan.jpg";
+import homeLoanImage from "@/assets/exploreProducts/homeLoan.jpg";
+import personalLoanImage from "@/assets/exploreProducts/personalLoan.jpg";
 
 const easeOut: [number, number, number, number] = [0.25, 0.1, 0.25, 1];
 
@@ -11,8 +15,9 @@ type LoanDetail = {
   features: string[];
   href: string;
   reverse?: boolean;
+  image: StaticImageData;
+  imageAlt: string;
   accent: string;
-  bg: string;
 };
 
 const LOANS: LoanDetail[] = [
@@ -22,8 +27,9 @@ const LOANS: LoanDetail[] = [
       "Whether you're scaling operations, buying equipment, or managing cash flow — our business loans are designed to move as fast as your ambitions. Get up to ₹50 Lakhs with minimal documentation.",
     features: ["Up to ₹50 Lakhs", "Approval in 24 hrs", "Flexible tenure", "No collateral required"],
     href: "/loans",
+    image: businessLoanImage,
+    imageAlt: "Business loan financing",
     accent: "bg-sky-400",
-    bg: "bg-sky-50",
     reverse: false,
   },
   {
@@ -32,8 +38,9 @@ const LOANS: LoanDetail[] = [
       "From medical emergencies to dream vacations — a personal loan puts money in your hands when you need it most. No end-use restrictions, instant disbursal.",
     features: ["Up to ₹25 Lakhs", "Disbursal in 2 hrs", "Zero prepayment charges", "100% online process"],
     href: "/personal-loan",
+    image: personalLoanImage,
+    imageAlt: "Personal loan funds",
     accent: "bg-indigo-400",
-    bg: "bg-indigo-50",
     reverse: true,
   },
   {
@@ -42,23 +49,12 @@ const LOANS: LoanDetail[] = [
       "Turn your dream home into reality with our competitive home loan rates. We partner with 70+ banks and NBFCs to get you the best deal possible.",
     features: ["Up to ₹5 Crores", "Lowest interest rates", "Long tenure options", "Balance transfer available"],
     href: "/loans",
+    image: homeLoanImage,
+    imageAlt: "Home loan and mortgage support",
     accent: "bg-emerald-400",
-    bg: "bg-emerald-50",
     reverse: false,
   },
 ];
-
-function IllustrationPlaceholder({ bg, accent }: { bg: string; accent: string }) {
-  return (
-    <div className={`flex h-56 w-full items-center justify-center rounded-2xl ${bg} md:h-72`}>
-      <div className="flex flex-col items-center gap-3 opacity-40">
-        <div className={`h-16 w-16 rounded-full ${accent}`} />
-        <div className={`h-3 w-32 rounded-full ${accent}`} />
-        <div className={`h-3 w-24 rounded-full ${accent}`} />
-      </div>
-    </div>
-  );
-}
 
 export function LoanDetailSection() {
   return (
@@ -77,7 +73,7 @@ export function LoanDetailSection() {
       </motion.div>
 
       <div className="flex flex-col gap-10">
-        {LOANS.map(({ title, description, features, href, reverse, accent, bg }) => (
+        {LOANS.map(({ title, description, features, href, reverse, accent, image, imageAlt }) => (
           <motion.div
             key={title}
             initial={{ opacity: 0, y: 32 }}
@@ -109,8 +105,15 @@ export function LoanDetailSection() {
               </Link>
             </div>
 
-            {/* Illustration */}
-            <IllustrationPlaceholder bg={bg} accent={accent} />
+            <div className="relative h-56 w-full overflow-hidden rounded-2xl md:h-72">
+              <Image
+                src={image}
+                alt={imageAlt}
+                fill
+                className="object-cover"
+                sizes="(max-width: 768px) 100vw, 50vw"
+              />
+            </div>
           </motion.div>
         ))}
       </div>
