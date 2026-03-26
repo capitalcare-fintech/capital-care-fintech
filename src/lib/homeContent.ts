@@ -8,21 +8,21 @@ import inDemandPersonalImage from "@/assets/inDemand/personal.jpg";
 
 export type NavItem =
   | {
-      label: string;
-      href: string;
-      items?: undefined;
-    }
+    label: string;
+    href: string;
+    items?: undefined;
+  }
   | {
-      label: string;
-      href?: undefined;
-      items: { label: string; href: string }[];
-    };
+    label: string;
+    href?: undefined;
+    items: { label: string; href: string }[];
+  };
 
 export const NAV_ITEMS: NavItem[] = [
   {
     label: "Loans",
     items: [
-      { label: "Personal Loan", href: "/loans" },
+      { label: "Personal Loan", href: "/personal-loan" },
       { label: "Business Loan", href: "/loans" },
       { label: "In-demand Loans", href: "/#in-demand-loans" },
     ],
@@ -38,6 +38,7 @@ export const NAV_ITEMS: NavItem[] = [
   { label: "Credit-Score", href: "/credit-score" },
   { label: "Contact-Us", href: "/contact-us" },
   { label: "About-us", href: "/about-us" },
+  { label: "Become Our Partner", href: "/become-partner" },
 ];
 
 export type HeroSlide = {
@@ -56,8 +57,8 @@ export const HERO_SLIDES: HeroSlide[] = [
     title: "Fast approvals, transparent rates.",
     description:
       "Compare loan options built for your goals — from short-term needs to long-term growth.",
-    ctaLabel: "Explore loans",
-    ctaHref: "/loans",
+    ctaLabel: "Explore personal loan",
+    ctaHref: "/personal-loan",
     image: heroLoanImage,
     imageAlt: "Loan approval and financing illustration",
   },
@@ -85,7 +86,7 @@ export const IN_DEMAND_LOANS: InDemandCard[] = [
   {
     title: "Personal",
     subtitle: "Instant to 24h",
-    href: "/loans",
+    href: "/personal-loan",
     image: inDemandPersonalImage,
     imageAlt: "Personal loan form illustration",
   },
