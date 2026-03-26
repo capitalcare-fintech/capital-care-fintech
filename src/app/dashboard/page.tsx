@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useMemo } from "react";
 import { useRouter } from "next/navigation";
 import { getSignedIn, getUser } from "@/lib/authClient";
 import { useAuth } from "@/lib/useAuth";
@@ -8,15 +8,12 @@ import { useAuth } from "@/lib/useAuth";
 export default function DashboardPage() {
     const router = useRouter();
     const { signOut } = useAuth();
-    const [userName, setUserName] = useState("");
+    const userName = useMemo(() => getUser()?.name ?? "", []);
 
     useEffect(() => {
         if (!getSignedIn()) {
             router.replace("/sign-in");
-            return;
         }
-        const user = getUser();
-        if (user) setUserName(user.name);
     }, [router]);
 
     return (
