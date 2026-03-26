@@ -1,4 +1,5 @@
 import Link from "next/link";
+import Image from "next/image";
 import {
   FaEnvelope,
   FaFacebookF,
@@ -9,6 +10,7 @@ import {
   FaYoutube,
 } from "react-icons/fa";
 import { FaXTwitter } from "react-icons/fa6";
+import capitalCareLogo from "@/assets/logo/capitalCareLogo.png";
 
 export function Footer() {
   return (
@@ -16,13 +18,11 @@ export function Footer() {
       <div className="w-full px-4 pt-10 pb-2 md:px-8 lg:px-12">
         <div className="grid gap-10 lg:grid-cols-2 lg:gap-24">
           <div>
-            <h3 className="text-xl font-bold tracking-tight text-slate-900 sm:text-2xl">
-              CAPITAL CARE
-            </h3>
-            {/* <p className="mt-2 inline-flex bg-cyan-400 px-1 py-1 text-xs font-semibold uppercase tracking-[0.22em] text-white">
-              trusted financial partner
-            </p> */}
-
+            <Image
+              src={capitalCareLogo}
+              alt="Capital Care"
+              className="h-18 w-auto object-contain"
+            />
             <div className="mt-8 space-y-2">
               <a
                 href="tel:+91-9205559500"
@@ -122,18 +122,21 @@ export function Footer() {
         </div>
 
         <div className="mt-4  pt-4">
-          <div className="grid grid-cols-2 gap-4 text-center text-[12px]  text-slate-600 sm:grid-cols-4 sm:text-sm">
-            <Link href="/about-us" className="hover:text-slate-900">
-              About Us
-            </Link>
-            <Link href="/contact-us" className="hover:text-slate-900">
-              Contact Us
-            </Link>
+          <div className="grid grid-cols-2 gap-4 text-center text-[12px]  text-slate-600 sm:grid-cols-5 sm:text-sm">
             <Link href="/loans" className="hover:text-slate-900">
               Loans
             </Link>
             <Link href="/insurance" className="hover:text-slate-900">
               Insurance
+            </Link>
+            <Link href="/partners" className="hover:text-slate-900">
+              Our Partners
+            </Link>
+            <Link href="/about-us" className="hover:text-slate-900">
+              About Us
+            </Link>
+            <Link href="/contact-us" className="hover:text-slate-900">
+              Contact Us
             </Link>
           </div>
         </div>
