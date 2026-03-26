@@ -29,10 +29,10 @@ export async function POST(req: NextRequest) {
 
     const db = getDB();
 
-    const [existing] = await db.query(
+    const [existing] = (await db.query(
       "SELECT id FROM users WHERE phone = ?",
-      [phone]
-    ) as [Array<{ id: number }>, unknown];
+      [phone],
+    )) as unknown as [Array<{ id: number }>, unknown];
 
     if (existing.length > 0) {
       return NextResponse.json(

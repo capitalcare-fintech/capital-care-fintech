@@ -6,6 +6,7 @@ import Link from "next/link";
 import { motion, AnimatePresence } from "framer-motion";
 import { HiOutlineShieldCheck, HiOutlineArrowLeft, HiCheck } from "react-icons/hi";
 import { Stepper } from "@/components/partner/Stepper";
+import { getSignedIn } from "@/lib/authClient";
 
 const easeOut: [number, number, number, number] = [0.25, 0.1, 0.25, 1];
 const MOCK_OTP = "1234";
@@ -23,6 +24,11 @@ function OtpForm() {
   const [verified, setVerified] = useState(false);
   const [timer, setTimer] = useState(RESEND_SECONDS);
   const inputRefs = useRef<(HTMLInputElement | null)[]>([]);
+
+  // Already logged in → skip straight to dashboard
+  useEffect(() => {
+    if (getSignedIn()) router.replace("/partner-dashboard");
+  }, [router]);
 
   // Resend countdown
   useEffect(() => {
