@@ -1,24 +1,45 @@
-import { PARTNERS } from "@/lib/homeContent";
+import Image from "next/image";
+import Link from "next/link";
+import { homePartners } from "@/app/partners/partners";
 
 export function Partners() {
   return (
-      <div className="rounded-3xl p-8 md:p-10">
+      <div className="p-8 md:p-10">
         <div className="flex flex-col items-start justify-between gap-4 md:flex-row md:items-center">
-          <h2 className="text-3xl font-semibold tracking-tight text-slate-900 md:text-4xl">
-            Partners
+          <div>
+              <h2 className="text-3xl font-semibold tracking-tight text-slate-900 md:text-4xl">
+            Our Partners
           </h2>
-          <div className="text-sm font-medium text-slate-500">
-            Placeholder list — swap with real partner logos later.
+          <p className="text-sm text-slate-600 md:text-base">
+            Partnering with top financial providers to bring you reliable loan and insurance solutions, all in one place.
+          </p>
           </div>
+          <Link
+            href="/partners"
+            className="rounded-full border border-slate-300 px-4 py-2 text-sm font-semibold text-slate-700 transition hover:border-slate-400 hover:bg-slate-50"
+          >
+            View More
+          </Link>
         </div>
 
-        <div className="mt-8 grid grid-cols-2 gap-3 md:grid-cols-3 lg:grid-cols-6">
-          {PARTNERS.map((p) => (
+        <div className="mt-8 grid grid-cols-2 gap-x-10 gap-y-8 md:grid-cols-3 lg:grid-cols-4">
+          {homePartners.map((p) => (
             <div
               key={p.name}
-              className="flex items-center justify-center rounded-2xl border border-slate-200 bg-slate-50 px-4 py-5 text-center text-sm font-semibold text-slate-700"
+              className="flex flex-col items-center"
             >
-              {p.name}
+              <div className="relative mb-3 h-24 w-full max-w-55 overflow-hidden">
+                <Image
+                  src={p.logo}
+                  alt={p.name}
+                  fill
+                  className="object-contain"
+                  sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 25vw"
+                />
+              </div>
+              <p className="text-center text-sm font-semibold text-slate-700">
+                {p.name}
+              </p>
             </div>
           ))}
         </div>
