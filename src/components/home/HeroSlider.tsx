@@ -2,7 +2,7 @@
 
 import Image from "next/image";
 import Link from "next/link";
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import { AnimatePresence, motion } from "framer-motion";
 import { HERO_SLIDES, type HeroSlide } from "@/lib/homeContent";
 
@@ -48,12 +48,10 @@ export function HeroSlider({
 
   useEffect(() => {
     if (data.length <= 1) return;
-
     const id = window.setInterval(() => {
       setDirection(1);
       setIndex((i) => clampIndex(i + 1, data.length));
     }, autoMs);
-
     return () => window.clearInterval(id);
   }, [autoMs, data.length]);
 
@@ -92,7 +90,7 @@ export function HeroSlider({
           </>
         ) : null}
 
-        <div className="relative grid min-h-105 gap-8 p-8 md:grid-cols-[1.1fr_0.9fr] md:min-h-110 md:p-12">
+        <div className="relative grid min-h-[420px] gap-8 p-8 md:grid-cols-[1.1fr_0.9fr] md:min-h-[440px] md:p-12">
           {/* Left: animated text content */}
           <div className="flex flex-col justify-center gap-4 overflow-hidden">
             <AnimatePresence mode="wait" custom={direction}>
