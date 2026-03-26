@@ -1,8 +1,10 @@
 "use client";
 
 import { useState } from "react";
+import DocumentUploadCard from "./document-upload-card";
+import { DOCUMENT_REQUIREMENTS, getDocumentsByCategory } from "./documents-config";
 
-type EmploymentType = "salaried" | "self-employed-business" | "self-employed-professional";
+type EmploymentType = "salaried" | "self-employed";
 type ResidenceType = "owned" | "owned-by-parents" | "rented";
 
 type LoanProvider = {
@@ -111,6 +113,7 @@ export default function PersonalLoanPage() {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
 
+
   const [otpStage, setOtpStage] = useState<"pending" | "sent" | "verified">("pending");
   const [generatedOtp, setGeneratedOtp] = useState("");
   const [enteredOtp, setEnteredOtp] = useState("");
@@ -140,10 +143,33 @@ export default function PersonalLoanPage() {
     ? loanProviders.filter((provider) => (creditScore ?? 0) >= provider.minCreditScore)
     : [];
 
-  const progress = Math.round((step / 6) * 100);
+  const [documents, setDocuments] = useState<Record<string, File | null>>({});
+  const documentConfig = employmentType ? DOCUMENT_REQUIREMENTS[employmentType as "salaried" | "self-employed"] : [];
+  const requiredDocs = documentConfig.filter(d => d.isRequired);
+  const uploadedCount = requiredDocs.filter(d => documents[d.type]).length;
+
+  const progress = Math.round((step / 7) * 100);
 
   const updateField = (key: keyof typeof formData, value: string) => {
     setFormData((prev) => ({ ...prev, [key]: value }));
+  };
+
+  const calculateAge = (dateString: string): number => {
+    if (!dateString) return 0;
+    const today = new Date();
+    const birthDate = new Date(dateString);
+    let age = today.getFullYear() - birthDate.getFullYear();
+    const monthDiff = today.getMonth() - birthDate.getMonth();
+    if (monthDiff < 0 || (monthDiff === 0 && today.getDate() < birthDate.getDate())) {
+      age--;
+    }
+    return age;
+  };
+
+  const getMaxDateForAge18 = (): string => {
+    const today = new Date();
+    const maxDate = new Date(today.getFullYear() - 18, today.getMonth(), today.getDate());
+    return maxDate.toISOString().split('T')[0];
   };
 
   const handleSendOtp = () => {
@@ -165,6 +191,10 @@ export default function PersonalLoanPage() {
     }
     if (!formData.dob) {
       setError("Date of birth is required.");
+      return;
+    }
+    if (calculateAge(formData.dob) < 18) {
+      setError("You must be at least 18 years old to apply for a loan.");
       return;
     }
 
@@ -205,12 +235,9 @@ export default function PersonalLoanPage() {
       if (employmentType === "salaried") {
         if (!formData.yearlyIncome.trim()) validationError = "Yearly income is required.";
         if (!formData.employerName.trim()) validationError = "Employer name is required.";
-      } else if (employmentType === "self-employed-business") {
-        if (!formData.annualTurnover.trim()) validationError = "Annual turnover is required.";
-        if (!formData.businessDetails.trim()) validationError = "Business details are required.";
-      } else if (employmentType === "self-employed-professional") {
-        if (!formData.professionType.trim()) validationError = "Profession type is required.";
+      } else if (employmentType === "self-employed") {
         if (!formData.annualTurnover.trim()) validationError = "Annual income is required.";
+        if (!formData.businessDetails.trim()) validationError = "Business/Profession details are required.";
       }
 
       if (validationError) {
@@ -247,45 +274,14 @@ export default function PersonalLoanPage() {
       }
 
       setError("");
-      fetchCreditScore();
+      setStep(6);
     }
   };
 
-  const fetchCreditScore = async () => {
-    setLoading(true);
-    setError("");
-    try {
-      const nameParts = formData.fullName.trim().split(/\s+/);
-      const firstName = nameParts[0] || "";
-      const lastName = nameParts.slice(1).join(" ") || "NA";
-
-      const response = await fetch("/api/credit-score", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          firstName,
-          lastName,
-          gender: formData.gender,
-          dob: formData.dob,
-          email: formData.email,
-          mobile: formData.mobile,
-        }),
-      });
-
-      const data: CreditScoreApiResponse = await response.json();
-
-      if (!response.ok || !data.success || !data.data) {
-        setError(data.error || "Failed to fetch credit score.");
-        return;
-      }
-
-      setCreditScore(data.data.credit_score);
-      setStep(6);
-    } catch {
-      setError("Something went wrong. Please try again.");
-    } finally {
-      setLoading(false);
-    }
+  const showLoanOffers = () => {
+    // Set mock credit score without calling API
+    setCreditScore(720);
+    setStep(7);
   };
 
   const resetFlow = () => {
@@ -293,6 +289,7 @@ export default function PersonalLoanPage() {
     setEmploymentType("");
     setCreditScore(null);
     setError("");
+    setDocuments({});
     setOtpStage("pending");
     setGeneratedOtp("");
     setEnteredOtp("");
@@ -327,7 +324,7 @@ export default function PersonalLoanPage() {
         {/* Progress Bar */}
         <div className="mb-10 rounded-lg bg-white p-4 shadow-sm">
           <div className="mb-2 flex items-center justify-between">
-            <span className="text-xs font-semibold text-gray-600 uppercase tracking-wide">Step {step} of 6</span>
+            <span className="text-xs font-semibold text-gray-600 uppercase tracking-wide">Step {step} of 7</span>
             <span className="text-sm font-semibold text-blue-600">{progress}%</span>
           </div>
           <div className="h-2 w-full rounded-full bg-gray-200 overflow-hidden">
@@ -384,8 +381,10 @@ export default function PersonalLoanPage() {
                       <label className="block text-sm font-semibold text-gray-700 mb-2">Mobile Number</label>
                       <input
                         type="tel"
+                        inputMode="numeric"
                         value={formData.mobile}
-                        onChange={(e) => updateField("mobile", e.target.value)}
+                        onChange={(e) => updateField("mobile", e.target.value.replace(/[^0-9]/g, ""))}
+                        maxLength={10}
                         placeholder="10-digit mobile"
                         className="w-full rounded-lg border border-gray-300 px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
                       />
@@ -411,6 +410,7 @@ export default function PersonalLoanPage() {
                         type="date"
                         value={formData.dob}
                         onChange={(e) => updateField("dob", e.target.value)}
+                        max={getMaxDateForAge18()}
                         className="w-full rounded-lg border border-gray-300 px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
                       />
                     </div>
@@ -449,8 +449,9 @@ export default function PersonalLoanPage() {
                         <label className="block text-sm font-semibold text-gray-700 mb-2">Enter 4-Digit OTP</label>
                         <input
                           type="text"
+                          inputMode="numeric"
                           value={enteredOtp}
-                          onChange={(e) => setEnteredOtp(e.target.value.slice(0, 4))}
+                          onChange={(e) => setEnteredOtp(e.target.value.replace(/[^0-9]/g, "").slice(0, 4))}
                           placeholder="0000"
                           maxLength={4}
                           className="w-full rounded-lg border border-gray-300 px-3 py-2 text-center text-lg tracking-widest font-semibold focus:outline-none focus:ring-2 focus:ring-blue-500"
@@ -479,11 +480,10 @@ export default function PersonalLoanPage() {
                 <p className="mt-1 text-sm text-gray-600">How do you earn your income?</p>
               </div>
 
-              <div className="grid gap-3 md:grid-cols-3">
+              <div className="grid gap-3 md:grid-cols-2">
                 {[
                   { value: "salaried", label: "Salaried", desc: "Fixed monthly income" },
-                  { value: "self-employed-business", label: "Business", desc: "Run a business" },
-                  { value: "self-employed-professional", label: "Professional", desc: "Doctor, CA, etc." },
+                  { value: "self-employed", label: "Self Employed", desc: "Business or profession" },
                 ].map((opt) => (
                   <button
                     key={opt.value}
@@ -537,48 +537,26 @@ export default function PersonalLoanPage() {
                   </>
                 )}
 
-                {employmentType === "self-employed-business" && (
+                {employmentType === "self-employed" && (
                   <>
-                    <div>
-                      <label className="block text-sm font-semibold text-gray-700 mb-2">Annual Turnover</label>
-                      <input
-                        value={formData.annualTurnover}
-                        onChange={(e) => updateField("annualTurnover", e.target.value)}
-                        placeholder="₹"
-                        className="w-full rounded-lg border border-gray-300 px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
-                      />
-                    </div>
-
-                    <div>
-                      <label className="block text-sm font-semibold text-gray-700 mb-2">Business Details</label>
-                      <input
-                        value={formData.businessDetails}
-                        onChange={(e) => updateField("businessDetails", e.target.value)}
-                        placeholder="Type, firm name, etc."
-                        className="w-full rounded-lg border border-gray-300 px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
-                      />
-                    </div>
-                  </>
-                )}
-
-                {employmentType === "self-employed-professional" && (
-                  <>
-                    <div>
-                      <label className="block text-sm font-semibold text-gray-700 mb-2">Profession Type</label>
-                      <input
-                        value={formData.professionType}
-                        onChange={(e) => updateField("professionType", e.target.value)}
-                        placeholder="e.g., Doctor, CA, Lawyer"
-                        className="w-full rounded-lg border border-gray-300 px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
-                      />
-                    </div>
-
                     <div>
                       <label className="block text-sm font-semibold text-gray-700 mb-2">Annual Income</label>
                       <input
+                        type="text"
+                        inputMode="numeric"
                         value={formData.annualTurnover}
-                        onChange={(e) => updateField("annualTurnover", e.target.value)}
+                        onChange={(e) => updateField("annualTurnover", e.target.value.replace(/[^0-9]/g, ""))}
                         placeholder="₹"
+                        className="w-full rounded-lg border border-gray-300 px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
+                      />
+                    </div>
+
+                    <div>
+                      <label className="block text-sm font-semibold text-gray-700 mb-2">Business/Profession Details</label>
+                      <input
+                        value={formData.businessDetails}
+                        onChange={(e) => updateField("businessDetails", e.target.value)}
+                        placeholder="e.g., Type of business or profession"
                         className="w-full rounded-lg border border-gray-300 px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
                       />
                     </div>
@@ -627,8 +605,11 @@ export default function PersonalLoanPage() {
                 <div>
                   <label className="block text-sm font-semibold text-gray-700 mb-2">PIN Code</label>
                   <input
+                    type="text"
+                    inputMode="numeric"
                     value={formData.pinCode}
-                    onChange={(e) => updateField("pinCode", e.target.value)}
+                    onChange={(e) => updateField("pinCode", e.target.value.replace(/[^0-9]/g, "").slice(0, 6))}
+                    maxLength={6}
                     placeholder="6-digit PIN"
                     className="w-full rounded-lg border border-gray-300 px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
                   />
@@ -732,96 +713,108 @@ export default function PersonalLoanPage() {
                 </button>
                 <button
                   type="button"
-                  onClick={handleNextStep}
-                  disabled={loading}
-                  className="flex-1 rounded-lg bg-blue-600 px-4 py-2.5 font-semibold text-white text-sm hover:bg-blue-700 transition disabled:opacity-50"
+                  onClick={() => setStep(6)}
+                  className="flex-1 rounded-lg bg-blue-600 px-4 py-2.5 font-semibold text-white text-sm hover:bg-blue-700 transition"
                 >
-                  {loading ? "Checking..." : "View Offers"}
+                  Continue
                 </button>
               </div>
             </div>
           )}
 
-          {/* Step 6: Loan Offers */}
-          {step === 6 && creditScore !== null && (
+          {/* Step 6: Document Uploads */}
+          {step === 6 && employmentType && (
             <div className="space-y-6">
-              <div className="rounded-lg bg-sky-50 border border-sky-200 p-4">
-                <p className="text-xs font-semibold text-sky-600 uppercase tracking-wide">Your Score</p>
-                <p className="text-3xl font-bold text-blue-900 mt-2">{creditScore}</p>
+              <div>
+                <h2 className="text-xl font-bold text-gray-900">Upload Documents</h2>
+                <p className="mt-1 text-sm text-gray-600">Please upload the required documents for verification</p>
               </div>
 
-              {eligibleOffers.length === 0 ? (
-                <div className="rounded-lg bg-red-50 border border-red-200 p-4 flex gap-2">
-                  <AlertIcon />
-                  <p className="text-sm text-red-700">No offers available. Please try again later.</p>
+              <div className="rounded-lg bg-sky-50 border border-sky-200 p-3 flex gap-2">
+                <InfoIcon />
+                <div className="text-sm text-sky-900">
+                  <p className="font-semibold">Required: {uploadedCount}/{requiredDocs.length} documents</p>
+                  <p className="text-xs mt-1">Upload all mandatory documents to proceed</p>
                 </div>
-              ) : (
-                <div className="space-y-4">
-                  <p className="text-sm font-semibold text-gray-600">{eligibleOffers.length} Offers Available</p>
+              </div>
 
-                  {eligibleOffers.map((offer) => (
-                    <div key={offer.name} className="rounded-lg border border-gray-200 overflow-hidden hover:shadow-md transition">
-                      {/* Provider Header */}
-                      <div className="bg-linear-to-r from-sky-50 to-blue-50 px-4 py-3 border-b border-gray-200 flex items-center gap-3">
-                        <div className="flex h-10 w-10 items-center justify-center rounded-full bg-blue-600 text-white font-semibold text-xs">
-                          {offer.logo}
-                        </div>
-                        <h3 className="font-semibold text-gray-900 text-sm">{offer.name}</h3>
-                      </div>
-
-                      {/* Details Grid */}
-                      <div className="px-4 py-3 grid grid-cols-2 gap-3 md:grid-cols-4 text-xs">
-                        <div>
-                          <p className="text-gray-600 flex items-center gap-1 mb-1">
-                            <ClockIcon />
-                            Processing
-                          </p>
-                          <p className="font-semibold text-gray-900">{offer.processingTime}</p>
-                        </div>
-
-                        <div>
-                          <p className="text-gray-600 flex items-center gap-1 mb-1">
-                            <TrendingUpIcon />
-                            Approval
-                          </p>
-                          <p className="font-semibold text-emerald-600">{offer.approvalChance}</p>
-                        </div>
-
-                        <div>
-                          <p className="text-gray-600 flex items-center gap-1 mb-1">
-                            <PercentIcon />
-                            Rate
-                          </p>
-                          <p className="font-semibold text-blue-600">{offer.interestRate}</p>
-                        </div>
-
-                        <div>
-                          <p className="text-gray-600 font-semibold mb-1">EMI</p>
-                          <p className="font-semibold text-gray-900">{offer.emi}</p>
-                        </div>
-                      </div>
-
-                      {/* Action Buttons */}
-                      <div className="bg-gray-50 px-4 py-3 border-t border-gray-200 flex gap-2">
-                        <button className="flex-1 rounded-lg bg-blue-600 px-3 py-2 text-white font-semibold text-xs hover:bg-blue-700 transition">
-                          Apply Now
-                        </button>
-                        <button className="px-3 py-2 text-blue-600 font-semibold text-xs hover:text-blue-700 transition">
-                          Details
-                        </button>
-                      </div>
+              <div className="space-y-6">
+                {getDocumentsByCategory(employmentType as "salaried" | "self-employed").map((category) => (
+                  <div key={category.name}>
+                    <h3 className="text-sm font-semibold text-gray-700 mb-3">{category.name}</h3>
+                    <div className="space-y-3">
+                      {category.documents.map((doc) => (
+                        <DocumentUploadCard
+                          key={doc.type}
+                          type={doc.type}
+                          label={doc.label}
+                          isRequired={doc.isRequired}
+                          file={documents[doc.type] || null}
+                          onFileSelect={(file) => setDocuments((prev) => ({ ...prev, [doc.type]: file }))}
+                          onRemove={() => setDocuments((prev) => ({ ...prev, [doc.type]: null }))}
+                        />
+                      ))}
                     </div>
-                  ))}
-                </div>
-              )}
+                  </div>
+                ))}
+              </div>
 
-              <button
-                type="button"
-                onClick={resetFlow}
-                className="w-full rounded-lg border border-gray-300 px-4 py-2.5 font-semibold text-gray-700 text-sm hover:bg-gray-50 transition"
-              >
-                Start Over
-              </button>
+              <div className="flex gap-3 pt-4">
+                <button
+                  type="button"
+                  onClick={() => setStep(5)}
+                  className="rounded-lg border border-gray-300 px-4 py-2.5 font-semibold text-gray-700 text-sm hover:bg-gray-50 transition"
+                >
+                  Back
+                </button>
+                <button
+                  type="button"
+                  onClick={() => {
+                    if (uploadedCount === requiredDocs.length) {
+                      setStep(7);
+                    } else {
+                      setError(`Please upload all ${requiredDocs.length} required documents`);
+                    }
+                  }}
+                  className="flex-1 rounded-lg bg-blue-600 px-4 py-2.5 font-semibold text-white text-sm hover:bg-blue-700 transition"
+                >
+                  Continue to Submit
+                </button>
+              </div>
+            </div>
+          )}
+
+          {/* Step 7: Request Submitted */}
+          {step === 7 && (
+            <div className="space-y-6 text-center py-8">
+              <div className="flex justify-center">
+                <div className="flex h-16 w-16 items-center justify-center rounded-full bg-emerald-100">
+                  <CheckIcon />
+                </div>
+              </div>
+
+              <div>
+                <h2 className="text-2xl font-bold text-gray-900">Request Submitted!</h2>
+                <p className="mt-2 text-sm text-gray-600">
+                  Your loan application has been submitted successfully.
+                </p>
+              </div>
+
+              <div className="rounded-lg bg-blue-50 border border-blue-200 p-4">
+                <p className="text-xs text-blue-700">
+                  Our team will review your documents and contact you shortly with the next steps.
+                </p>
+              </div>
+
+              <div className="pt-4">
+                <button
+                  type="button"
+                  onClick={resetFlow}
+                  className="w-full rounded-lg bg-blue-600 px-4 py-2.5 font-semibold text-white text-sm hover:bg-blue-700 transition"
+                >
+                  Apply for Another Loan
+                </button>
+              </div>
             </div>
           )}
         </div>
