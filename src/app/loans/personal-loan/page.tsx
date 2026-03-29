@@ -20,26 +20,27 @@ const featureCards = [
 ];
 
 const eligibility = [
-  "Age between 21 years to 58 years.",
-  "Salaried or self-employed with steady income.",
+  "Age above 18 years.",
+  "Salaried person with steady income.",
   "Minimum net monthly income as per city profile.",
   "Valid KYC and PAN details.",
   "Good repayment behavior improves offer quality.",
 ];
 
 const documents = [
-  "Identity and address proof (Aadhaar card, PAN card).",
-  "Latest salary slips or ITR depending on profile.",
-  "Recent bank statement for income verification.",
-  "Passport-size photo and active mobile number.",
+  "Aadhar Card (Applicant), PAN Card (Applicant), and Applicant Photo.",
+  "Latest Electricity Bill for residence proof.",
+  "Salaried profile: Office I-Card, last 3 month salary slips, last 6 month bank statement, and last 2 years Form 16.",
+  "Self-employed profile: Last 2 years ITR with computation, last 1 year current account bank statement, and office address proof.",
+  "Existing loan details (if any) can be uploaded as optional supporting documents.",
+  "Upload format supported: PDF, JPG, JPEG, PNG (maximum 10MB per file).",
 ];
 
 const applySteps = [
-  "Search and compare offers for your profile.",
-  "Choose preferred loan amount and tenure.",
-  "Submit KYC/income details and verify OTP.",
-  "Get lender decision and complete approval.",
-  "Receive disbursal directly in your account.",
+  "Click Apply Now and complete your personal, employment, residence, and loan details.",
+  "Verify your mobile number using OTP and continue the application.",
+  "Upload the required documents based on your employment profile.",
+  "Submit the form; our team reviews the details and contacts you with the next steps.",
 ];
 
 const chargeRows = [
@@ -61,47 +62,43 @@ const loanTypes = [
 
 export default function PersonalLoanPage() {
   const { signedIn } = useAuth();
-  const applyHref = signedIn ? "/dashboard" : "/sign-in?next=/personal-loan";
+  const applyHref = signedIn ? "/dashboard" : "/sign-in?next=/loans/personal-loan/apply";
 
   return (
     <main className="min-h-screen w-full bg-background py-8">
       <div className="flex w-full flex-col gap-8">
-        <section className="w-full px-4 py-8 md:px-10 lg:px-16">
-          <div className="grid w-full items-start gap-8 lg:grid-cols-[1.3fr_0.7fr]">
-            <div>
+        <section className="w-full px-40 py-10 md:px-10 lg:px-16">
+          <div className="w-full">
+            <div className="w-full">
               <h1 className="text-xl font-bold text-slate-900 md:text-3xl">Personal Loan</h1>
-              <p className="mt-4 max-w-4xl text-sm leading-relaxed text-slate-900 md:text-lg">
+              <p className="mt-4 w-full text-sm leading-relaxed text-slate-900 md:text-lg">
                 Personal Loan is your go-to solution for managing financial emergencies. Meet all your urgent
                 financial needs with an instant personal loan while improving your credit score.
                 Explore personal loans at competitive interest rates with CapitalCare.
               </p>
+              <p className="mt-3 w-full text-sm leading-relaxed text-slate-700 md:text-base">
+                The application journey is simple and practical: fill the required form fields,
+                upload your documents, and submit. There is no separate profile search step.
+                Once submitted, our loan team reviews your application and reaches out directly
+                to guide you through approval and disbursal.
+              </p>
+
+              <div className="mt-5">
+                <Link
+                  href="/loans/personal-loan/apply"
+                  className="inline-flex rounded-full bg-linear-to-r from-sky-400 to-indigo-500 px-6 py-2.5 text-sm font-semibold text-white hover:brightness-110"
+                >
+                  Apply Now
+                </Link>
+              </div>
 
               <div className="mt-5 grid gap-3 text-sm text-slate-900 md:grid-cols-2 md:text-sm xl:grid-cols-4">
-                <p className="flex items-center gap-2"><FaCheckCircle className="text-sky-600" />For Salaried and Self-Employed Individuals</p>
+                <p className="flex items-center gap-2"><FaCheckCircle className="text-sky-600" />For Salaried Individuals</p>
                 <p className="flex items-center gap-2"><FaCheckCircle className="text-sky-600" />No Collateral Required</p>
                 <p className="flex items-center gap-2"><FaCheckCircle className="text-sky-600" />Disbursal in 24 Hours</p>
                 <p className="flex items-center gap-2"><FaCheckCircle className="text-sky-600" />Interest Rate @ 9.99% p.a.</p>
               </div>
-
-              <p className="mt-6 text-sm text-slate-600 md:text-base">
-                Last Updated: <span className="font-semibold">6 March 2026</span>
-              </p>
             </div>
-
-            <aside className="rounded-3xl border border-sky-200 h-full bg-white/90 p-6 shadow-[0_16px_45px_-28px_rgba(14,165,233,0.45)]">
-              <h2 className="text-lg text-slate-800 md:text-xl">
-                Check Low Interest <span className="font-semibold">Personal Loan</span> offers
-              </h2>
-              <p className="mt-6 text-sm text-slate-600 md:text-base">
-                Find the best personal loan offers with low interest rates and flexible repayment options.
-              </p>
-              <Link
-                href={"/personal-loan/options"}
-                className="mt-5 inline-flex h-10 w-full items-center justify-center rounded-full bg-linear-to-r from-sky-400 to-indigo-500 text-sm font-semibold text-white hover:brightness-110 md:h-12 md:text-lg"
-              >
-                Check Offers
-              </Link>
-            </aside>
           </div>
         </section>
 
@@ -189,7 +186,7 @@ export default function PersonalLoanPage() {
           </div>
 
           <div className="mt-6 rounded-2xl border border-sky-200 bg-sky-50 p-4 text-sm text-slate-700 md:text-base">
-            Login is required when you apply for the loan.
+            No separate search is required. Fill the form, upload documents, and submit. Our team will contact you.
           </div>
 
           <div className="mt-6 flex justify-center">
