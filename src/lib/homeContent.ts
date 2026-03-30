@@ -10,11 +10,13 @@ export type NavItem =
   | {
     label: string;
     href: string;
+    newTab?: boolean;
     items?: undefined;
   }
   | {
     label: string;
     href?: undefined;
+    newTab?: undefined;
     items: { label: string; href: string }[];
   };
 
@@ -38,7 +40,7 @@ export const NAV_ITEMS: NavItem[] = [
   { label: "Credit-Score", href: "/credit-score" },
   { label: "Contact-Us", href: "/contact-us" },
   { label: "About-us", href: "/about-us" },
-  { label: "Become Our Partner", href: "/become-partner" },
+  { label: "Become Our Partner", href: "/partner-apply", newTab: true },
 ];
 
 export type HeroSlide = {
