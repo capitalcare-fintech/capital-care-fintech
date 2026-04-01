@@ -15,8 +15,14 @@ import smfgLogo from "./smfgLogo.png";
 import starHealthLogo from "./starHealthLogo.png";
 import tataCapitalLogo from "./Tata_Capital_Logo-01.jpg";
 import universalSompoLogo from "./UniversalSompo_LOGO.jpg";
+import magmaIsuranceLogo from "./magmaInsuranceLogo.png";
+import niva_bupaLogo from "./niva-bupaLogo.png";
+import orientalInsuranceLogo from "./oriental-insuranceLogo.png";
 
 const PARTNER_LOGOS = {
+	magmaIsuranceLogo,
+	niva_bupaLogo,
+	orientalInsuranceLogo,
 	axisBankLogo,
 	hdfcBankLogo,
 	hdfcErgoLogo,
@@ -37,6 +43,9 @@ const PARTNER_LOGOS = {
 };
 
 export {
+	niva_bupaLogo,
+	magmaIsuranceLogo,
+	orientalInsuranceLogo,
 	axisBankLogo,
 	hdfcBankLogo,
 	hdfcErgoLogo,
