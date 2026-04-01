@@ -1,20 +1,22 @@
 import type { StaticImageData } from "next/image";
-import heroInsuranceImage from "@/assets/heroSlide/insurance-image.jpg";
-import heroLoanImage from "@/assets/heroSlide/loan-image.jpg";
-import inDemandBusinessImage from "@/assets/inDemand/buisness.jpg";
-import inDemandEducationImage from "@/assets/inDemand/education.jpg";
-import inDemandHomeImage from "@/assets/inDemand/home.jpg";
-import inDemandPersonalImage from "@/assets/inDemand/personal.jpg";
+import heroInsuranceImage from "@/assets/heroSlide/insurance-image.png";
+import heroLoanImage from "@/assets/heroSlide/loan-image.png";
+import inDemandBusinessImage from "@/assets/inDemand/buisness.png";
+import inDemandEducationImage from "@/assets/inDemand/property.jpg";
+import inDemandHomeImage from "@/assets/inDemand/home.png";
+import inDemandPersonalImage from "@/assets/inDemand/personal.png";
 
 export type NavItem =
   | {
     label: string;
     href: string;
+    newTab?: boolean;
     items?: undefined;
   }
   | {
     label: string;
     href?: undefined;
+    newTab?: undefined;
     items: { label: string; href: string }[];
   };
 
@@ -22,23 +24,23 @@ export const NAV_ITEMS: NavItem[] = [
   {
     label: "Loans",
     items: [
-      { label: "Personal Loan", href: "/personal-loan" },
-      { label: "Business Loan", href: "/loans" },
-      { label: "In-demand Loans", href: "/#in-demand-loans" },
+      { label: "Personal Loan", href: "/loans/personal-loan" },
+      { label: "Business Loan", href: "/loans/business-loan" },
+      { label: "loan-against-property", href: "/loans/loan-against-property" },
     ],
   },
   {
     label: "Insurance",
     items: [
-      { label: "Health Insurance", href: "/insurance" },
-      { label: "Life Insurance", href: "/insurance" },
-      { label: "Motor Insurance", href: "/insurance" },
+      { label: "Health Insurance", href: "/insurance/health-insurance" },
+      { label: "Life Insurance", href: "/insurance/life-insurance" },
+      { label: "Motor Insurance", href: "/insurance/motor-insurance" },
     ],
   },
   { label: "Credit-Score", href: "/credit-score" },
   { label: "Contact-Us", href: "/contact-us" },
   { label: "About-us", href: "/about-us" },
-  { label: "Become Our Partner", href: "/become-partner" },
+  { label: "Become Our Partner", href: "/partner-apply", newTab: true },
 ];
 
 export type HeroSlide = {
@@ -58,7 +60,7 @@ export const HERO_SLIDES: HeroSlide[] = [
     description:
       "Compare loan options built for your goals — from short-term needs to long-term growth.",
     ctaLabel: "Explore personal loan",
-    ctaHref: "/personal-loan",
+    ctaHref: "/loans/personal-loan",
     image: heroLoanImage,
     imageAlt: "Loan approval and financing illustration",
   },
@@ -84,30 +86,30 @@ export type InDemandCard = {
 
 export const IN_DEMAND_LOANS: InDemandCard[] = [
   {
-    title: "Personal",
+    title: "Personal Loan",
     subtitle: "Instant to 24h",
-    href: "/personal-loan",
+    href: "/loans/personal-loan",
     image: inDemandPersonalImage,
     imageAlt: "Personal loan form illustration",
   },
   {
-    title: "Education",
-    subtitle: "Pay as you learn",
-    href: "/loans",
+    title: "Loan Against Property",
+    subtitle: "Collateral-backed security",
+    href: "/loans/loan-against-property",
     image: inDemandEducationImage,
-    imageAlt: "Education funding certificate illustration",
+    imageAlt: "Loan against property illustration",
   },
   {
-    title: "Business",
+    title: "Business Loan",
     subtitle: "Grow smarter",
-    href: "/loans",
+    href: "/loans/business-loan",
     image: inDemandBusinessImage,
     imageAlt: "Business growth financing illustration",
   },
   {
-    title: "Home",
+    title: "Home Loan",
     subtitle: "Long-term comfort",
-    href: "/loans",
+    href: "/loans/home-loan",
     image: inDemandHomeImage,
     imageAlt: "Home loan and mortgage illustration",
   },

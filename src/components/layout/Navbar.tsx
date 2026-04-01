@@ -163,7 +163,7 @@ export function Navbar() {
       ref={(el) => {
         rootRef.current = el;
       }}
-      className="sticky top-0 z-40 border-b border-slate-200/80 bg-white/80 backdrop-blur transition-colors duration-300 dark:border-slate-700/80 dark:bg-slate-900/80"
+      className="sticky top-0 z-40 border-b border-slate-200/80 bg-white transition-colors duration-300 dark:border-slate-700 dark:bg-slate-900"
     >
       <div className="flex w-full items-center justify-between px-4 py-4 md:px-8 lg:px-12">
         <div className="flex items-center gap-2">
@@ -187,7 +187,7 @@ export function Navbar() {
                 <Link
                   key={item.label}
                   href={item.href}
-                  className="rounded-full px-4 py-2 text-sm font-medium text-slate-700 hover:bg-slate-100 hover:text-slate-900 dark:text-slate-200 dark:hover:bg-slate-800 dark:hover:text-white"
+                  className="rounded-full px-4 py-2 text-sm font-medium text-slate-700 hover:bg-slate-100 hover:text-slate-900 dark:text-slate-300 dark:hover:bg-slate-800 dark:hover:text-white"
                 >
                   {item.label}
                 </Link>
@@ -212,7 +212,7 @@ export function Navbar() {
               >
                 <button
                   type="button"
-                  className="inline-flex items-center gap-1.5 rounded-full px-4 py-2 text-sm font-medium text-slate-700 hover:bg-slate-100 hover:text-slate-900 cursor-pointer"
+                  className="inline-flex cursor-pointer items-center gap-1.5 rounded-full px-4 py-2 text-sm font-medium text-slate-700 hover:bg-slate-100 hover:text-slate-900 dark:text-slate-300 dark:hover:bg-slate-800 dark:hover:text-white"
                   aria-haspopup="menu"
                   aria-expanded={open}
                   onFocus={() => setOpenLabel(item.label)}
@@ -241,7 +241,7 @@ export function Navbar() {
                           href={sub.href}
                           role="menuitem"
                           onClick={() => setOpenLabel(null)}
-                          className="block rounded-xl px-3 py-2 text-sm text-slate-700 hover:bg-slate-100 hover:text-slate-900 dark:text-slate-200 dark:hover:bg-slate-800 dark:hover:text-white"
+                          className="block rounded-xl px-3 py-2 text-sm font-medium text-slate-700 hover:bg-slate-100 hover:text-slate-900 dark:text-slate-300 dark:hover:bg-slate-800 dark:hover:text-white"
                         >
                           {sub.label}
                         </Link>
@@ -278,7 +278,7 @@ export function Navbar() {
               <>
                 <Link
                   href="/sign-in"
-                  className="rounded-full border border-slate-200 bg-white px-4 py-2 text-sm font-semibold text-slate-700 hover:bg-slate-100 dark:border-slate-700 dark:bg-slate-900 dark:text-slate-200 dark:hover:bg-slate-800"
+                  className="rounded-full border border-slate-200 bg-white px-4 py-2 text-sm font-medium text-slate-700 hover:bg-slate-100 hover:text-slate-900 dark:border-slate-700 dark:bg-slate-900 dark:text-slate-300 dark:hover:bg-slate-800 dark:hover:text-white"
                 >
                   Sign in
                 </Link>
@@ -304,8 +304,10 @@ export function Navbar() {
                     <Link
                       key={item.label}
                       href={item.href}
+                      target={item.newTab ? "_blank" : undefined}
+                      rel={item.newTab ? "noopener noreferrer" : undefined}
                       onClick={() => setMobileOpen(false)}
-                      className="rounded-2xl border border-slate-200 bg-white px-4 py-3 text-sm font-semibold text-slate-700 hover:bg-slate-100 dark:border-slate-700 dark:bg-slate-900 dark:text-slate-200 dark:hover:bg-slate-800"
+                      className="rounded-2xl border border-slate-200 bg-white px-4 py-3 text-sm font-medium text-slate-700 hover:bg-slate-100 hover:text-slate-900 dark:border-slate-700 dark:bg-slate-900 dark:text-slate-300 dark:hover:bg-slate-800 dark:hover:text-white"
                     >
                       {item.label}
                     </Link>
@@ -317,7 +319,7 @@ export function Navbar() {
                     key={item.label}
                     className="group overflow-hidden rounded-2xl border border-slate-200 bg-white dark:border-slate-700 dark:bg-slate-900"
                   >
-                    <summary className="flex cursor-pointer list-none items-center justify-between px-4 py-3 text-sm font-semibold text-slate-700 hover:bg-slate-100 dark:text-slate-200 dark:hover:bg-slate-800">
+                    <summary className="flex cursor-pointer list-none items-center justify-between px-4 py-3 text-sm font-medium text-slate-700 hover:bg-slate-100 hover:text-slate-900 dark:text-slate-300 dark:hover:bg-slate-800 dark:hover:text-white">
                       <span>{item.label}</span>
                       <IconChevronDown className="h-4 w-4 text-slate-500 transition-transform group-open:rotate-180" />
                     </summary>
@@ -327,7 +329,7 @@ export function Navbar() {
                           key={sub.label}
                           href={sub.href}
                           onClick={() => setMobileOpen(false)}
-                          className="rounded-xl px-3 py-2 text-sm font-medium text-slate-700 hover:bg-slate-100 hover:text-slate-900 dark:text-slate-200 dark:hover:bg-slate-800 dark:hover:text-white"
+                          className="rounded-xl px-3 py-2 text-sm font-medium text-slate-700 hover:bg-slate-100 hover:text-slate-900 dark:text-slate-300 dark:hover:bg-slate-800 dark:hover:text-white"
                         >
                           {sub.label}
                         </Link>
@@ -354,7 +356,7 @@ export function Navbar() {
                     <Link
                       href="/sign-in"
                       onClick={() => setMobileOpen(false)}
-                      className="rounded-xl border border-slate-200 bg-white px-4 py-3 text-center text-sm font-semibold text-slate-700 hover:bg-slate-100 dark:border-slate-700 dark:bg-slate-900 dark:text-slate-200 dark:hover:bg-slate-800"
+                      className="rounded-xl border border-slate-200 bg-white px-4 py-3 text-center text-sm font-medium text-slate-700 hover:bg-slate-100 hover:text-slate-900 dark:border-slate-700 dark:bg-slate-900 dark:text-slate-300 dark:hover:bg-slate-800 dark:hover:text-white"
                     >
                       Sign in
                     </Link>
