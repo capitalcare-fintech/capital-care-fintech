@@ -112,6 +112,7 @@ export default function PersonalLoanPage() {
   const [creditScore, setCreditScore] = useState<number | null>(null);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
+  const [applicationId, setApplicationId] = useState("");
 
 
   const [otpStage, setOtpStage] = useState<"pending" | "sent" | "verified">("pending");
@@ -278,16 +279,60 @@ export default function PersonalLoanPage() {
     }
   };
 
-  const showLoanOffers = () => {
-    // Set mock credit score without calling API
-    setCreditScore(720);
-    setStep(7);
+  const handleSubmitApplication = async () => {
+    if (uploadedCount !== requiredDocs.length) {
+      setError(`Please upload all ${requiredDocs.length} required documents`);
+      return;
+    }
+
+    if (!employmentType) {
+      setError("Please select employment type.");
+      return;
+    }
+
+    setLoading(true);
+    setError("");
+
+    try {
+      const payload = new FormData();
+      payload.append("loanType", "personal-loan");
+      payload.append("loanSubtype", employmentType);
+      payload.append("formData", JSON.stringify(formData));
+
+      Object.entries(documents).forEach(([docType, file]) => {
+        if (file) payload.append(docType, file);
+      });
+
+      const res = await fetch("/api/loan-applications", {
+        method: "POST",
+        body: payload,
+      });
+
+      const result = await res.json();
+      if (!res.ok || !result?.success) {
+        const firstFieldError = result?.fieldErrors
+          ? Object.values(result.fieldErrors)[0]?.[0]
+          : "";
+        setError(firstFieldError || result?.error || "Submission failed. Please try again.");
+        return;
+      }
+
+      setApplicationId(result?.data?.applicationId ?? "");
+      setCreditScore(720);
+      setStep(7);
+    } catch (submitError) {
+      console.error("[personal-loan/apply] submit error", submitError);
+      setError("Submission failed. Please try again.");
+    } finally {
+      setLoading(false);
+    }
   };
 
   const resetFlow = () => {
     setStep(1);
     setEmploymentType("");
     setCreditScore(null);
+    setApplicationId("");
     setError("");
     setDocuments({});
     setOtpStage("pending");
@@ -769,16 +814,11 @@ export default function PersonalLoanPage() {
                 </button>
                 <button
                   type="button"
-                  onClick={() => {
-                    if (uploadedCount === requiredDocs.length) {
-                      setStep(7);
-                    } else {
-                      setError(`Please upload all ${requiredDocs.length} required documents`);
-                    }
-                  }}
+                  onClick={handleSubmitApplication}
+                  disabled={loading}
                   className="flex-1 rounded-lg bg-blue-600 px-4 py-2.5 font-semibold text-white text-sm hover:bg-blue-700 transition"
                 >
-                  Continue to Submit
+                  {loading ? "Submitting..." : "Continue to Submit"}
                 </button>
               </div>
             </div>
@@ -798,6 +838,9 @@ export default function PersonalLoanPage() {
                 <p className="mt-2 text-sm text-gray-600">
                   Your loan application has been submitted successfully.
                 </p>
+                {applicationId && (
+                  <p className="mt-1 text-xs text-gray-500">Application ID: {applicationId}</p>
+                )}
               </div>
 
               <div className="rounded-lg bg-blue-50 border border-blue-200 p-4">
