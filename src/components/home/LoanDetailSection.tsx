@@ -3,9 +3,9 @@
 import Image, { type StaticImageData } from "next/image";
 import Link from "next/link";
 import { motion } from "framer-motion";
-import businessLoanImage from "@/assets/exploreProducts/businessLoan.jpg";
-import homeLoanImage from "@/assets/exploreProducts/homeLoan.jpg";
-import personalLoanImage from "@/assets/exploreProducts/personalLoan.jpg";
+import businessLoanImage from "@/assets/exploreProducts/buisnessLoan.png";
+import homeLoanImage from "@/assets/exploreProducts/homeLoan.png";
+import personalLoanImage from "@/assets/exploreProducts/personalLoan.png";
 
 const easeOut: [number, number, number, number] = [0.25, 0.1, 0.25, 1];
 

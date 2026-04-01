@@ -16,6 +16,9 @@ import {
   starHealthLogo,
   tataCapitalLogo,
   universalSompoLogo,
+  magmaIsuranceLogo,
+  orientalInsuranceLogo,
+  niva_bupaLogo
 } from "@/assets/partners";
 
 const axisBankPartner = {
@@ -103,24 +106,48 @@ const universalSompoPartner = {
   logo: universalSompoLogo,
 };
 
-export const partners = [
+const magmaInsurance = {
+  name: "Magma Insurance",
+  logo: magmaIsuranceLogo,
+};
+
+const nivaBupa = {
+  name: "Niva bupa",
+  logo: niva_bupaLogo,
+};
+
+const orientalInsurance = {
+  name: "Oriental Insurance",
+  logo: orientalInsuranceLogo,
+};
+
+export const loanPartners = [
   axisBankPartner,
   hdfcBankPartner,
-  hdfcErgoPartner,
   heroFinCorpPartner,
   iciciBankPartner,
-  iciciLombardPartner,
   idfcFirstBankPartner,
   indusIndBankPartner,
-  licPartner,
   ltTechnologyServicesPartner,
   piramalFinancePartner,
   poonawallaFincorpPartner,
-  relianceGeneralInsurancePartner,
   smfgIndiaCreditPartner,
-  starHealthPartner,
   tataCapitalPartner,
-  universalSompoPartner,
 ];
 
-export const homePartners = partners.slice(0, 8);
+export const insurancePartners = [
+  hdfcErgoPartner,
+  iciciLombardPartner,
+  licPartner,
+  relianceGeneralInsurancePartner,
+  starHealthPartner,
+  universalSompoPartner,
+  magmaInsurance,
+  orientalInsurance,
+  nivaBupa,
+];
+
+export const partners = [...loanPartners, ...insurancePartners];
+const hp=[...loanPartners.slice(0,4),...insurancePartners.slice(0,4)];
+// export const homePartners = partners.slice(0, 8);
+export const homePartners = hp;
