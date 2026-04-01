@@ -38,12 +38,12 @@ const slideRight = {
 
 // ── Contact info items ───────────────────────────────────────────────────────
 const INFO = [
-  {
-    icon: HiOutlineLocationMarker,
-    title: "Our Office",
-    lines: ["4th Floor, Tower B, Cyber City", "Gurugram, Haryana – 122002"],
-    color: "bg-sky-50 text-sky-500",
-  },
+  // {
+  //   icon: HiOutlineLocationMarker,
+  //   title: "Our Office",
+  //   lines: ["4th Floor, Tower B, Cyber City", "Gurugram, Haryana – 122002"],
+  //   color: "bg-sky-50 text-sky-500",
+  // },
   {
     icon: HiOutlinePhone,
     title: "Phone Support",
@@ -58,12 +58,12 @@ const INFO = [
     color: "bg-cyan-50 text-cyan-600",
     href: "mailto:support@capitalcare.in",
   },
-  {
-    icon: HiOutlineClock,
-    title: "Working Hours",
-    lines: ["Mon – Fri: 9:00 AM – 6:00 PM", "Saturday: 10:00 AM – 2:00 PM","Sunday: Closed"],
-    color: "bg-violet-50 text-violet-500",
-  },
+  // {
+  //   icon: HiOutlineClock,
+  //   title: "Working Hours",
+  //   lines: ["Mon – Fri: 9:00 AM – 6:00 PM", "Saturday: 10:00 AM – 2:00 PM","Sunday: Closed"],
+  //   color: "bg-violet-50 text-violet-500",
+  // },
 ];
 
 // ── Types ────────────────────────────────────────────────────────────────────
@@ -371,7 +371,7 @@ export default function ContactUsPage() {
               title="CapitalCare Office Location"
               src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3507.3!2d77.0856!3d28.4595!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x0%3A0x0!2zMjjCsDI3JzM0LjIiTiA3N8KwMDUnMDguMiJF!5e0!3m2!1sen!2sin!4v1234567890"
               width="100%"
-              height="220"
+              height="320"
               style={{ border: 0, display: "block" }}
               allowFullScreen
               loading="lazy"
