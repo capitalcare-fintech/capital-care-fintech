@@ -25,6 +25,7 @@ export const NAV_ITEMS: NavItem[] = [
       { label: "Personal Loan", href: "/loans/personal-loan" },
       { label: "Business Loan", href: "/loans/business-loan" },
       { label: "loan-against-property", href: "/loans/loan-against-property" },
+      { label: "Home Loan", href: "/loans/home-loan" },
     ],
   },
   {

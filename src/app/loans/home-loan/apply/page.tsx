@@ -2,9 +2,11 @@
 
 import { useState } from "react";
 import DocumentUploadCard from "./document-upload-card";
-import { BusinessApplicantType, DOCUMENT_REQUIREMENTS, getDocumentsByCategory } from "./documents-config";
+import { DOCUMENT_REQUIREMENTS, getDocumentsByCategory, HomeLoanApplicantType } from "./documents-config";
 
 type ResidenceType = "owned" | "owned-by-family" | "rented";
+
+type PropertyType = "residential" | "commercial" | "mixed-use";
 
 const mockOtpValue = "1234";
 
@@ -38,9 +40,9 @@ const InfoIcon = () => (
   </svg>
 );
 
-export default function BusinessLoanApplyPage() {
+export default function HomeLoanApplyPage() {
   const [step, setStep] = useState(1);
-  const [applicantType, setApplicantType] = useState<BusinessApplicantType | "">("");
+  const [applicantType, setApplicantType] = useState<HomeLoanApplicantType | "">("");
   const [error, setError] = useState("");
   const [submitting, setSubmitting] = useState(false);
   const [applicationId, setApplicationId] = useState("");
@@ -55,15 +57,17 @@ export default function BusinessLoanApplyPage() {
     mobile: "",
     dob: "",
 
-    businessName: "",
+    monthlyIncome: "",
     annualTurnover: "",
-    businessNature: "",
-    yearsInOperation: "",
+    employerName: "",
+    businessDetails: "",
 
     city: "",
     pinCode: "",
-    officeCity: "",
     residenceType: "" as ResidenceType | "",
+
+    propertyType: "" as PropertyType | "",
+    propertyLocation: "",
 
     panNumber: "",
     desiredLoanAmount: "",
@@ -145,7 +149,7 @@ export default function BusinessLoanApplyPage() {
     setError("Invalid OTP. Please try again.");
   };
 
-  const handleApplicantSelect = (value: BusinessApplicantType) => {
+  const handleApplicantSelect = (value: HomeLoanApplicantType) => {
     setApplicantType(value);
     setError("");
     setStep(3);
@@ -154,20 +158,30 @@ export default function BusinessLoanApplyPage() {
   const handleNextStep = () => {
     if (step === 3) {
       if (!applicantType) {
-        setError("Please select applicant type.");
+        setError("Please select profile type.");
         return;
       }
-      if (!formData.businessName.trim()) {
-        setError("Business name is required.");
-        return;
+
+      if (applicantType === "salaried") {
+        if (!formData.monthlyIncome.trim()) {
+          setError("Monthly income is required.");
+          return;
+        }
+        if (!formData.employerName.trim()) {
+          setError("Employer name is required.");
+          return;
+        }
       }
-      if (!formData.annualTurnover.trim()) {
-        setError("Annual turnover is required.");
-        return;
-      }
-      if (!formData.businessNature.trim()) {
-        setError("Business nature is required.");
-        return;
+
+      if (applicantType === "self-employed") {
+        if (!formData.annualTurnover.trim()) {
+          setError("Annual turnover is required.");
+          return;
+        }
+        if (!formData.businessDetails.trim()) {
+          setError("Business details are required.");
+          return;
+        }
       }
 
       setError("");
@@ -184,10 +198,6 @@ export default function BusinessLoanApplyPage() {
         setError("PIN code is required.");
         return;
       }
-      if (!formData.officeCity.trim()) {
-        setError("Office city is required.");
-        return;
-      }
       if (!formData.residenceType) {
         setError("Residence type is required.");
         return;
@@ -201,6 +211,14 @@ export default function BusinessLoanApplyPage() {
     if (step === 5) {
       if (!formData.panNumber.trim()) {
         setError("PAN number is required.");
+        return;
+      }
+      if (!formData.propertyType) {
+        setError("Property type is required.");
+        return;
+      }
+      if (!formData.propertyLocation.trim()) {
+        setError("Property location is required.");
         return;
       }
       if (!formData.desiredLoanAmount) {
@@ -220,7 +238,7 @@ export default function BusinessLoanApplyPage() {
     }
 
     if (!applicantType) {
-      setError("Please select applicant type.");
+      setError("Please select profile type.");
       return;
     }
 
@@ -229,7 +247,7 @@ export default function BusinessLoanApplyPage() {
 
     try {
       const payload = new FormData();
-      payload.append("loanType", "business-loan");
+      payload.append("loanType", "home-loan");
       payload.append("loanSubtype", applicantType);
       payload.append("formData", JSON.stringify(formData));
 
@@ -253,7 +271,7 @@ export default function BusinessLoanApplyPage() {
       setApplicationId(result?.data?.applicationId ?? "");
       setStep(7);
     } catch (submitError) {
-      console.error("[business-loan/apply] submit error", submitError);
+      console.error("[home-loan/apply] submit error", submitError);
       setError("Submission failed. Please try again.");
     } finally {
       setSubmitting(false);
@@ -275,14 +293,15 @@ export default function BusinessLoanApplyPage() {
       email: "",
       mobile: "",
       dob: "",
-      businessName: "",
+      monthlyIncome: "",
       annualTurnover: "",
-      businessNature: "",
-      yearsInOperation: "",
+      employerName: "",
+      businessDetails: "",
       city: "",
       pinCode: "",
-      officeCity: "",
       residenceType: "",
+      propertyType: "",
+      propertyLocation: "",
       panNumber: "",
       desiredLoanAmount: "",
     });
@@ -292,9 +311,9 @@ export default function BusinessLoanApplyPage() {
     <main className="min-h-screen bg-linear-to-b from-blue-50 to-white px-4 py-10">
       <div className="mx-auto max-w-3xl">
         <div className="mb-8">
-          <h1 className="text-3xl font-bold text-gray-900">Business Loan</h1>
+          <h1 className="text-3xl font-bold text-gray-900">Home Loan</h1>
           <p className="mt-2 text-sm text-gray-600">
-            Structured business funding with profile-based document checklist
+            Secure your dream home with profile-based eligibility and documentation support
           </p>
         </div>
 
@@ -433,19 +452,18 @@ export default function BusinessLoanApplyPage() {
           {step === 2 && (
             <div className="space-y-5">
               <div>
-                <h2 className="text-xl font-bold text-gray-900">Business Type</h2>
-                <p className="mt-1 text-sm text-gray-600">Select your company constitution</p>
+                <h2 className="text-xl font-bold text-gray-900">Applicant Type</h2>
+                <p className="mt-1 text-sm text-gray-600">Select your income profile</p>
               </div>
 
-              <div className="grid gap-3 md:grid-cols-3">
+              <div className="grid gap-3 md:grid-cols-2">
                 {[
-                  { value: "proprietorship", label: "Proprietorship", desc: "Single owner business" },
-                  { value: "partnership", label: "Partnership", desc: "Partner-driven firm" },
-                  { value: "private-limited", label: "Private Limited", desc: "Company structure" },
+                  { value: "self-employed", label: "Self Employed", desc: "Proprietorship profile" },
+                  { value: "salaried", label: "Salaried", desc: "Salary income profile" },
                 ].map((opt) => (
                   <button
                     key={opt.value}
-                    onClick={() => handleApplicantSelect(opt.value as BusinessApplicantType)}
+                    onClick={() => handleApplicantSelect(opt.value as HomeLoanApplicantType)}
                     className="rounded-lg border-2 border-gray-200 p-4 text-left transition hover:border-blue-500 hover:bg-blue-50"
                   >
                     <p className="text-sm font-semibold text-gray-900">{opt.label}</p>
@@ -459,54 +477,62 @@ export default function BusinessLoanApplyPage() {
           {step === 3 && applicantType && (
             <div className="space-y-6">
               <div>
-                <h2 className="text-xl font-bold text-gray-900">Business Information</h2>
-                <p className="mt-1 text-sm text-gray-600">Tell us about your business profile</p>
+                <h2 className="text-xl font-bold text-gray-900">Income Information</h2>
+                <p className="mt-1 text-sm text-gray-600">Tell us about your earning profile</p>
               </div>
 
-              <div className="grid gap-4 md:grid-cols-2">
-                <div>
-                  <label className="mb-2 block text-sm font-semibold text-gray-700">Business Name</label>
-                  <input
-                    value={formData.businessName}
-                    onChange={(e) => updateField("businessName", e.target.value)}
-                    placeholder="Registered business name"
-                    className="w-full rounded-lg border border-gray-300 px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
-                  />
-                </div>
+              <div className="space-y-4">
+                {applicantType === "salaried" && (
+                  <>
+                    <div>
+                      <label className="mb-2 block text-sm font-semibold text-gray-700">Monthly Income</label>
+                      <input
+                        type="text"
+                        inputMode="numeric"
+                        value={formData.monthlyIncome}
+                        onChange={(e) => updateField("monthlyIncome", e.target.value.replace(/[^0-9]/g, ""))}
+                        placeholder="Amount in INR"
+                        className="w-full rounded-lg border border-gray-300 px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
+                      />
+                    </div>
 
-                <div>
-                  <label className="mb-2 block text-sm font-semibold text-gray-700">Annual Turnover</label>
-                  <input
-                    type="text"
-                    inputMode="numeric"
-                    value={formData.annualTurnover}
-                    onChange={(e) => updateField("annualTurnover", e.target.value.replace(/[^0-9]/g, ""))}
-                    placeholder="Amount in INR"
-                    className="w-full rounded-lg border border-gray-300 px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
-                  />
-                </div>
+                    <div>
+                      <label className="mb-2 block text-sm font-semibold text-gray-700">Employer Name</label>
+                      <input
+                        value={formData.employerName}
+                        onChange={(e) => updateField("employerName", e.target.value)}
+                        placeholder="Company name"
+                        className="w-full rounded-lg border border-gray-300 px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
+                      />
+                    </div>
+                  </>
+                )}
 
-                <div>
-                  <label className="mb-2 block text-sm font-semibold text-gray-700">Business Nature</label>
-                  <input
-                    value={formData.businessNature}
-                    onChange={(e) => updateField("businessNature", e.target.value)}
-                    placeholder="Manufacturing / Trading / Services"
-                    className="w-full rounded-lg border border-gray-300 px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
-                  />
-                </div>
+                {applicantType === "self-employed" && (
+                  <>
+                    <div>
+                      <label className="mb-2 block text-sm font-semibold text-gray-700">Annual Turnover</label>
+                      <input
+                        type="text"
+                        inputMode="numeric"
+                        value={formData.annualTurnover}
+                        onChange={(e) => updateField("annualTurnover", e.target.value.replace(/[^0-9]/g, ""))}
+                        placeholder="Amount in INR"
+                        className="w-full rounded-lg border border-gray-300 px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
+                      />
+                    </div>
 
-                <div>
-                  <label className="mb-2 block text-sm font-semibold text-gray-700">Years in Operation</label>
-                  <input
-                    type="text"
-                    inputMode="numeric"
-                    value={formData.yearsInOperation}
-                    onChange={(e) => updateField("yearsInOperation", e.target.value.replace(/[^0-9]/g, ""))}
-                    placeholder="Years"
-                    className="w-full rounded-lg border border-gray-300 px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
-                  />
-                </div>
+                    <div>
+                      <label className="mb-2 block text-sm font-semibold text-gray-700">Business Details</label>
+                      <input
+                        value={formData.businessDetails}
+                        onChange={(e) => updateField("businessDetails", e.target.value)}
+                        placeholder="Business or profession details"
+                        className="w-full rounded-lg border border-gray-300 px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
+                      />
+                    </div>
+                  </>
+                )}
               </div>
 
               <div className="flex gap-3 pt-4">
@@ -531,13 +557,13 @@ export default function BusinessLoanApplyPage() {
           {step === 4 && (
             <div className="space-y-6">
               <div>
-                <h2 className="text-xl font-bold text-gray-900">Residence and Office Details</h2>
-                <p className="mt-1 text-sm text-gray-600">Current location and residence profile</p>
+                <h2 className="text-xl font-bold text-gray-900">Residence Details</h2>
+                <p className="mt-1 text-sm text-gray-600">Current residential information</p>
               </div>
 
               <div className="grid gap-4 md:grid-cols-2">
                 <div>
-                  <label className="mb-2 block text-sm font-semibold text-gray-700">Residence City</label>
+                  <label className="mb-2 block text-sm font-semibold text-gray-700">City</label>
                   <input
                     value={formData.city}
                     onChange={(e) => updateField("city", e.target.value)}
@@ -555,16 +581,6 @@ export default function BusinessLoanApplyPage() {
                     onChange={(e) => updateField("pinCode", e.target.value.replace(/[^0-9]/g, "").slice(0, 6))}
                     maxLength={6}
                     placeholder="6-digit PIN"
-                    className="w-full rounded-lg border border-gray-300 px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
-                  />
-                </div>
-
-                <div className="md:col-span-2">
-                  <label className="mb-2 block text-sm font-semibold text-gray-700">Office City</label>
-                  <input
-                    value={formData.officeCity}
-                    onChange={(e) => updateField("officeCity", e.target.value)}
-                    placeholder="Office location"
                     className="w-full rounded-lg border border-gray-300 px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
                   />
                 </div>
@@ -615,8 +631,8 @@ export default function BusinessLoanApplyPage() {
           {step === 5 && (
             <div className="space-y-6">
               <div>
-                <h2 className="text-xl font-bold text-gray-900">Financial Details</h2>
-                <p className="mt-1 text-sm text-gray-600">Loan requirement and PAN details</p>
+                <h2 className="text-xl font-bold text-gray-900">Loan and Property Details</h2>
+                <p className="mt-1 text-sm text-gray-600">PAN, property profile, and loan requirement</p>
               </div>
 
               <div>
@@ -631,15 +647,48 @@ export default function BusinessLoanApplyPage() {
               </div>
 
               <div>
+                <p className="mb-3 text-sm font-semibold text-gray-700">Property Type</p>
+                <div className="grid gap-2 md:grid-cols-3">
+                  {[
+                    { value: "residential", label: "Residential" },
+                    { value: "commercial", label: "Commercial" },
+                    { value: "mixed-use", label: "Mixed Use" },
+                  ].map((opt) => (
+                    <button
+                      key={opt.value}
+                      onClick={() => updateField("propertyType", opt.value)}
+                      className={`rounded-lg border-2 p-3 text-sm font-semibold transition ${
+                        formData.propertyType === opt.value
+                          ? "border-blue-600 bg-blue-50 text-blue-900"
+                          : "border-gray-200 text-gray-900 hover:border-blue-300"
+                      }`}
+                    >
+                      {opt.label}
+                    </button>
+                  ))}
+                </div>
+              </div>
+
+              <div>
+                <label className="mb-2 block text-sm font-semibold text-gray-700">Property Location</label>
+                <input
+                  value={formData.propertyLocation}
+                  onChange={(e) => updateField("propertyLocation", e.target.value)}
+                  placeholder="City / Area"
+                  className="w-full rounded-lg border border-gray-300 px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
+                />
+              </div>
+
+              <div>
                 <p className="mb-3 text-sm font-semibold text-gray-700">Desired Loan Amount</p>
                 <div className="grid gap-2 md:grid-cols-3">
                   {[
-                    "Upto INR 10 Lacs",
-                    "INR 10 - INR 25 Lacs",
+                    "Upto INR 25 Lacs",
                     "INR 25 - INR 50 Lacs",
                     "INR 50 Lacs - INR 1 Cr",
                     "INR 1 Cr - INR 3 Cr",
-                    "INR 3 Cr +",
+                    "INR 3 Cr - INR 5 Cr",
+                    "INR 5 Cr +",
                   ].map((amount) => (
                     <button
                       key={amount}
@@ -679,7 +728,7 @@ export default function BusinessLoanApplyPage() {
             <div className="space-y-6">
               <div>
                 <h2 className="text-xl font-bold text-gray-900">Upload Documents</h2>
-                <p className="mt-1 text-sm text-gray-600">Upload all required business documents for verification</p>
+                <p className="mt-1 text-sm text-gray-600">Upload all mandatory documents for verification</p>
               </div>
 
               <div className="flex gap-2 rounded-lg border border-sky-200 bg-sky-50 p-3">
@@ -742,7 +791,7 @@ export default function BusinessLoanApplyPage() {
 
               <div>
                 <h2 className="text-2xl font-bold text-gray-900">Request Submitted!</h2>
-                <p className="mt-2 text-sm text-gray-600">Your business loan request has been submitted successfully.</p>
+                <p className="mt-2 text-sm text-gray-600">Your home loan request has been submitted successfully.</p>
                 {applicationId && (
                   <p className="mt-1 text-xs text-gray-500">Application ID: {applicationId}</p>
                 )}
@@ -750,7 +799,7 @@ export default function BusinessLoanApplyPage() {
 
               <div className="rounded-lg border border-blue-200 bg-blue-50 p-4">
                 <p className="text-xs text-blue-700">
-                  Our team will review your profile and documents and contact you shortly with next steps.
+                  Our team will review your profile, property papers, and documents and contact you shortly.
                 </p>
               </div>
 

@@ -44,6 +44,8 @@ export default function LoanAgainstPropertyApplyPage() {
   const [step, setStep] = useState(1);
   const [applicantType, setApplicantType] = useState<LapApplicantType | "">("");
   const [error, setError] = useState("");
+  const [submitting, setSubmitting] = useState(false);
+  const [applicationId, setApplicationId] = useState("");
 
   const [otpStage, setOtpStage] = useState<"pending" | "sent" | "verified">("pending");
   const [generatedOtp, setGeneratedOtp] = useState("");
@@ -229,10 +231,59 @@ export default function LoanAgainstPropertyApplyPage() {
     }
   };
 
+  const handleSubmitApplication = async () => {
+    if (uploadedCount !== requiredDocs.length) {
+      setError(`Please upload all ${requiredDocs.length} required documents`);
+      return;
+    }
+
+    if (!applicantType) {
+      setError("Please select profile type.");
+      return;
+    }
+
+    setSubmitting(true);
+    setError("");
+
+    try {
+      const payload = new FormData();
+      payload.append("loanType", "loan-against-property");
+      payload.append("loanSubtype", applicantType);
+      payload.append("formData", JSON.stringify(formData));
+
+      Object.entries(documents).forEach(([docType, file]) => {
+        if (file) payload.append(docType, file);
+      });
+
+      const res = await fetch("/api/loan-applications", {
+        method: "POST",
+        body: payload,
+      });
+
+      const result = await res.json();
+      if (!res.ok || !result?.success) {
+        const fieldErrors = result?.fieldErrors as Record<string, string[]> | undefined;
+        const firstFieldError = fieldErrors ? Object.values(fieldErrors)[0]?.[0] : "";
+        setError(firstFieldError || result?.error || "Submission failed. Please try again.");
+        return;
+      }
+
+      setApplicationId(result?.data?.applicationId ?? "");
+      setStep(7);
+    } catch (submitError) {
+      console.error("[lap/apply] submit error", submitError);
+      setError("Submission failed. Please try again.");
+    } finally {
+      setSubmitting(false);
+    }
+  };
+
   const resetFlow = () => {
     setStep(1);
     setApplicantType("");
     setError("");
+    setSubmitting(false);
+    setApplicationId("");
     setDocuments({});
     setOtpStage("pending");
     setGeneratedOtp("");
@@ -720,17 +771,11 @@ export default function LoanAgainstPropertyApplyPage() {
                 </button>
                 <button
                   type="button"
-                  onClick={() => {
-                    if (uploadedCount === requiredDocs.length) {
-                      setError("");
-                      setStep(7);
-                      return;
-                    }
-                    setError(`Please upload all ${requiredDocs.length} required documents`);
-                  }}
+                  onClick={handleSubmitApplication}
+                  disabled={submitting}
                   className="flex-1 rounded-lg bg-blue-600 px-4 py-2.5 text-sm font-semibold text-white transition hover:bg-blue-700"
                 >
-                  Continue to Submit
+                  {submitting ? "Submitting..." : "Continue to Submit"}
                 </button>
               </div>
             </div>
@@ -747,6 +792,9 @@ export default function LoanAgainstPropertyApplyPage() {
               <div>
                 <h2 className="text-2xl font-bold text-gray-900">Request Submitted!</h2>
                 <p className="mt-2 text-sm text-gray-600">Your LAP request has been submitted successfully.</p>
+                {applicationId && (
+                  <p className="mt-1 text-xs text-gray-500">Application ID: {applicationId}</p>
+                )}
               </div>
 
               <div className="rounded-lg border border-blue-200 bg-blue-50 p-4">
