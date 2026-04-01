@@ -4,10 +4,12 @@ import { useState, useEffect, Suspense } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 import Link from "next/link";
 import { setSignedIn } from "@/lib/authClient";
+import { useRedirectIfAuthed } from "@/lib/useRedirectIfAuthed";
 
 function SignInForm() {
   const router = useRouter();
   const params = useSearchParams();
+  const ready  = useRedirectIfAuthed("/partner-dashboard");
 
   const [form, setForm] = useState({ phone: "", password: "" });
   const [errors, setErrors] = useState<{ phone?: string; password?: string }>({});
@@ -57,13 +59,23 @@ function SignInForm() {
 
       setSignedIn(true, data.user);
       const nextParam = params.get("next");
-      const nextPath = nextParam && nextParam.startsWith("/") ? nextParam : "/dashboard";
-      router.push(nextPath);
+      const nextPath = nextParam && nextParam.startsWith("/") ? nextParam : "/partner-dashboard";
+      // Use setTimeout(0) to ensure localStorage + cookie are flushed
+      // before the next page's auth check runs
+      setTimeout(() => router.push(nextPath), 0);
     } catch {
       setServerError("Network error. Please try again.");
     } finally {
       setLoading(false);
     }
+  }
+
+  if (!ready) {
+    return (
+      <div className="flex min-h-screen items-center justify-center">
+        <div className="h-8 w-8 animate-spin rounded-full border-4 border-sky-400 border-t-transparent" />
+      </div>
+    );
   }
 
   return (
