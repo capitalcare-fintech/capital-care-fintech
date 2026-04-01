@@ -9,6 +9,7 @@ import { CreditScoreCTA } from "@/components/home/CreditScoreCTA";
 import { InDemandLoans } from "@/components/home/InDemandLoans";
 import { Reviews } from "@/components/home/Reviews";
 import { Partners } from "@/components/home/Partners";
+import { EmiCalculator } from "@/components/loans/EmiCalculator";
 
 export default function Home() {
   return (
@@ -17,6 +18,7 @@ export default function Home() {
       <HeroSlider />
       <StatsSection />
       <TrendingLoans />
+      <EmiCalculator title="EMI Calculator"/>
       <WhyChooseUs />
       <InDemandLoans />
       <LoanDetailSection />

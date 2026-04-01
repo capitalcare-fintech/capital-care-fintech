@@ -1,10 +1,10 @@
 import type { StaticImageData } from "next/image";
-import heroInsuranceImage from "@/assets/heroSlide/insurance-image.jpg";
-import heroLoanImage from "@/assets/heroSlide/loan-image.jpg";
-import inDemandBusinessImage from "@/assets/inDemand/buisness.jpg";
-import inDemandEducationImage from "@/assets/inDemand/property.jpg";
-import inDemandHomeImage from "@/assets/inDemand/home.jpg";
-import inDemandPersonalImage from "@/assets/inDemand/personal.jpg";
+import heroInsuranceImage from "@/assets/heroSlide/insurance-image.png";
+import heroLoanImage from "@/assets/heroSlide/loan-image.png";
+import inDemandBusinessImage from "@/assets/inDemand/buisness.png";
+import inDemandEducationImage from "@/assets/inDemand/education.png";
+import inDemandHomeImage from "@/assets/inDemand/home.png";
+import inDemandPersonalImage from "@/assets/inDemand/personal.png";
 
 export type NavItem =
   | {
@@ -32,9 +32,9 @@ export const NAV_ITEMS: NavItem[] = [
   {
     label: "Insurance",
     items: [
-      { label: "Health Insurance", href: "/insurance" },
-      { label: "Life Insurance", href: "/insurance" },
-      { label: "Motor Insurance", href: "/insurance" },
+      { label: "Health Insurance", href: "/insurance/health-insurance" },
+      { label: "Life Insurance", href: "/insurance/life-insurance" },
+      { label: "Motor Insurance", href: "/insurance/motor-insurance" },
     ],
   },
   { label: "Credit-Score", href: "/credit-score" },
