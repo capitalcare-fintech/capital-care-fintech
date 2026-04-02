@@ -26,6 +26,8 @@ export const NAV_ITEMS: NavItem[] = [
       { label: "Business Loan", href: "/loans/business-loan" },
       { label: "loan-against-property", href: "/loans/loan-against-property" },
       { label: "Home Loan", href: "/loans/home-loan" },
+      { label: "New Car Loan", href: "/loans/new-car-loan" },
+      { label: "Used Car Loan", href: "/loans/used-car-loan" },
     ],
   },
   {
@@ -111,6 +113,20 @@ export const IN_DEMAND_LOANS: InDemandCard[] = [
     href: "/loans/home-loan",
     image: inDemandHomeImage,
     imageAlt: "Home loan and mortgage illustration",
+  },
+  {
+    title: "New Car Loan",
+    subtitle: "Drive new sooner",
+    href: "/loans/new-car-loan",
+    image: inDemandPersonalImage,
+    imageAlt: "New car loan illustration",
+  },
+  {
+    title: "Used Car Loan",
+    subtitle: "Pre-owned made easy",
+    href: "/loans/used-car-loan",
+    image: inDemandEducationImage,
+    imageAlt: "Used car loan illustration",
   },
 ];
 
