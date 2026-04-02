@@ -2,7 +2,9 @@ export type LoanType =
   | "personal-loan"
   | "business-loan"
   | "loan-against-property"
-  | "home-loan";
+  | "home-loan"
+  | "new-car-loan"
+  | "used-car-loan";
 
 export type ApplicationStatus = "submitted" | "in_review" | "approved" | "rejected";
 
@@ -71,6 +73,19 @@ const homeLoanCommonFields = [
   "propertyType",
   "propertyLocation",
   "desiredLoanAmount",
+];
+
+const carLoanCommonFields = [
+  "fullName",
+  "email",
+  "mobile",
+  "dob",
+  "city",
+  "pinCode",
+  "residenceType",
+  "panNumber",
+  "carMakeModel",
+  "quotationAmount",
 ];
 
 export const LOAN_APPLICATION_CONFIG: Record<LoanType, LoanTypeConfig> = {
@@ -235,6 +250,86 @@ export const LOAN_APPLICATION_CONFIG: Record<LoanType, LoanTypeConfig> = {
           "office_proof",
           "property_chain",
           "agreement_to_sale",
+        ],
+      },
+    },
+  },
+  "new-car-loan": {
+    label: "New Car Loan",
+    subtypes: {
+      salaried: {
+        requiredFields: [...carLoanCommonFields, "monthlyIncome", "employerName"],
+        requiredDocs: [
+          "aadhar_applicant",
+          "pan_applicant",
+          "photo_applicant",
+          "aadhar_co_applicant",
+          "pan_co_applicant",
+          "photo_co_applicant",
+          "residence_bill",
+          "office_id",
+          "salary_slip_6m",
+          "bank_statement_1y",
+          "form16_2y",
+          "loan_details",
+        ],
+      },
+      "self-employed": {
+        requiredFields: [...carLoanCommonFields, "annualTurnover", "businessDetails"],
+        requiredDocs: [
+          "aadhar_applicant",
+          "pan_applicant",
+          "photo_applicant",
+          "aadhar_co_applicant",
+          "pan_co_applicant",
+          "photo_co_applicant",
+          "residence_bill",
+          "itr_2y_computation",
+          "bank_statement_current",
+          "loan_details",
+          "office_proof",
+        ],
+      },
+    },
+  },
+  "used-car-loan": {
+    label: "Used Car Loan",
+    subtypes: {
+      salaried: {
+        requiredFields: [...carLoanCommonFields, "monthlyIncome", "employerName"],
+        requiredDocs: [
+          "aadhar_applicant",
+          "pan_applicant",
+          "photo_applicant",
+          "aadhar_co_applicant",
+          "pan_co_applicant",
+          "photo_co_applicant",
+          "residence_bill",
+          "office_id",
+          "salary_slip_3m",
+          "bank_statement_6m",
+          "form16_2y",
+          "loan_details",
+          "rc_photo",
+          "car_insurance",
+        ],
+      },
+      "self-employed": {
+        requiredFields: [...carLoanCommonFields, "annualTurnover", "businessDetails"],
+        requiredDocs: [
+          "aadhar_applicant",
+          "pan_applicant",
+          "photo_applicant",
+          "aadhar_co_applicant",
+          "pan_co_applicant",
+          "photo_co_applicant",
+          "residence_bill",
+          "itr_2y_computation",
+          "bank_statement_current",
+          "loan_details",
+          "office_proof",
+          "rc_photo",
+          "car_insurance",
         ],
       },
     },
