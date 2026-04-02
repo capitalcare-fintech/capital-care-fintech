@@ -154,12 +154,6 @@ export default function MotorInsurancePage() {
 
                         <div className="flex flex-wrap gap-3">
                             <Link
-                                href="/sign-in?next=/insurance/motor-insurance"
-                                className="inline-flex items-center justify-center rounded-full bg-slate-900 px-7 py-3 text-sm font-semibold text-white transition hover:bg-slate-700"
-                            >
-                                Check Eligibility
-                            </Link>
-                            <Link
                                 href="/contact-us"
                                 className="inline-flex items-center justify-center rounded-full border border-slate-300 bg-white px-7 py-3 text-sm font-semibold text-slate-700 transition hover:border-slate-900 hover:text-slate-900"
                             >
@@ -172,7 +166,7 @@ export default function MotorInsurancePage() {
                         <Image
                             src={motorInsurance1}
                             alt="Motor insurance overview"
-                            className="h-fit w-full object-cover"
+                            className="h-80  object-fit"
                             priority
                         />
                     </div>
@@ -196,7 +190,7 @@ export default function MotorInsurancePage() {
                                         src={type.image}
                                         alt={type.alt}
                                         fill
-                                        className="object-cover"
+                                        className="object-fit"
                                         sizes="(max-width: 1024px) 100vw, 50vw"
                                     />
                                 </div>
@@ -246,14 +240,14 @@ export default function MotorInsurancePage() {
                         <Image
                             src={motorInsurance4}
                             alt="Motor insurance claim documents"
-                            className="h-auto w-full object-cover"
+                            className="h-auto w-full object-contain"
                         />
                     </div>
                 </div>
             </section>
 
             <section className="w-full bg-slate-100 px-4 py-10 md:px-10 lg:px-16 xl:px-24">
-                <div className="grid items-start gap-8 lg:grid-cols-[1fr_0.9fr]">
+                <div className="grid lg:flex items-start gap-8 lg:grid-cols-[1fr_0.9fr]">
                     <div>
                         <h2 className="text-lg font-bold text-slate-900 md:text-2xl">What your motor policy should actually include</h2>
                         <p className="mt-3 text-sm leading-relaxed text-slate-800 md:text-base">
@@ -278,7 +272,7 @@ export default function MotorInsurancePage() {
                             <Image
                                 src={motorInsurance2}
                                 alt="Motor insurance benefits"
-                                className="h-auto w-full object-cover"
+                                className="h-96 object-fit"
                             />
                         </div>
                     </div>

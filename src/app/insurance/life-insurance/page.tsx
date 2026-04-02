@@ -131,7 +131,7 @@ export default function LifeInsurancePage() {
     return (
         <main className="w-full overflow-hidden bg-slate-50 text-slate-900">
             <section className="relative w-full bg-[radial-gradient(circle_at_top_left,#e0f2fe_0%,#f8fafc_40%,#ffffff_100%)] px-4 pb-16 pt-10 md:px-10 lg:px-16 xl:px-24">
-                <div className="absolute -left-8 top-14 h-48 w-48 rounded-full bg-sky-200/30 blur-2xl" aria-hidden />
+                <div className="absolute -left-10 top-16 h-44 w-44 rounded-full bg-sky-200/30 blur-2xl" aria-hidden />
                 <div className="absolute right-0 top-0 h-64 w-64 rounded-full bg-cyan-200/30 blur-3xl" aria-hidden />
 
                 <div className="relative grid items-center gap-8 lg:grid-cols-[1.1fr_0.9fr]">
@@ -160,12 +160,6 @@ export default function LifeInsurancePage() {
 
                         <div className="flex flex-wrap gap-3">
                             <Link
-                                href="/sign-in?next=/insurance/life-insurance"
-                                className="inline-flex items-center justify-center rounded-full bg-slate-900 px-7 py-3 text-sm font-semibold text-white transition hover:bg-slate-700"
-                            >
-                                Check Eligibility
-                            </Link>
-                            <Link
                                 href="/contact-us"
                                 className="inline-flex items-center justify-center rounded-full border border-slate-300 bg-white px-7 py-3 text-sm font-semibold text-slate-700 transition hover:border-slate-900 hover:text-slate-900"
                             >
@@ -174,11 +168,11 @@ export default function LifeInsurancePage() {
                         </div>
                     </div>
 
-                    <div className="overflow-hidden rounded-4xl border border-slate-200 bg-white shadow-[0_30px_80px_-40px_rgba(15,23,42,0.4)]">
+                    <div className="overflow-hidden rounded-4xl border border-slate-200  shadow-[0_30px_80px_-40px_rgba(15,23,42,0.4)]">
                         <Image
                             src={lifeInsurance1}
                             alt="Life insurance overview"
-                            className="h-auto w-full object-cover"
+                            className="h-80  object-fit"
                             priority
                         />
                     </div>
@@ -202,7 +196,7 @@ export default function LifeInsurancePage() {
                                         src={type.image}
                                         alt={type.alt}
                                         fill
-                                        className="object-cover"
+                                        className="object-fit"
                                         sizes="(max-width: 1024px) 100vw, 50vw"
                                     />
                                 </div>
@@ -252,14 +246,14 @@ export default function LifeInsurancePage() {
                         <Image
                             src={lifeInsurance4}
                             alt="Life insurance documents"
-                            className="h-auto w-full object-cover"
+                            className="h-auto w-full object-contain"
                         />
                     </div>
                 </div>
             </section>
 
             <section className="w-full bg-slate-100 px-4 py-10 md:px-10 lg:px-16 xl:px-24">
-                <div className="grid items-start gap-8 lg:grid-cols-[1fr_0.9fr]">
+                <div className="grid lg:flex justify-center items-center gap-8 lg:grid-cols-[1fr_0.9fr]">
                     <div>
                         <h2 className="text-lg font-bold text-slate-900 md:text-2xl">What a strong life plan should include</h2>
                         <p className="mt-3 text-sm leading-relaxed text-slate-800 md:text-base">
@@ -312,13 +306,9 @@ export default function LifeInsurancePage() {
                             <p className="mt-3 text-sm leading-relaxed text-slate-800 md:text-base">{option.description}</p>
                         </article>
                     ))}
+                   
                 </div>
-
-                <div className="mt-8 grid items-center gap-6 rounded-3xl border border-slate-200 bg-slate-50 p-6 md:grid-cols-[1fr_auto]">
-                    <div className="overflow-hidden rounded-2xl">
-                        <Image src={lifeInsurance6} alt="Life insurance payout planning" className="h-auto w-full object-cover" />
-                    </div>
-                    <div className="flex justify-center md:justify-end">
+                 <div className="mt-8 flex justify-center ">
                         <Link
                             href="/sign-in?next=/insurance/life-insurance"
                             className="inline-flex items-center justify-center rounded-xl bg-cyan-500 px-8 py-3 text-sm font-semibold text-white transition hover:bg-cyan-600"
@@ -326,7 +316,6 @@ export default function LifeInsurancePage() {
                             Apply Now
                         </Link>
                     </div>
-                </div>
             </section>
 
             <section className="w-full px-4 py-10 md:px-10 lg:px-16 xl:px-24">
