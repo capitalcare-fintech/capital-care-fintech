@@ -166,6 +166,7 @@ export default function HealthInsurancePage() {
             <div className="flex flex-wrap gap-3">
              <Link
                 href="/insurance/health-insurance/apply"
+                // href="/sign-in?next=/insurance/health-insurance/apply"
                 className="inline-flex items-center justify-center rounded-xl bg-sky-700 px-6 py-3 text-sm font-semibold text-white transition hover:bg-sky-800"
               >
                 Apply Now

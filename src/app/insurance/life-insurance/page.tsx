@@ -160,7 +160,8 @@ export default function LifeInsurancePage() {
 
                         <div className="flex flex-wrap gap-3">
                           <Link
-                                href="/sign-in?next=/insurance/life-insurance/apply"
+                                href="/insurance/life-insurance/apply"
+                                // href="/sign-in?next=/insurance/life-insurance/apply"
                                 className="inline-flex items-center justify-center rounded-xl bg-cyan-700 px-6 py-3 text-sm font-semibold text-white transition hover:bg-cyan-800"
                             >
                                 Apply Now
