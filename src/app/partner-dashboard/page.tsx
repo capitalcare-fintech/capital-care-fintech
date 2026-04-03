@@ -10,7 +10,8 @@ import {
   HiOutlinePlus,
   HiOutlineSearch,
 } from "react-icons/hi";
-import { getSignedIn, getUser } from "@/lib/authClient";
+import { getPartnerSession } from "@/lib/partnerAuthClient";
+import { useRequirePartnerAuth } from "@/lib/useRequirePartnerAuth";
 import { useAuth } from "@/lib/useAuth";
 
 const easeOut: [number, number, number, number] = [0.25, 0.1, 0.25, 1];
@@ -41,18 +42,24 @@ const LOAN_TABS = ["Personal Loan", "Business Loan", "Secure Loan"];
 export default function PartnerDashboardPage() {
   const router = useRouter();
   const { signOut } = useAuth();
+  const ready = useRequirePartnerAuth();
   const [activeTab, setActiveTab] = useState(0);
   const [search, setSearch] = useState("");
   const [userName, setUserName] = useState("");
 
   useEffect(() => {
-    if (!getSignedIn()) {
-      router.replace("/sign-in");
-      return;
-    }
-    const user = getUser();
-    if (user) setUserName(user.name);
-  }, [router]);
+    if (!ready) return;
+    const session = getPartnerSession();
+    if (session) setUserName(session.name);
+  }, [ready]);
+
+  if (!ready) {
+    return (
+      <div className="flex min-h-screen items-center justify-center bg-sky-50 dark:bg-slate-950">
+        <div className="h-8 w-8 animate-spin rounded-full border-4 border-yellow-400 border-t-transparent" />
+      </div>
+    );
+  }
 
   return (
     <div className="min-h-[calc(100vh-3.5rem)] bg-slate-50 text-slate-900 transition-colors duration-300 dark:bg-slate-950 dark:text-slate-100">

@@ -5,22 +5,25 @@ import { useRouter } from "next/navigation";
 import { getSignedIn } from "@/lib/authClient";
 
 /**
- * Redirects to sign-in if the user is not authenticated.
- * Pass `redirectTo` to return the user back after login.
- * Returns `ready` — true once the auth check is complete.
+ * Protects a page. Returns `ready=true` only when the user is confirmed signed in.
+ * Redirects to sign-in (with ?next=) otherwise.
  */
-export function useRequireAuth(redirectTo?: string): { ready: boolean } {
+export function useRequireAuth(redirectTo = "/sign-in") {
   const router = useRouter();
-  const [ready, setReady] = useState(false);
+  // Initialise synchronously — avoids a flash of the spinner on fast loads
+  const [ready, setReady] = useState<boolean>(() => {
+    if (typeof window === "undefined") return false;
+    return getSignedIn();
+  });
 
   useEffect(() => {
-    if (!getSignedIn()) {
-      const returnPath = redirectTo ?? window.location.pathname;
-      router.replace(`/sign-in?next=${encodeURIComponent(returnPath)}`);
-    } else {
+    if (getSignedIn()) {
       setReady(true);
+    } else {
+      const current = window.location.pathname + window.location.search;
+      router.replace(`${redirectTo}?next=${encodeURIComponent(current)}`);
     }
   }, [router, redirectTo]);
 
-  return { ready };
+  return ready;
 }

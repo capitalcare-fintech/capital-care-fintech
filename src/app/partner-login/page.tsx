@@ -9,21 +9,16 @@ import {
   HiOutlineEye, HiOutlineEyeOff, HiOutlineShieldCheck,
 } from "react-icons/hi";
 import { FaHandshake } from "react-icons/fa";
+import { savePartnerSession } from "@/lib/partnerAuthClient";
+import { useRedirectIfPartnerAuthed } from "@/lib/useRedirectIfPartnerAuthed";
 
 const easeOut: [number, number, number, number] = [0.25, 0.1, 0.25, 1];
-
-const PARTNER_SESSION_KEY = "capitalcare:partner";
-
-function savePartnerSession(data: { name: string; partnerId: string }) {
-  if (typeof window !== "undefined") {
-    localStorage.setItem(PARTNER_SESSION_KEY, JSON.stringify(data));
-  }
-}
 
 type View = "login" | "set-password";
 
 export default function PartnerLoginPage() {
   const router = useRouter();
+  const ready  = useRedirectIfPartnerAuthed("/partner-dashboard");
   const [view, setView] = useState<View>("login");
 
   // Login form
@@ -66,7 +61,7 @@ export default function PartnerLoginPage() {
         setView("set-password");
       } else {
         savePartnerSession({ name: data.partner.name, partnerId: data.partner.partnerId });
-        router.push("/partner-dashboard");
+        setTimeout(() => router.push("/partner-dashboard"), 0);
       }
     } catch {
       setLoginError("Network error. Please try again.");
@@ -90,7 +85,7 @@ export default function PartnerLoginPage() {
       const data = await res.json();
       if (!res.ok) { setSetPwdError(data.error || "Failed to set password"); return; }
       savePartnerSession({ name: data.partner.name, partnerId: data.partner.partnerId });
-      router.push("/partner-dashboard");
+      setTimeout(() => router.push("/partner-dashboard"), 0);
     } catch {
       setSetPwdError("Network error. Please try again.");
     } finally {
@@ -99,6 +94,14 @@ export default function PartnerLoginPage() {
   }
 
   const inputCls = "w-full rounded-xl border border-slate-200 bg-slate-50 py-2.5 pl-10 pr-10 text-sm text-slate-900 placeholder-slate-400 outline-none transition focus:border-sky-400 focus:bg-white focus:ring-2 focus:ring-sky-100";
+
+  if (!ready) {
+    return (
+      <div className="flex min-h-screen items-center justify-center">
+        <div className="h-8 w-8 animate-spin rounded-full border-4 border-sky-400 border-t-transparent" />
+      </div>
+    );
+  }
 
   return (
     <div className="flex min-h-[calc(100vh-80px)] items-center justify-center px-4 py-12">

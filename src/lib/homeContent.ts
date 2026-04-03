@@ -2,7 +2,7 @@ import type { StaticImageData } from "next/image";
 import heroInsuranceImage from "@/assets/heroSlide/insurance-image.png";
 import heroLoanImage from "@/assets/heroSlide/loan-image.png";
 import inDemandBusinessImage from "@/assets/inDemand/buisness.png";
-import inDemandEducationImage from "@/assets/inDemand/property.jpg";
+import inDemandEducationImage from "@/assets/inDemand/education.png";
 import inDemandHomeImage from "@/assets/inDemand/home.png";
 import inDemandPersonalImage from "@/assets/inDemand/personal.png";
 
@@ -43,7 +43,7 @@ export const NAV_ITEMS: NavItem[] = [
   { label: "Credit-Score", href: "/credit-score" },
   { label: "Contact-Us", href: "/contact-us" },
   { label: "About-us", href: "/about-us" },
-  { label: "Become Our Partner", href: "/partner-apply", newTab: true },
+  { label: "Become Our Partner", href: "/partner-login", newTab: true },
 ];
 
 export type HeroSlide = {
