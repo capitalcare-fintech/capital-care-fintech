@@ -2,8 +2,8 @@
 
 import Image from "next/image";
 import Link from "next/link";
-import personalLoanImage from "@/assets/inDemand/personal.jpg";
-import chargesImage from "@/assets/heroSlide/loan-image.jpg";
+import personalLoanImage from "@/assets/inDemand/personal.png";
+import chargesImage from "@/assets/heroSlide/loan-image.png";
 import { EmiCalculator } from "@/components/loans/EmiCalculator";
 import { useAuth } from "@/lib/useAuth";
 import { FaBuilding, FaCheckCircle, FaStar, FaUniversity, FaUsers } from "react-icons/fa";

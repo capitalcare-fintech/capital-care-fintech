@@ -26,10 +26,10 @@ export function Footer() {
             <div className="mt-8 space-y-2">
               <a
                 href="tel:+91-9205559500"
-                className="flex w-fit items-center gap-3 font-medium text-slate-700 hover:text-slate-900"
+                className="flex w-fit items-center gap-2.5 text-slate-700 hover:text-slate-900"
               >
-                <FaPhone className="h-4 w-4" />
-                <span className="text-sm leading-none font-semibold sm:text-base">
+                <FaPhone className="h-3.5 w-3.5" />
+                <span className="text-xs leading-none font-semibold sm:text-sm">
                   +91-9205559500
                 </span>
               </a>
@@ -37,26 +37,26 @@ export function Footer() {
                 href="https://wa.me/919205559500"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="flex w-fit items-center gap-3 font-semibold text-slate-700 hover:text-slate-900"
+                className="flex w-fit items-center gap-2.5 text-slate-700 hover:text-slate-900"
               >
-                <FaWhatsapp className="h-4 w-4" />
-                <span className="text-sm leading-none font-semibold sm:text-base">
+                <FaWhatsapp className="h-3.5 w-3.5" />
+                <span className="text-xs leading-none font-semibold sm:text-sm">
                   +91-9205559500
                 </span>
               </a>
               <a
                 href="mailto:info@capitalcare.in"
-                className="flex w-fit items-center gap-3 font-semibold text-slate-700 hover:text-slate-900"
+                className="flex w-fit items-center gap-2.5 text-slate-700 hover:text-slate-900"
               >
-                <FaEnvelope className="h-4 w-4" />
-                <span className="text-sm leading-none font-semibold sm:text-base">
+                <FaEnvelope className="h-3.5 w-3.5" />
+                <span className="text-xs leading-none font-semibold sm:text-sm">
                   info@capitalcare.in
                 </span>
               </a>
             </div>
 
             <div className="mt-12">
-              <h4 className="text-base font-semibold text-slate-900 sm:text-lg">Follow Us On:</h4>
+              <h4 className="text-sm font-semibold text-slate-900 sm:text-base">Follow Us On:</h4>
               <div className="mt-4 flex flex-wrap gap-3">
                 <a
                   href="https://facebook.com"
@@ -108,10 +108,10 @@ export function Footer() {
           </div>
 
           <div className="flex flex-col justify-start pt-2 lg:items-start lg:pt-4">
-            <h4 className="text-lg font-bold text-slate-900 sm:text-xl">
+            <h4 className="text-base font-bold text-slate-900 sm:text-lg">
               Contact Information
             </h4>
-            <p className="mt-4 max-w-xl text-sm font-medium leading-relaxed text-slate-700 sm:text-base">
+            <p className="mt-4 max-w-xl text-xs font-medium leading-relaxed text-slate-700 sm:text-sm">
               Capital Care Fincorp Limited,
               <br />
               Office No. 337, 3rd Floor Shubham Tower, Neelam Chowk,
@@ -121,14 +121,8 @@ export function Footer() {
           </div>
         </div>
 
-        <div className="mt-4  pt-4">
-          <div className="grid grid-cols-2 gap-4 text-center text-[12px]  text-slate-600 sm:grid-cols-5 sm:text-sm">
-            <Link href="/loans" className="hover:text-slate-900">
-              Loans
-            </Link>
-            <Link href="/insurance" className="hover:text-slate-900">
-              Insurance
-            </Link>
+        <div className="mt-4 pt-4">
+          <div className="flex flex-wrap items-center justify-center gap-x-5 gap-y-2 text-center text-[11px] font-medium text-slate-600 sm:text-xs">
             <Link href="/partners" className="hover:text-slate-900">
               Our Partners
             </Link>
@@ -138,11 +132,32 @@ export function Footer() {
             <Link href="/contact-us" className="hover:text-slate-900">
               Contact Us
             </Link>
+            <Link href="/terms-and-conditions" className="hover:text-slate-800">
+              Terms &amp; Conditions
+            </Link>
+            <Link href="/privacy-policy" className="hover:text-slate-800">
+              Privacy Policy
+            </Link>
+            <Link href="/disclaimer" className="hover:text-slate-800">
+              Disclaimer
+            </Link>
           </div>
         </div>
-
-        <div className="mt-2 border-t border-slate-200 pt-4 text-sm font-medium text-slate-500">
-          © {new Date().getFullYear()} CapitalCare. All rights reserved.
+        <div className="mt-3 border-t border-slate-200 pt-3 text-center text-[11px] font-medium text-slate-500 sm:text-xs">
+        </div>
+        <div>
+          <div className="flex flex-col gap-2 sm:flex-row sm:items-center sm:justify-between">
+            <p className="text-[11px] leading-relaxed text-slate-600 sm:max-w-4xl sm:text-xs">
+              Disclaimer: Information on this website is for general informational and business purposes only. Quotations,
+              approvals, policy issuance, and claim outcomes are subject to final verification and partner terms.
+            </p>
+            <Link
+              href="/disclaimer"
+              className="inline-flex w-fit items-center justify-center rounded-full border border-slate-300 bg-white px-4 py-1.5 text-[11px] font-semibold text-slate-700 transition hover:border-slate-800 hover:text-slate-900 sm:text-xs"
+            >
+              Read More
+            </Link>
+          </div>
         </div>
       </div>
     </footer>
