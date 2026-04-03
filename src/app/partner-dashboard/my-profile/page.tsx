@@ -1,10 +1,10 @@
-import { AuthGuard } from "@/components/layout/AuthGuard";
+import { PartnerAuthGuard } from "@/components/layout/PartnerAuthGuard";
 import { MyProfilePage } from "@/components/profile/MyProfilePage";
 
 export default function MyProfileRoute() {
   return (
-    <AuthGuard>
+    <PartnerAuthGuard>
       <MyProfilePage />
-    </AuthGuard>
+    </PartnerAuthGuard>
   );
 }

@@ -10,9 +10,9 @@ import {
   HiOutlinePlus,
   HiOutlineSearch,
 } from "react-icons/hi";
-import { getSignedIn, getUser } from "@/lib/authClient";
+import { getPartnerSession } from "@/lib/partnerAuthClient";
+import { useRequirePartnerAuth } from "@/lib/useRequirePartnerAuth";
 import { useAuth } from "@/lib/useAuth";
-import { useRequireAuth } from "@/lib/useRequireAuth";
 
 const easeOut: [number, number, number, number] = [0.25, 0.1, 0.25, 1];
 
@@ -42,15 +42,15 @@ const LOAN_TABS = ["Personal Loan", "Business Loan", "Secure Loan"];
 export default function PartnerDashboardPage() {
   const router = useRouter();
   const { signOut } = useAuth();
-  const ready = useRequireAuth();
+  const ready = useRequirePartnerAuth();
   const [activeTab, setActiveTab] = useState(0);
   const [search, setSearch] = useState("");
   const [userName, setUserName] = useState("");
 
   useEffect(() => {
     if (!ready) return;
-    const user = getUser();
-    if (user) setUserName(user.name);
+    const session = getPartnerSession();
+    if (session) setUserName(session.name);
   }, [ready]);
 
   if (!ready) {

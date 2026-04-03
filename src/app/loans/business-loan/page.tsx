@@ -2,8 +2,8 @@
 
 import Image from "next/image";
 import Link from "next/link";
-import businessLoanImage from "@/assets/inDemand/buisness.jpg";
-import chargesImage from "@/assets/heroSlide/loan-image.jpg";
+import businessLoanImage from "@/assets/inDemand/buisness.png";
+import chargesImage from "@/assets/heroSlide/loan-image.png";
 import { useAuth } from "@/lib/useAuth";
 import { FaBuilding, FaCheckCircle, FaStar, FaUniversity, FaUsers } from "react-icons/fa";
 
