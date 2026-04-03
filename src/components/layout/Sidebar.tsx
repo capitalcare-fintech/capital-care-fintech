@@ -19,6 +19,7 @@ import {
   HiOutlineUsers,
 } from "react-icons/hi";
 import { useAuth } from "@/lib/useAuth";
+import { clearPartnerSession } from "@/lib/partnerAuthClient";
 import { useSidebar } from "@/context/SidebarProvider";
 import { isPartnerAppRoute } from "@/lib/partnerRoutes";
 
@@ -58,6 +59,7 @@ export function Sidebar() {
   const router = useRouter();
 
   const onLogout = useCallback(() => {
+    clearPartnerSession();
     signOut();
     setOpen(false);
     router.push("/");

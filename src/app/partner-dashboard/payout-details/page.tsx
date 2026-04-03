@@ -1,10 +1,10 @@
-import { AuthGuard } from "@/components/layout/AuthGuard";
+import { PartnerAuthGuard } from "@/components/layout/PartnerAuthGuard";
 import { PayoutPage } from "@/components/payout/PayoutPage";
 
 export default function PayoutDetailsRoute() {
   return (
-    <AuthGuard>
+    <PartnerAuthGuard>
       <PayoutPage />
-    </AuthGuard>
+    </PartnerAuthGuard>
   );
 }

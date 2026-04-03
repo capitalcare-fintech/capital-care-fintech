@@ -40,7 +40,7 @@ export const NAV_ITEMS: NavItem[] = [
   { label: "Credit-Score", href: "/credit-score" },
   { label: "Contact-Us", href: "/contact-us" },
   { label: "About-us", href: "/about-us" },
-  { label: "Become Our Partner", href: "/partner-apply", newTab: true },
+  { label: "Become Our Partner", href: "/partner-login", newTab: true },
 ];
 
 export type HeroSlide = {

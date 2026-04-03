@@ -1,10 +1,10 @@
-import { AuthGuard } from "@/components/layout/AuthGuard";
+import { PartnerAuthGuard } from "@/components/layout/PartnerAuthGuard";
 import { ViewBillPage } from "@/components/bills/ViewBillPage";
 
 export default function ViewBillRoute() {
   return (
-    <AuthGuard>
+    <PartnerAuthGuard>
       <ViewBillPage />
-    </AuthGuard>
+    </PartnerAuthGuard>
   );
 }
