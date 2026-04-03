@@ -9,10 +9,10 @@ export default function PrivacyPolicyPage() {
             <p className="inline-flex w-fit rounded-full border border-cyan-200 bg-white px-4 py-2 text-[11px] font-semibold uppercase tracking-[0.2em] text-cyan-700 sm:text-xs">
               Legal
             </p>
-            <h1 className="max-w-3xl text-3xl font-bold leading-tight text-slate-900 md:text-5xl">
+            <h1 className="max-w-3xl text-2xl font-bold leading-tight text-slate-900 md:text-3xl">
               {privacyPolicy.title}
             </h1>
-            <p className="max-w-3xl text-sm leading-relaxed text-slate-700 md:text-base lg:text-lg">
+            <p className="max-w-3xl text-sm leading-relaxed text-slate-700 md:text-base">
               Effective Date: {privacyPolicy.effectiveDate.trim()}
             </p>
           </div>
@@ -20,7 +20,7 @@ export default function PrivacyPolicyPage() {
       </section>
 
       <section className="w-full">
-        <div className="mx-12 w-full max-w-6xl  px-5 py-6 md:px-8 md:py-10">
+        <div className="mx-auto w-full max-w-6xl px-4 py-6 sm:px-6 md:px-8 md:py-10">
           {privacyPolicy.sections.map((section, index) => (
             <article
               key={section.heading}
@@ -31,7 +31,7 @@ export default function PrivacyPolicyPage() {
                   {String(index + 1).padStart(2, "0")}
                 </div>
                 <div className="min-w-0">
-                  <h2 className="text-lg font-semibold text-cyan-800 md:text-2xl">
+                  <h2 className="text-lg font-semibold text-cyan-800 md:text-xl">
                     {section.heading.replace(/^\./, "")}
                   </h2>
                   <p className="mt-4 whitespace-pre-line text-sm leading-8 text-slate-700 md:text-base">{section.content}</p>
