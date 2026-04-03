@@ -45,15 +45,15 @@ type FormDataState = {
   registrationNumber: string;
   makeModel: string;
   manufacturingYear: string;
-  insurancePlanType: string;
+//   insurancePlanType: string;
 
   preExistingDisease: string;
   heightCm: string;
   weightKg: string;
-  tobaccoUse: string;
+//   tobaccoUse: string;
   hospitalizationLast2Years: string;
 
-  tobaccoOrAlcoholUse: string;
+//   tobaccoOrAlcoholUse: string;
   majorIllness: string;
   majorIllnessDetails: string;
   nomineeName: string;
@@ -92,15 +92,15 @@ const initialFormState: FormDataState = {
   registrationNumber: "",
   makeModel: "",
   manufacturingYear: "",
-  insurancePlanType: "",
+//   insurancePlanType: "",
 
   preExistingDisease: "",
   heightCm: "",
   weightKg: "",
-  tobaccoUse: "",
+//   tobaccoUse: "",
   hospitalizationLast2Years: "",
 
-  tobaccoOrAlcoholUse: "",
+//   tobaccoOrAlcoholUse: "",
   majorIllness: "",
   majorIllnessDetails: "",
   nomineeName: "",
@@ -269,7 +269,7 @@ export default function InsuranceApplyForm({ insuranceType, heading }: Insurance
         if (!formData.registrationNumber.trim()) return "Registration number is required.";
         if (!formData.makeModel.trim()) return "Make and model is required.";
         if (!formData.manufacturingYear) return "Manufacturing year is required.";
-        if (!formData.insurancePlanType) return "Insurance plan type is required.";
+        // if (!formData.insurancePlanType) return "Insurance plan type is required.";
       }
     }
 
@@ -278,12 +278,12 @@ export default function InsuranceApplyForm({ insuranceType, heading }: Insurance
         if (!formData.preExistingDisease) return "Please select pre-existing disease status.";
         if (!formData.heightCm.trim()) return "Height is required.";
         if (!formData.weightKg.trim()) return "Weight is required.";
-        if (!formData.tobaccoUse) return "Please select tobacco use status.";
+        // if (!formData.tobaccoUse) return "Please select tobacco use status.";
         if (!formData.hospitalizationLast2Years) return "Please select hospitalization status.";
       }
 
       if (insuranceType === "life-insurance") {
-        if (!formData.tobaccoOrAlcoholUse) return "Please select tobacco/alcohol use status.";
+        // if (!formData.tobaccoOrAlcoholUse) return "Please select tobacco/alcohol use status.";
         if (!formData.majorIllness) return "Please select major illness status.";
         if (formData.majorIllness === "yes" && !formData.majorIllnessDetails.trim()) {
           return "Please add major illness details.";
@@ -661,8 +661,8 @@ export default function InsuranceApplyForm({ insuranceType, heading }: Insurance
               className="w-full rounded-lg border border-slate-300 px-3 py-2 text-sm"
             >
               <option value="">Select</option>
-              <option value="bike">Bike</option>
-              <option value="car">Car</option>
+              <option value="bike">Commercial Vehicle</option>
+              <option value="car">Private Vehicle</option>
             </select>
           </label>
           <label className="space-y-2">
@@ -694,7 +694,7 @@ export default function InsuranceApplyForm({ insuranceType, heading }: Insurance
               max={new Date().getFullYear()}
             />
           </label>
-          <label className="space-y-2 md:col-span-2">
+          {/* <label className="space-y-2 md:col-span-2">
             <span className="text-sm font-semibold text-slate-700">Insurance type</span>
             <select
               value={formData.insurancePlanType}
@@ -703,9 +703,10 @@ export default function InsuranceApplyForm({ insuranceType, heading }: Insurance
             >
               <option value="">Select</option>
               <option value="third-party">Third-party</option>
+              <option value="comprehensive">Only Damage</option>
               <option value="comprehensive">Comprehensive</option>
             </select>
-          </label>
+          </label> */}
         </div>
       )}
 
@@ -723,7 +724,7 @@ export default function InsuranceApplyForm({ insuranceType, heading }: Insurance
               <option value="no">No</option>
             </select>
           </label>
-          <label className="space-y-2">
+          {/* <label className="space-y-2">
             <span className="text-sm font-semibold text-slate-700">Tobacco use</span>
             <select
               value={formData.tobaccoUse}
@@ -734,7 +735,7 @@ export default function InsuranceApplyForm({ insuranceType, heading }: Insurance
               <option value="yes">Yes</option>
               <option value="no">No</option>
             </select>
-          </label>
+          </label> */}
           <label className="space-y-2">
             <span className="text-sm font-semibold text-slate-700">Height (cm)</span>
             <input
@@ -774,7 +775,7 @@ export default function InsuranceApplyForm({ insuranceType, heading }: Insurance
 
       {step === 3 && insuranceType === "life-insurance" && (
         <div className="grid gap-4 md:grid-cols-2">
-          <label className="space-y-2">
+          {/* <label className="space-y-2">
             <span className="text-sm font-semibold text-slate-700">Tobacco/Alcohol use</span>
             <select
               value={formData.tobaccoOrAlcoholUse}
@@ -785,7 +786,7 @@ export default function InsuranceApplyForm({ insuranceType, heading }: Insurance
               <option value="yes">Yes</option>
               <option value="no">No</option>
             </select>
-          </label>
+          </label> */}
           <label className="space-y-2">
             <span className="text-sm font-semibold text-slate-700">Major illness history</span>
             <select
