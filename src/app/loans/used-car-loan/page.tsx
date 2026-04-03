@@ -2,8 +2,8 @@
 
 import Image from "next/image";
 import Link from "next/link";
-import homeImage from "@/assets/inDemand/home.jpg";
-import chargesImage from "@/assets/heroSlide/loan-image.jpg";
+import homeImage from "@/assets/inDemand/home.png";
+import chargesImage from "@/assets/heroSlide/loan-image.png";
 import { useAuth } from "@/lib/useAuth";
 import { FaBuilding, FaCheckCircle, FaStar, FaUniversity, FaUsers } from "react-icons/fa";
 
