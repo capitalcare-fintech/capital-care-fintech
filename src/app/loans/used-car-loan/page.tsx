@@ -181,7 +181,7 @@ export default function UsedCarLoanPage() {
 							href={applyHref}
 							className="rounded-full bg-linear-to-r from-sky-400 to-indigo-500 px-10 py-3 text-sm font-semibold text-slate-950 transition hover:brightness-110 md:text-base"
 						>
-							Apply Now
+							Apply Now 
 						</Link>
 					</div>
 				</section>
