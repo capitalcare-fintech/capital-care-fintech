@@ -19,6 +19,7 @@ import {
   HiOutlineUsers,
 } from "react-icons/hi";
 import { useAuth } from "@/lib/useAuth";
+import { clearPartnerSession } from "@/lib/partnerAuthClient";
 import { useSidebar } from "@/context/SidebarProvider";
 import { isPartnerAppRoute } from "@/lib/partnerRoutes";
 
@@ -29,29 +30,19 @@ export type SidebarNavItem = {
 };
 
 export const PARTNER_SIDEBAR_ITEMS: SidebarNavItem[] = [
-  { label: "DSA Dashboard", href: "/partner-dashboard", icon: HiOutlineTemplate },
-  { label: "My Profile", href: "/partner-dashboard/my-profile", icon: HiOutlineUser },
+  { label: "DSA Dashboard",  href: "/partner-dashboard",              icon: HiOutlineTemplate },
+  { label: "My Profile",     href: "/partner-dashboard/my-profile",   icon: HiOutlineUser },
   { label: "Payout Details", href: "/partner-dashboard/payout-details", icon: HiOutlineCash },
-  {
-    label: "Transaction History",
-    href: "/partner-dashboard/transaction-history",
-    icon: HiOutlineClipboardList,
-  },
-  { label: "Marketing", href: "/partner-dashboard/marketing", icon: HiOutlineSpeakerphone },
-  {
-    label: "Disbursement Confirmation",
-    href: "/partner-dashboard/disbursement-confirmation",
-    icon: HiOutlineCheckCircle,
-  },
-  { label: "Digital Card", href: "/partner-dashboard/digital-card", icon: HiOutlineCreditCard },
-  { label: "View Bill", href: "/partner-dashboard/view-bill", icon: HiOutlineDocumentText },
-  {
-    label: "SubPartner Onboarding",
-    href: "/partner-dashboard/subpartner-onboarding",
-    icon: HiOutlineUserAdd,
-  },
-  { label: "UTM Link", href: "/partner-dashboard/utm-link", icon: HiOutlineLink },
-  { label: "SubPartner's List", href: "/partner-dashboard/subpartners-list", icon: HiOutlineUsers },
+  { label: "View Bill",      href: "/partner-dashboard/view-bill",    icon: HiOutlineDocumentText },
+  { label: "Digital Card",   href: "/partner-dashboard/digital-card", icon: HiOutlineCreditCard },
+
+  // — Coming soon — uncomment when implemented —
+  // { label: "Transaction History",       href: "/partner-dashboard/transaction-history",       icon: HiOutlineClipboardList },
+  // { label: "Marketing",                 href: "/partner-dashboard/marketing",                 icon: HiOutlineSpeakerphone },
+  // { label: "Disbursement Confirmation", href: "/partner-dashboard/disbursement-confirmation", icon: HiOutlineCheckCircle },
+  // { label: "SubPartner Onboarding",     href: "/partner-dashboard/subpartner-onboarding",     icon: HiOutlineUserAdd },
+  // { label: "UTM Link",                  href: "/partner-dashboard/utm-link",                  icon: HiOutlineLink },
+  // { label: "SubPartner's List",         href: "/partner-dashboard/subpartners-list",          icon: HiOutlineUsers },
 ];
 
 function isActivePath(pathname: string, href: string) {
@@ -68,6 +59,7 @@ export function Sidebar() {
   const router = useRouter();
 
   const onLogout = useCallback(() => {
+    clearPartnerSession();
     signOut();
     setOpen(false);
     router.push("/");

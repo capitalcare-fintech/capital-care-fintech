@@ -3,6 +3,7 @@
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
+import { useRedirectIfAuthed } from "@/lib/useRedirectIfAuthed";
 
 type Field = "fullName" | "phone" | "otp" | "password";
 
@@ -10,6 +11,7 @@ const MOCK_OTP = "123456";
 
 export default function SignUpPage() {
   const router = useRouter();
+  const ready  = useRedirectIfAuthed("/partner-dashboard");
 
   const [form, setForm] = useState({ fullName: "", phone: "", otp: "", password: "" });
   const [errors, setErrors] = useState<Partial<Record<Field, string>>>({});
@@ -83,6 +85,14 @@ export default function SignUpPage() {
     } finally {
       setLoading(false);
     }
+  }
+
+  if (!ready) {
+    return (
+      <div className="flex min-h-screen items-center justify-center">
+        <div className="h-8 w-8 animate-spin rounded-full border-4 border-sky-400 border-t-transparent" />
+      </div>
+    );
   }
 
   return (

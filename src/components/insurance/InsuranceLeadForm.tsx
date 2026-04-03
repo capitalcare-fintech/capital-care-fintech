@@ -1,0 +1,207 @@
+"use client";
+
+import { useState } from "react";
+import Link from "next/link";
+import { motion, AnimatePresence } from "framer-motion";
+import {
+  HiOutlineUser, HiOutlinePhone, HiOutlineMail,
+  HiOutlineLocationMarker, HiOutlineChatAlt2,
+  HiOutlineShieldCheck, HiOutlineClipboardList, HiCheckCircle,
+} from "react-icons/hi";
+
+const easeOut: [number, number, number, number] = [0.25, 0.1, 0.25, 1];
+
+type InsuranceType = "Life Insurance" | "Health Insurance" | "Motor Insurance";
+
+const INSURANCE_TYPES: { value: InsuranceType; label: string }[] = [
+  { value: "Life Insurance",   label: "Life Insurance" },
+  { value: "Health Insurance", label: "Health Insurance" },
+  { value: "Motor Insurance",  label: "Motor Insurance" },
+];
+
+const THEME: Record<InsuranceType, { border: string; bg: string; badge: string; btn: string; accent: string }> = {
+  "Life Insurance":   { border: "border-emerald-100", bg: "from-white via-emerald-50 to-teal-50",   badge: "border-emerald-200 bg-emerald-50 text-emerald-700",   btn: "from-emerald-400 to-teal-500",   accent: "border-emerald-100 bg-emerald-50 text-emerald-500" },
+  "Health Insurance": { border: "border-rose-100",    bg: "from-white via-rose-50 to-pink-50",      badge: "border-rose-200 bg-rose-50 text-rose-700",           btn: "from-rose-400 to-pink-500",      accent: "border-rose-100 bg-rose-50 text-rose-500" },
+  "Motor Insurance":  { border: "border-sky-100",     bg: "from-white via-sky-50 to-cyan-50",       badge: "border-sky-200 bg-sky-50 text-sky-700",              btn: "from-sky-400 to-indigo-500",     accent: "border-sky-100 bg-sky-50 text-sky-500" },
+};
+
+type Form = { insuranceType: InsuranceType; fullName: string; mobile: string; email: string; city: string; message: string };
+type Errors = Partial<Record<keyof Form, string>>;
+
+const inputCls = "w-full rounded-xl border border-slate-200 bg-slate-50 py-2.5 pl-10 pr-4 text-sm text-slate-900 placeholder-slate-400 outline-none transition focus:border-sky-400 focus:bg-white focus:ring-2 focus:ring-sky-100";
+
+function Field({ label, icon: Icon, error, children }: { label: string; icon: React.ElementType; error?: string; children: React.ReactNode }) {
+  return (
+    <div className="grid gap-1.5">
+      <label className="text-sm font-medium text-slate-700">{label}</label>
+      <div className="relative">
+        <Icon className="pointer-events-none absolute left-3.5 top-1/2 h-4 w-4 -translate-y-1/2 text-slate-400" />
+        {children}
+      </div>
+      {error && <p className="text-xs text-red-500">{error}</p>}
+    </div>
+  );
+}
+
+export function InsuranceLeadForm() {
+  const [form, setForm] = useState<Form>({
+    insuranceType: "Life Insurance",
+    fullName: "", mobile: "", email: "", city: "", message: "",
+  });
+  const [errors, setErrors]           = useState<Errors>({});
+  const [serverError, setServerError] = useState("");
+  const [submitted, setSubmitted]     = useState(false);
+  const [loading, setLoading]         = useState(false);
+
+  const theme = THEME[form.insuranceType];
+
+  function set<K extends keyof Form>(field: K, value: Form[K]) {
+    setForm((f) => ({ ...f, [field]: value }));
+    setErrors((e) => ({ ...e, [field]: "" }));
+  }
+
+  function validate(): boolean {
+    const e: Errors = {};
+    if (!form.fullName.trim())                            e.fullName      = "Full name is required";
+    if (!/^\d{10}$/.test(form.mobile))                   e.mobile        = "Enter a valid 10-digit mobile number";
+    if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(form.email)) e.email         = "Enter a valid email address";
+    if (!form.city.trim())                                e.city          = "City is required";
+    setErrors(e);
+    return Object.keys(e).length === 0;
+  }
+
+  async function handleSubmit(e: React.FormEvent) {
+    e.preventDefault();
+    if (!validate()) return;
+    setLoading(true);
+    setServerError("");
+    try {
+      const res = await fetch("/api/insurance-leads", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(form),
+      });
+      const data = await res.json();
+      if (!res.ok) { setServerError(data.error || "Something went wrong"); return; }
+      setSubmitted(true);
+    } catch {
+      setServerError("Network error. Please try again.");
+    } finally {
+      setLoading(false);
+    }
+  }
+
+  return (
+    <div className="mx-auto w-full max-w-2xl px-4 py-12 md:px-6">
+      {/* Hero banner */}
+      <motion.div
+        initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.45, ease: easeOut }}
+        className={`mb-8 overflow-hidden rounded-3xl border ${theme.border} bg-linear-to-br ${theme.bg} px-8 py-10 text-center shadow-[0_12px_40px_-20px_rgba(16,185,129,0.2)]`}
+      >
+        <span className={`inline-flex items-center gap-2 rounded-full border px-4 py-1.5 text-xs font-semibold uppercase tracking-widest ${theme.badge}`}>
+          {form.insuranceType}
+        </span>
+        <h1 className="mt-4 text-3xl font-bold tracking-tight text-slate-900 md:text-4xl">
+          Apply for {form.insuranceType}
+        </h1>
+        <p className="mx-auto mt-3 max-w-md text-sm text-slate-500">
+          Fill in your details and we&apos;ll get back to you within 24 hours.
+        </p>
+      </motion.div>
+
+      {/* Form card */}
+      <motion.div
+        initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.45, delay: 0.1, ease: easeOut }}
+        className={`rounded-2xl border ${theme.border} bg-white p-8 shadow-sm`}
+      >
+        {serverError && (
+          <div className="mb-4 rounded-xl border border-red-200 bg-red-50 px-4 py-3 text-sm text-red-600">{serverError}</div>
+        )}
+
+        <AnimatePresence mode="wait">
+          {submitted ? (
+            <motion.div key="success" initial={{ opacity: 0, scale: 0.95 }} animate={{ opacity: 1, scale: 1 }}
+              className="flex flex-col items-center gap-3 py-10 text-center"
+            >
+              <HiCheckCircle className="h-16 w-16 text-green-500" />
+              <p className="text-lg font-bold text-slate-800">Application Submitted!</p>
+              <p className="text-sm text-slate-500">We&apos;ll contact you within 24 hours.</p>
+              <div className="mt-2 flex gap-3">
+                <button onClick={() => setSubmitted(false)}
+                  className={`rounded-xl border px-5 py-2 text-sm font-semibold transition ${theme.accent} hover:opacity-80`}>
+                  Apply Again
+                </button>
+                <Link href="/add-lead"
+                  className={`rounded-xl bg-linear-to-r ${theme.btn} px-5 py-2 text-sm font-semibold text-white hover:brightness-110`}>
+                  Back to Services
+                </Link>
+              </div>
+            </motion.div>
+          ) : (
+            <motion.form key="form" initial={{ opacity: 0 }} animate={{ opacity: 1 }}
+              onSubmit={handleSubmit} className="grid gap-5" noValidate
+            >
+              {/* Insurance Type */}
+              <div className="grid gap-1.5">
+                <label className="text-sm font-medium text-slate-700">Insurance Type</label>
+                <div className="relative">
+                  <HiOutlineClipboardList className="pointer-events-none absolute left-3.5 top-1/2 h-4 w-4 -translate-y-1/2 text-slate-400" />
+                  <select
+                    value={form.insuranceType}
+                    onChange={(e) => set("insuranceType", e.target.value as InsuranceType)}
+                    className={inputCls + " appearance-none"}
+                  >
+                    {INSURANCE_TYPES.map(({ value, label }) => (
+                      <option key={value} value={value}>{label}</option>
+                    ))}
+                  </select>
+                </div>
+              </div>
+
+              <div className="grid gap-5 sm:grid-cols-2">
+                <Field label="Full Name" icon={HiOutlineUser} error={errors.fullName}>
+                  <input type="text" value={form.fullName} onChange={(e) => set("fullName", e.target.value)} placeholder="John Doe" className={inputCls} />
+                </Field>
+                <Field label="Mobile Number" icon={HiOutlinePhone} error={errors.mobile}>
+                  <input type="tel" value={form.mobile} onChange={(e) => set("mobile", e.target.value.replace(/\D/g, "").slice(0, 10))} placeholder="9876543210" className={inputCls} />
+                </Field>
+              </div>
+
+              <Field label="Email Address" icon={HiOutlineMail} error={errors.email}>
+                <input type="email" value={form.email} onChange={(e) => set("email", e.target.value)} placeholder="john@example.com" className={inputCls} />
+              </Field>
+
+              <Field label="City" icon={HiOutlineLocationMarker} error={errors.city}>
+                <input type="text" value={form.city} onChange={(e) => set("city", e.target.value)} placeholder="Mumbai" className={inputCls} />
+              </Field>
+
+              <div className="grid gap-1.5">
+                <label className="text-sm font-medium text-slate-700">Message <span className="text-slate-400">(optional)</span></label>
+                <div className="relative">
+                  <HiOutlineChatAlt2 className="pointer-events-none absolute left-3.5 top-3 h-4 w-4 text-slate-400" />
+                  <textarea rows={3} value={form.message} onChange={(e) => set("message", e.target.value)} placeholder="Any additional details..." className={inputCls + " resize-none"} />
+                </div>
+              </div>
+
+              <div className={`flex items-center gap-2 rounded-xl border px-4 py-2.5 ${theme.accent}`}>
+                <HiOutlineShieldCheck className="h-4 w-4 shrink-0" />
+                <p className="text-xs text-slate-500">Your data is secure. We respond within <span className="font-semibold text-slate-700">24 hours</span>.</p>
+              </div>
+
+              <motion.button type="submit" disabled={loading}
+                whileHover={{ scale: loading ? 1 : 1.02 }} whileTap={{ scale: loading ? 1 : 0.98 }}
+                className={`rounded-xl bg-linear-to-r ${theme.btn} py-3 text-sm font-semibold text-white hover:brightness-110 disabled:opacity-60`}
+              >
+                {loading
+                  ? <span className="flex items-center justify-center gap-2"><svg className="h-4 w-4 animate-spin" viewBox="0 0 24 24" fill="none"><circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" /><path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8v8z" /></svg>Submitting…</span>
+                  : "Submit Application"}
+              </motion.button>
+            </motion.form>
+          )}
+        </AnimatePresence>
+      </motion.div>
+    </div>
+  );
+}
