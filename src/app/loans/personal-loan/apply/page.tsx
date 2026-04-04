@@ -805,16 +805,16 @@ export default function PersonalLoanPage() {
             <div className="space-y-6">
               <div>
                 <h2 className="text-lg font-bold text-gray-900">Upload Documents</h2>
-                <p className="mt-1 text-sm text-gray-600">Please upload the required documents for verification</p>
+                <p className="mt-1 text-sm text-gray-600">You may upload these documents, our team will reach out to you.</p>
               </div>
 
-              <div className="rounded-lg bg-sky-50 border border-sky-200 p-3 flex gap-2">
+              {/* <div className="rounded-lg bg-sky-50 border border-sky-200 p-3 flex gap-2">
                 <InfoIcon />
                 <div className="text-sm text-sky-900">
                   <p className="font-semibold">Required: {uploadedCount}/{requiredDocs.length} documents</p>
                   <p className="text-xs mt-1">Upload all mandatory documents to proceed</p>
                 </div>
-              </div>
+              </div> */}
 
               <div className="space-y-6">
                 {getDocumentsByCategory(employmentType as "salaried" | "self-employed").map((category) => (
