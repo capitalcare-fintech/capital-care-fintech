@@ -1,5 +1,6 @@
-export const PARTNER_SESSION_KEY = "capitalcare:partner";
-export const PARTNER_COOKIE      = "capitalcare_partner";
+// Partner dashboard auth — completely independent from main site auth
+export const PARTNER_SESSION_KEY = "partnerToken";       // localStorage: JSON session
+export const PARTNER_COOKIE      = "capitalcare_partner"; // JS-readable cookie
 
 export type PartnerSession = { name: string; partnerId: string };
 
@@ -26,6 +27,7 @@ function getCookie(): string {
 export function getPartnerSignedIn(): boolean {
   if (typeof window === "undefined") return false;
   try {
+    console.log("partnerToken:", window.localStorage.getItem(PARTNER_SESSION_KEY));
     if (getCookie()) return true;
     return !!window.localStorage.getItem(PARTNER_SESSION_KEY);
   } catch {
@@ -58,6 +60,7 @@ export function savePartnerSession(data: PartnerSession) {
 export function clearPartnerSession() {
   if (typeof window === "undefined") return;
   try {
+    // Only remove partner keys — never touch userToken
     deleteCookie();
     window.localStorage.removeItem(PARTNER_SESSION_KEY);
     window.dispatchEvent(new Event("capitalcare:partner-auth"));

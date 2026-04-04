@@ -1,5 +1,8 @@
 @import "tailwindcss";
 
+@source "../components/profile/**/*.tsx";
+@source "../app/partner-dashboard/**/*.tsx";
+
 @custom-variant dark (&:where(.dark, .dark *));
 
 :root {

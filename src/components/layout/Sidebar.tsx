@@ -18,7 +18,6 @@ import {
   HiOutlineUserAdd,
   HiOutlineUsers,
 } from "react-icons/hi";
-import { useAuth } from "@/lib/useAuth";
 import { clearPartnerSession } from "@/lib/partnerAuthClient";
 import { useSidebar } from "@/context/SidebarProvider";
 import { isPartnerAppRoute } from "@/lib/partnerRoutes";
@@ -55,15 +54,14 @@ function isActivePath(pathname: string, href: string) {
 export function Sidebar() {
   const pathname = usePathname();
   const { open, setOpen } = useSidebar();
-  const { signOut } = useAuth();
   const router = useRouter();
 
   const onLogout = useCallback(() => {
+    // Only clear partner session — do NOT touch userToken / main site auth
     clearPartnerSession();
-    signOut();
     setOpen(false);
     router.push("/");
-  }, [signOut, setOpen, router]);
+  }, [setOpen, router]);
 
   useEffect(() => {
     if (!open) return;
