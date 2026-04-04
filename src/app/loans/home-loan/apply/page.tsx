@@ -759,10 +759,10 @@ export default function HomeLoanApplyPage() {
             <div className="space-y-6">
               <div>
                 <h2 className="text-lg font-bold text-gray-900">Upload Documents</h2>
-                <p className="mt-1 text-sm text-gray-600">Upload all mandatory documents for verification</p>
+                <p className="mt-1 text-sm text-gray-600">You may upload these documents, our team will reach out to you.</p>
               </div>
 
-              <div className="flex gap-2 rounded-lg border border-sky-200 bg-sky-50 p-3">
+              {/* <div className="flex gap-2 rounded-lg border border-sky-200 bg-sky-50 p-3">
                 <InfoIcon />
                 <div className="text-sm text-sky-900">
                   <p className="font-semibold">
@@ -770,7 +770,7 @@ export default function HomeLoanApplyPage() {
                   </p>
                   <p className="mt-1 text-xs">Upload all mandatory documents to proceed</p>
                 </div>
-              </div>
+              </div> */}
 
               <div className="space-y-6">
                 {getDocumentsByCategory(applicantType).map((category) => (

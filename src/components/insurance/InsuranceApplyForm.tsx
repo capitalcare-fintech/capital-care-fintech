@@ -65,8 +65,8 @@ type FormDataState = {
   previousInsurer: string;
   policyExpiryDate: string;
   previousClaim: string;
-  ncbPercentage: string;
-  addons: string[];
+//   ncbPercentage: string;
+//   addons: string[];
 };
 
 const initialFormState: FormDataState = {
@@ -112,8 +112,8 @@ const initialFormState: FormDataState = {
   previousInsurer: "",
   policyExpiryDate: "",
   previousClaim: "",
-  ncbPercentage: "",
-  addons: [],
+//   ncbPercentage: "",
+//   addons: [],
 };
 
 const stepLabels = ["Basic Details", "Coverage Details", "Eligibility Details", "Document Upload"];
@@ -229,14 +229,14 @@ export default function InsuranceApplyForm({ insuranceType, heading }: Insurance
     }));
   };
 
-  const toggleAddOn = (value: string) => {
-    setFormData((prev) => ({
-      ...prev,
-      addons: prev.addons.includes(value)
-        ? prev.addons.filter((item) => item !== value)
-        : [...prev.addons, value],
-    }));
-  };
+//   const toggleAddOn = (value: string) => {
+//     setFormData((prev) => ({
+//       ...prev,
+//       addons: prev.addons.includes(value)
+//         ? prev.addons.filter((item) => item !== value)
+//         : [...prev.addons, value],
+//     }));
+//   };
 
   const validateStep = (currentStep: number): string => {
     if (currentStep === 1) {
@@ -343,7 +343,7 @@ export default function InsuranceApplyForm({ insuranceType, heading }: Insurance
       payload.append("insuranceType", insuranceType);
       payload.append("formData", JSON.stringify({
         ...formData,
-        addons: formData.addons.join(", "),
+        // addons: formData.addons.join(", "),
       }));
 
       Object.entries(documents).forEach(([docType, file]) => {
@@ -881,7 +881,7 @@ export default function InsuranceApplyForm({ insuranceType, heading }: Insurance
               </label>
             </>
           )}
-          <label className="space-y-2">
+          {/* <label className="space-y-2">
             <span className="text-sm font-semibold text-slate-700">Any claim in last year?</span>
             <select
               value={formData.previousClaim}
@@ -892,8 +892,8 @@ export default function InsuranceApplyForm({ insuranceType, heading }: Insurance
               <option value="yes">Yes</option>
               <option value="no">No</option>
             </select>
-          </label>
-          <label className="space-y-2">
+          </label> */}
+          {/* <label className="space-y-2">
             <span className="text-sm font-semibold text-slate-700">NCB Percentage (optional)</span>
             <input
               value={formData.ncbPercentage}
@@ -916,12 +916,15 @@ export default function InsuranceApplyForm({ insuranceType, heading }: Insurance
                 </label>
               ))}
             </div>
-          </div>
+          </div> */}
         </div>
       )}
 
       {step === 4 && (
         <div className="space-y-6">
+          <p className="text-sm text-slate-600">
+            You may upload the documents here, or our team will contact you for any details needed.
+          </p>
           {getInsuranceDocumentsByCategory(insuranceType).map((group) => (
             <div key={group.name} className="space-y-3">
               <h3 className="text-base font-bold text-slate-900">{group.name}</h3>
