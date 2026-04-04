@@ -21,7 +21,7 @@ export function StatsSection() {
         whileInView={{ opacity: 1, y: 0 }}
         viewport={{ once: true, margin: "-60px" }}
         transition={{ duration: 0.5, ease: easeOut }}
-        className="overflow-hidden rounded-3xl border border-sky-100 bg-white px-6 py-8 shadow-sm md:px-10"
+        className="overflow-hidden "
       >
         <p className="mb-6 text-center text-xs font-semibold uppercase tracking-widest text-sky-600">
           Trusted by our customers

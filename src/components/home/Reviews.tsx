@@ -15,7 +15,7 @@ function StarRating({ rating }: { rating: number }) {
           const fillPercentage = Math.min(Math.max(rating - i, 0), 1);
           return (
             <div key={i} className="relative h-4 w-4">
-              <span className="absolute inset-0 text-base leading-4 text-gray-600">★</span>
+              <span className="absolute inset-0 text-base leading-4 text-white">★</span>
               <div
                 className="absolute top-0 left-0 overflow-hidden"
                 style={{ width: `${fillPercentage * 100}%` }}
