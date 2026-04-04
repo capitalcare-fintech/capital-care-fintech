@@ -38,6 +38,16 @@ const InfoIcon = () => (
   </svg>
 );
 
+const stepLabels = [
+  "Personal Details",
+  "Business Type",
+  "Business Info",
+  "Residence Details",
+  "Financial Details",
+  "Document Upload",
+  "Confirmation",
+];
+
 export default function BusinessLoanApplyPage() {
   const [step, setStep] = useState(1);
   const [applicantType, setApplicantType] = useState<BusinessApplicantType | "">("");
@@ -289,25 +299,8 @@ export default function BusinessLoanApplyPage() {
   };
 
   return (
-    <main className="min-h-screen bg-linear-to-b from-blue-50 to-white px-4 py-10">
-      <div className="mx-auto max-w-3xl">
-        <div className="mb-8">
-          <h1 className="text-3xl font-bold text-gray-900">Business Loan</h1>
-          <p className="mt-2 text-sm text-gray-600">
-            Structured business funding with profile-based document checklist
-          </p>
-        </div>
-
-        <div className="mb-10 rounded-lg bg-white p-4 shadow-sm">
-          <div className="mb-2 flex items-center justify-between">
-            <span className="text-xs font-semibold uppercase tracking-wide text-gray-600">Step {step} of 7</span>
-            <span className="text-sm font-semibold text-blue-600">{progress}%</span>
-          </div>
-          <div className="h-2 w-full overflow-hidden rounded-full bg-gray-200">
-            <div className="h-2 rounded-full bg-blue-600 transition-all duration-500" style={{ width: `${progress}%` }} />
-          </div>
-        </div>
-
+    <main className="min-h-screen bg-slate-50 px-4 py-10">
+      <div className="mx-auto max-w-4xl">
         {error && (
           <div className="mb-6 flex gap-3 rounded-lg border-l-4 border-red-500 bg-red-50 p-4">
             <AlertIcon />
@@ -315,11 +308,43 @@ export default function BusinessLoanApplyPage() {
           </div>
         )}
 
-        <div className="rounded-lg bg-white p-8 shadow-sm">
+        <div className="rounded-2xl border border-slate-200 bg-white p-6 shadow-sm md:p-8">
+          <div className="mb-8 space-y-2">
+            <h1 className="text-xl font-bold tracking-tight text-slate-900 md:text-2xl">Business Loan</h1>
+            <p className="text-sm text-slate-600 mb-6">Structured business funding with profile-based document checklist</p>
+            <div className="pt-2">
+              <div className="h-2 w-full overflow-hidden rounded-full bg-slate-100">
+                <div className="h-full rounded-full bg-sky-600 transition-all duration-500" style={{ width: `${progress}%` }} />
+              </div>
+              <div className="mt-4 grid grid-cols-2 gap-2 md:grid-cols-4 xl:grid-cols-7">
+                {stepLabels.map((label, index) => {
+                  const currentStep = index + 1;
+                  const isActive = step === currentStep;
+                  const isComplete = step > currentStep;
+
+                  return (
+                    <div
+                      key={label}
+                      className={`rounded-lg border px-3 py-2 text-center text-xs font-semibold md:text-sm ${
+                        isActive
+                          ? "border-sky-300 bg-sky-50 text-sky-700"
+                          : isComplete
+                            ? "border-emerald-300 bg-emerald-50 text-emerald-700"
+                            : "border-slate-200 bg-slate-50 text-slate-500"
+                      }`}
+                    >
+                      {label}
+                    </div>
+                  );
+                })}
+              </div>
+            </div>
+          </div>
+
           {step === 1 && (
             <div className="space-y-6">
               <div>
-                <h2 className="text-xl font-bold text-gray-900">Personal Details</h2>
+                <h2 className="text-lg font-bold text-gray-900">Personal Details</h2>
                 <p className="mt-1 text-sm text-gray-600">Please provide basic contact details</p>
               </div>
 
@@ -433,7 +458,7 @@ export default function BusinessLoanApplyPage() {
           {step === 2 && (
             <div className="space-y-5">
               <div>
-                <h2 className="text-xl font-bold text-gray-900">Business Type</h2>
+                <h2 className="text-lg font-bold text-gray-900">Business Type</h2>
                 <p className="mt-1 text-sm text-gray-600">Select your company constitution</p>
               </div>
 
@@ -459,7 +484,7 @@ export default function BusinessLoanApplyPage() {
           {step === 3 && applicantType && (
             <div className="space-y-6">
               <div>
-                <h2 className="text-xl font-bold text-gray-900">Business Information</h2>
+                <h2 className="text-lg font-bold text-gray-900">Business Information</h2>
                 <p className="mt-1 text-sm text-gray-600">Tell us about your business profile</p>
               </div>
 
@@ -531,7 +556,7 @@ export default function BusinessLoanApplyPage() {
           {step === 4 && (
             <div className="space-y-6">
               <div>
-                <h2 className="text-xl font-bold text-gray-900">Residence and Office Details</h2>
+                <h2 className="text-lg font-bold text-gray-900">Residence and Office Details</h2>
                 <p className="mt-1 text-sm text-gray-600">Current location and residence profile</p>
               </div>
 
@@ -615,7 +640,7 @@ export default function BusinessLoanApplyPage() {
           {step === 5 && (
             <div className="space-y-6">
               <div>
-                <h2 className="text-xl font-bold text-gray-900">Financial Details</h2>
+                <h2 className="text-lg font-bold text-gray-900">Financial Details</h2>
                 <p className="mt-1 text-sm text-gray-600">Loan requirement and PAN details</p>
               </div>
 
@@ -678,11 +703,11 @@ export default function BusinessLoanApplyPage() {
           {step === 6 && applicantType && (
             <div className="space-y-6">
               <div>
-                <h2 className="text-xl font-bold text-gray-900">Upload Documents</h2>
-                <p className="mt-1 text-sm text-gray-600">Upload all required business documents for verification</p>
+                <h2 className="text-lg font-bold text-gray-900">Upload Documents</h2>
+                <p className="mt-1 text-sm text-gray-600">You may upload these documents, our team will reach out to you.</p>
               </div>
 
-              <div className="flex gap-2 rounded-lg border border-sky-200 bg-sky-50 p-3">
+              {/* <div className="flex gap-2 rounded-lg border border-sky-200 bg-sky-50 p-3">
                 <InfoIcon />
                 <div className="text-sm text-sky-900">
                   <p className="font-semibold">
@@ -690,7 +715,7 @@ export default function BusinessLoanApplyPage() {
                   </p>
                   <p className="mt-1 text-xs">Upload all mandatory documents to proceed</p>
                 </div>
-              </div>
+              </div> */}
 
               <div className="space-y-6">
                 {getDocumentsByCategory(applicantType).map((category) => (
@@ -741,7 +766,7 @@ export default function BusinessLoanApplyPage() {
               </div>
 
               <div>
-                <h2 className="text-2xl font-bold text-gray-900">Request Submitted!</h2>
+                <h2 className="text-xl font-bold text-gray-900 md:text-2xl">Request Submitted!</h2>
                 <p className="mt-2 text-sm text-gray-600">Your business loan request has been submitted successfully.</p>
                 {applicationId && (
                   <p className="mt-1 text-xs text-gray-500">Application ID: {applicationId}</p>
