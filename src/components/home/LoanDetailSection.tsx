@@ -24,9 +24,9 @@ const LOANS: LoanDetail[] = [
   {
     title: "Business Loan",
     description:
-      "Whether you're scaling operations, buying equipment, or managing cash flow — our business loans are designed to move as fast as your ambitions. Get up to ₹50 Lakhs with minimal documentation.",
-    features: ["Up to ₹50 Lakhs", "Approval in 24 hrs", "Flexible tenure", "No collateral required"],
-    href: "/loans",
+      "Whether you're scaling operations, buying equipment, or managing cash flow — our business loans are designed to move as fast as your ambitions. Get up to ₹2.5 Crore with minimal documentation.",
+    features: ["Up to ₹2.5 Crore", "Approval in 24 hrs", "Flexible tenure", "No collateral required"],
+    href: "/loans/business-loan/apply",
     image: businessLoanImage,
     imageAlt: "Business loan financing",
     accent: "bg-sky-400",
@@ -35,9 +35,9 @@ const LOANS: LoanDetail[] = [
   {
     title: "Personal Loan",
     description:
-      "From medical emergencies to dream vacations — a personal loan puts money in your hands when you need it most. No end-use restrictions, instant disbursal.",
-    features: ["Up to ₹25 Lakhs", "Disbursal in 2 hrs", "Zero prepayment charges", "100% online process"],
-    href: "/personal-loan",
+      "From medical emergencies to dream vacations — a personal loan puts money in your hands when you need it most. No end-use restrictions.",
+    features: ["Up to ₹1 Crore", "Disbursal in 24 hrs", "Zero prepayment charges", "100% online process"],
+    href: "/loans/personal-loan/apply",
     image: personalLoanImage,
     imageAlt: "Personal loan funds",
     accent: "bg-indigo-400",
@@ -47,8 +47,8 @@ const LOANS: LoanDetail[] = [
     title: "Home Loan",
     description:
       "Turn your dream home into reality with our competitive home loan rates. We partner with 70+ banks and NBFCs to get you the best deal possible.",
-    features: ["Up to ₹5 Crores", "Lowest interest rates", "Long tenure options", "Balance transfer available"],
-    href: "/loans",
+    features: ["Interest Rates starts from 7.05%", "Lowest interest rates", "Long tenure options", "Balance transfer available"],
+    href: "/loans/home-loan/apply",
     image: homeLoanImage,
     imageAlt: "Home loan and mortgage support",
     accent: "bg-emerald-400",

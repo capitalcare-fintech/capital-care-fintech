@@ -128,10 +128,6 @@ export default function PersonalLoanPage() {
           </div>
         </section>
 
-        <section className="w-full px-4 md:px-10 lg:px-16">
-          <EmiCalculator title="Personal Loan EMI Calculator" defaultAmount={1600000} defaultRate={11.2} defaultTenure={24} />
-        </section>
-
         <section className="w-full bg-linear-to-br from-white via-sky-50 to-cyan-50 px-4 py-10 md:px-10 lg:px-16">
           <h2 className="text-center text-xl font-bold text-slate-900 md:text-2xl">Online Personal Loan Features and Benefits</h2>
           <p className="mx-auto mt-4 max-w-6xl text-center text-sm text-slate-800 md:text-base">
