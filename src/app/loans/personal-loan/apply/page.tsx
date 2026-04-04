@@ -17,6 +17,15 @@ type LoanProvider = {
   minCreditScore: number;
 };
 
+type SubmitApiResponse = {
+  success?: boolean;
+  error?: string;
+  fieldErrors?: Record<string, string[]>;
+  data?: {
+    applicationId?: string;
+  };
+};
+
 type CreditScoreApiResponse = {
   success: boolean;
   data?: {
@@ -105,6 +114,16 @@ const PercentIcon = () => (
     <path d="M6 2a1 1 0 100 2 1 1 0 000-2zM4 5a2 2 0 11 4 0 2 2 0 01-4 0zM8 14a1 1 0 100 2 1 1 0 000-2zm-2 3a2 2 0 11 4 0 2 2 0 01-4 0zm6-14a1 1 0 110 2 1 1 0 010-2z" />
   </svg>
 );
+
+const stepLabels = [
+  "Personal Details",
+  "Employment Type",
+  "Employment Info",
+  "Residence Details",
+  "Financial Details",
+  "Document Upload",
+  "Confirmation",
+];
 
 export default function PersonalLoanPage() {
   const [step, setStep] = useState(1);
@@ -308,7 +327,7 @@ export default function PersonalLoanPage() {
         body: payload,
       });
 
-      const result = await res.json();
+      const result = (await res.json()) as SubmitApiResponse;
       if (!res.ok || !result?.success) {
         const firstFieldError = result?.fieldErrors
           ? Object.values(result.fieldErrors)[0]?.[0]
@@ -358,28 +377,8 @@ export default function PersonalLoanPage() {
   };
 
   return (
-    <main className="min-h-screen bg-linear-to-b from-blue-50 to-white px-4 py-10">
-      <div className="mx-auto max-w-3xl">
-        {/* Header */}
-        <div className="mb-8">
-          <h1 className="text-3xl font-bold text-gray-900">Personal Loan</h1>
-          <p className="mt-2 text-sm text-gray-600">Fast approval, transparent process, simple documentation</p>
-        </div>
-
-        {/* Progress Bar */}
-        <div className="mb-10 rounded-lg bg-white p-4 shadow-sm">
-          <div className="mb-2 flex items-center justify-between">
-            <span className="text-xs font-semibold text-gray-600 uppercase tracking-wide">Step {step} of 7</span>
-            <span className="text-sm font-semibold text-blue-600">{progress}%</span>
-          </div>
-          <div className="h-2 w-full rounded-full bg-gray-200 overflow-hidden">
-            <div
-              className="h-2 rounded-full bg-blue-600 transition-all duration-500"
-              style={{ width: `${progress}%` }}
-            />
-          </div>
-        </div>
-
+    <main className="min-h-screen bg-slate-50 px-4 py-10">
+      <div className="mx-auto max-w-4xl">
         {/* Error Message */}
         {error && (
           <div className="mb-6 rounded-lg bg-red-50 border-l-4 border-red-500 p-4 flex gap-3">
@@ -389,12 +388,46 @@ export default function PersonalLoanPage() {
         )}
 
         {/* Main Card */}
-        <div className="rounded-lg bg-white shadow-sm p-8">
+        <div className="rounded-2xl border border-slate-200 bg-white p-6 shadow-sm md:p-8">
+          <div className="mb-8 space-y-2">
+            <h1 className="text-xl font-bold tracking-tight text-slate-900 md:text-2xl">Personal Loan</h1>
+            <p className="text-sm text-slate-600 mb-8">Fast approval, transparent process, simple documentation</p>
+
+            <div className="h-2 w-full overflow-hidden rounded-full bg-slate-100">
+              <div
+                className="h-full rounded-full bg-sky-600 transition-all duration-500"
+                style={{ width: `${progress}%` }}
+              />
+            </div>
+            <div className="mt-4 grid grid-cols-2 gap-2 md:grid-cols-4 xl:grid-cols-7">
+              {stepLabels.map((label, index) => {
+                const currentStep = index + 1;
+                const isActive = step === currentStep;
+                const isComplete = step > currentStep;
+
+                return (
+                  <div
+                    key={label}
+                    className={`rounded-lg border px-3 py-2 text-center text-xs font-semibold md:text-sm ${
+                      isActive
+                        ? "border-sky-300 bg-sky-50 text-sky-700"
+                        : isComplete
+                          ? "border-emerald-300 bg-emerald-50 text-emerald-700"
+                          : "border-slate-200 bg-slate-50 text-slate-500"
+                    }`}
+                  >
+                    {label}
+                  </div>
+                );
+              })}
+            </div>
+          </div>
+
           {/* Step 1: Personal Details + OTP */}
           {step === 1 && (
             <div className="space-y-6">
               <div>
-                <h2 className="text-xl font-bold text-gray-900">Personal Details</h2>
+                <h2 className="text-lg font-bold text-gray-900">Personal Details</h2>
                 <p className="mt-1 text-sm text-gray-600">Please provide your basic information</p>
               </div>
 
@@ -521,7 +554,7 @@ export default function PersonalLoanPage() {
           {step === 2 && (
             <div className="space-y-5">
               <div>
-                <h2 className="text-xl font-bold text-gray-900">Employment Type</h2>
+                <h2 className="text-lg font-bold text-gray-900">Employment Type</h2>
                 <p className="mt-1 text-sm text-gray-600">How do you earn your income?</p>
               </div>
 
@@ -547,7 +580,7 @@ export default function PersonalLoanPage() {
           {step === 3 && employmentType && (
             <div className="space-y-6">
               <div>
-                <h2 className="text-xl font-bold text-gray-900">Employment Information</h2>
+                <h2 className="text-lg font-bold text-gray-900">Employment Information</h2>
                 <p className="mt-1 text-sm text-gray-600">Tell us more about your income</p>
               </div>
 
@@ -632,7 +665,7 @@ export default function PersonalLoanPage() {
           {step === 4 && (
             <div className="space-y-6">
               <div>
-                <h2 className="text-xl font-bold text-gray-900">Residence Details</h2>
+                <h2 className="text-lg font-bold text-gray-900">Residence Details</h2>
                 <p className="mt-1 text-sm text-gray-600">Current residential information</p>
               </div>
 
@@ -707,7 +740,7 @@ export default function PersonalLoanPage() {
           {step === 5 && (
             <div className="space-y-6">
               <div>
-                <h2 className="text-xl font-bold text-gray-900">Financial Details</h2>
+                <h2 className="text-lg font-bold text-gray-900">Financial Details</h2>
                 <p className="mt-1 text-sm text-gray-600">Loan amount and tax details</p>
               </div>
 
@@ -771,17 +804,17 @@ export default function PersonalLoanPage() {
           {step === 6 && employmentType && (
             <div className="space-y-6">
               <div>
-                <h2 className="text-xl font-bold text-gray-900">Upload Documents</h2>
-                <p className="mt-1 text-sm text-gray-600">Please upload the required documents for verification</p>
+                <h2 className="text-lg font-bold text-gray-900">Upload Documents</h2>
+                <p className="mt-1 text-sm text-gray-600">You may upload these documents, our team will reach out to you.</p>
               </div>
 
-              <div className="rounded-lg bg-sky-50 border border-sky-200 p-3 flex gap-2">
+              {/* <div className="rounded-lg bg-sky-50 border border-sky-200 p-3 flex gap-2">
                 <InfoIcon />
                 <div className="text-sm text-sky-900">
                   <p className="font-semibold">Required: {uploadedCount}/{requiredDocs.length} documents</p>
                   <p className="text-xs mt-1">Upload all mandatory documents to proceed</p>
                 </div>
-              </div>
+              </div> */}
 
               <div className="space-y-6">
                 {getDocumentsByCategory(employmentType as "salaried" | "self-employed").map((category) => (
@@ -834,7 +867,7 @@ export default function PersonalLoanPage() {
               </div>
 
               <div>
-                <h2 className="text-2xl font-bold text-gray-900">Request Submitted!</h2>
+                <h2 className="text-xl font-bold text-gray-900 md:text-2xl">Request Submitted!</h2>
                 <p className="mt-2 text-sm text-gray-600">
                   Your loan application has been submitted successfully.
                 </p>

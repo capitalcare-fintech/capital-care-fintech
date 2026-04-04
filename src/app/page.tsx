@@ -14,7 +14,7 @@ import { EmiCalculator } from "@/components/loans/EmiCalculator";
 export default function Home() {
   return (
     <>
-      <CreditScorePopup />
+      {/* <CreditScorePopup /> */}
       <HeroSlider />
       {/* <TrendingLoans /> */}
       <div className="px-4 md:px-10 lg:px-16">
@@ -24,7 +24,7 @@ export default function Home() {
       <InDemandLoans />
       <LoanDetailSection />
       <HowItWorks />
-      <CreditScoreCTA />
+      {/* <CreditScoreCTA /> */}
       <Reviews />
       <Partners />
       <StatsSection />
