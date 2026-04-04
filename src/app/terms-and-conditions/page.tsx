@@ -1,44 +1,50 @@
-import termsAndConditons from "@/context/termsAndConditions";
-
 export default function TermsAndConditionsPage() {
   return (
-    <main className="w-full overflow-hidden bg-slate-50 text-slate-900">
-      <section className="w-full bg-[linear-gradient(180deg,#eff6ff_0%,#f8fafc_48%,#ffffff_100%)] px-4 py-12 md:px-10 lg:px-16 xl:px-24">
-        <div className="mx-auto grid w-full max-w-7xl gap-8 lg:grid-cols-[1.1fr_0.9fr] lg:items-end">
-          <div className="space-y-5">
-            <p className="inline-flex w-fit rounded-full border border-sky-200 bg-white px-4 py-2 text-[11px] font-semibold uppercase tracking-[0.2em] text-sky-700 sm:text-xs">
-              Legal
-            </p>
-            <h1 className="max-w-3xl text-2xl font-bold leading-tight text-slate-900 md:text-3xl">
-              {termsAndConditons.title}
-            </h1>
-            <p className="max-w-3xl text-sm leading-relaxed text-slate-700 md:text-base">
-              Please review these terms before using our website, forms, and service channels.
-            </p>
-          </div>
-        </div>
-      </section>
+    <div className="mx-auto max-w-3xl px-4 py-16">
+      <h1 className="mb-2 text-3xl font-bold text-slate-900 dark:text-white">Terms &amp; Conditions</h1>
+      <p className="mb-8 text-sm text-slate-500 dark:text-slate-400">Last updated: April 2026</p>
 
-      <section className="w-full">
-        <div className="mx-auto w-full max-w-6xl px-4 py-6 sm:px-6 md:px-8 md:py-10">
-          {termsAndConditons.sections.map((section, index) => (
-            <article
-              key={section.heading}
-              className="border-b border-slate-200 py-7 last:border-b-0 last:pb-0 first:pt-0"
-            >
-              <div className="flex items-start gap-4">
-                <div className="mt-1 flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-sky-100 text-xs font-bold text-sky-700">
-                  {String(index + 1).padStart(2, "0")}
-                </div>
-                <div className="min-w-0">
-                  <h2 className="text-lg font-semibold text-sky-800 md:text-xl">{section.heading}</h2>
-                  <p className="mt-4 text-sm leading-8 text-slate-700 md:text-base">{section.content}</p>
-                </div>
-              </div>
-            </article>
-          ))}
-        </div>
-      </section>
-    </main>
+      <div className="prose prose-slate max-w-none dark:prose-invert space-y-6 text-sm leading-relaxed text-slate-700 dark:text-slate-300">
+        <section>
+          <h2 className="text-lg font-semibold text-slate-900 dark:text-white">1. Acceptance of Terms</h2>
+          <p>By accessing or using CapitalCare services, you agree to be bound by these Terms &amp; Conditions. If you do not agree, please do not use our platform.</p>
+        </section>
+
+        <section>
+          <h2 className="text-lg font-semibold text-slate-900 dark:text-white">2. Use of Services</h2>
+          <p>You agree to use CapitalCare services only for lawful purposes and in accordance with these terms. You must not misuse, disrupt, or attempt to gain unauthorised access to any part of our platform.</p>
+        </section>
+
+        <section>
+          <h2 className="text-lg font-semibold text-slate-900 dark:text-white">3. Account Responsibility</h2>
+          <p>You are responsible for maintaining the confidentiality of your account credentials. Any activity under your account is your responsibility. Notify us immediately of any unauthorised use.</p>
+        </section>
+
+        <section>
+          <h2 className="text-lg font-semibold text-slate-900 dark:text-white">4. Privacy Policy</h2>
+          <p>Your use of CapitalCare is also governed by our Privacy Policy. We collect and process personal data in accordance with applicable data protection laws.</p>
+        </section>
+
+        <section>
+          <h2 className="text-lg font-semibold text-slate-900 dark:text-white">5. Financial Information</h2>
+          <p>Information provided on this platform is for general informational purposes only and does not constitute financial advice. Always consult a qualified financial advisor before making decisions.</p>
+        </section>
+
+        <section>
+          <h2 className="text-lg font-semibold text-slate-900 dark:text-white">6. Limitation of Liability</h2>
+          <p>CapitalCare shall not be liable for any indirect, incidental, or consequential damages arising from your use of our services.</p>
+        </section>
+
+        <section>
+          <h2 className="text-lg font-semibold text-slate-900 dark:text-white">7. Changes to Terms</h2>
+          <p>We reserve the right to update these terms at any time. Continued use of the platform after changes constitutes acceptance of the revised terms.</p>
+        </section>
+
+        <section>
+          <h2 className="text-lg font-semibold text-slate-900 dark:text-white">8. Contact</h2>
+          <p>For questions about these terms, contact us at <a href="/contact-us" className="text-sky-600 hover:underline">our contact page</a>.</p>
+        </section>
+      </div>
+    </div>
   );
 }

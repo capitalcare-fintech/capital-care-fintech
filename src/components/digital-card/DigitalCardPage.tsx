@@ -16,6 +16,20 @@ export function DigitalCardPage() {
   const cardRef               = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
+    const savedImage = typeof window !== "undefined" ? localStorage.getItem("profileImage") ?? "" : "";
+
+    // Use cached profileData for instant render (written by profile page on save)
+    const cached = typeof window !== "undefined" ? localStorage.getItem("profileData") : null;
+    if (cached) {
+      try {
+        const p = JSON.parse(cached) as CardData;
+        console.log("Profile Data:", p);
+        setData({ ...p, profileImage: savedImage || p.profileImage || "" });
+        setLoading(false);
+        return; // skip API call if we have fresh cache
+      } catch { /* fall through to API */ }
+    }
+
     const user  = getUser();
     const phone = user?.phone ?? "";
     if (!phone) { setLoading(false); return; }
@@ -24,18 +38,22 @@ export function DigitalCardPage() {
       .then((r) => r.json())
       .then((json) => {
         if (json.profile) {
-          setData({
+          const d: CardData = {
             name:                json.profile.name                ?? "",
             phone:               json.profile.phone               ?? "",
             email:               json.profile.email               ?? "",
             relationshipManager: json.profile.relationshipManager ?? "",
-            profileImage:        json.profile.profileImage        ?? "",
-          });
+            profileImage:        savedImage || (json.profile.profileImage ?? ""),
+          };
+          console.log("Profile Data:", d);
+          setData(d);
+          localStorage.setItem("profileData", JSON.stringify(d));
         } else {
-          setData((p) => ({ ...p, phone, name: user?.name ?? "" }));
+          const fallback: CardData = { name: user?.name ?? "", phone, email: "", relationshipManager: "", profileImage: savedImage };
+          setData(fallback);
         }
       })
-      .catch(() => setData((p) => ({ ...p, phone, name: user?.name ?? "" })))
+      .catch(() => setData({ name: user?.name ?? "", phone, email: "", relationshipManager: "", profileImage: savedImage }))
       .finally(() => setLoading(false));
   }, []);
 

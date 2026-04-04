@@ -3,35 +3,49 @@
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
+import { HiOutlineEye, HiOutlineEyeOff } from "react-icons/hi";
+import { setSignedIn } from "@/lib/authClient";
 import { useRedirectIfAuthed } from "@/lib/useRedirectIfAuthed";
 
 type Field = "fullName" | "phone" | "otp" | "password";
 
 const MOCK_OTP = "123456";
 
+const inputCls = "rounded-xl border border-slate-200 bg-slate-50 px-4 py-2.5 text-sm text-slate-900 placeholder-slate-400 outline-none focus:border-sky-400 focus:ring-2 focus:ring-sky-100";
+
 export default function SignUpPage() {
   const router = useRouter();
-  const ready  = useRedirectIfAuthed("/partner-dashboard");
+  const ready  = useRedirectIfAuthed("/");
 
-  const [form, setForm] = useState({ fullName: "", phone: "", otp: "", password: "" });
-  const [errors, setErrors] = useState<Partial<Record<Field, string>>>({});
-  const [otpSent, setOtpSent] = useState(false);
+  const [form, setForm]           = useState({ fullName: "", phone: "", otp: "", password: "" });
+  const [errors, setErrors]       = useState<Partial<Record<Field, string>>>({});
+  const [otpSent, setOtpSent]     = useState(false);
   const [otpVerified, setOtpVerified] = useState(false);
   const [serverError, setServerError] = useState("");
-  const [loading, setLoading] = useState(false);
+  const [loading, setLoading]     = useState(false);
+  const [showPwd, setShowPwd]     = useState(false);
+  const [terms, setTerms]         = useState(false);
 
   function set(field: Field, value: string) {
     setForm((f) => ({ ...f, [field]: value }));
     setErrors((e) => ({ ...e, [field]: "" }));
   }
 
+  function handlePhone(e: React.ChangeEvent<HTMLInputElement>) {
+    // numeric only, max 10 digits
+    const val = e.target.value.replace(/\D/g, "").slice(0, 10);
+    setForm((f) => ({ ...f, phone: val }));
+    setErrors((e) => ({ ...e, phone: "" }));
+  }
+
   function validate(): boolean {
-    const e: Partial<Record<Field, string>> = {};
+    const e: Partial<Record<Field | "terms", string>> = {};
     if (!form.fullName.trim()) e.fullName = "Full name is required";
     if (!/^\d{10}$/.test(form.phone)) e.phone = "Enter a valid 10-digit phone number";
     if (!otpVerified) e.otp = "Please verify OTP first";
     if (form.password.length < 6) e.password = "Password must be at least 6 characters";
-    setErrors(e);
+    if (!terms) e.terms = "You must agree to the Terms & Conditions";
+    setErrors(e as Partial<Record<Field, string>>);
     return Object.keys(e).length === 0;
   }
 
@@ -57,29 +71,19 @@ export default function SignUpPage() {
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
     if (!validate()) return;
-
     setLoading(true);
     setServerError("");
-
     try {
-      const res = await fetch("/api/signup", {
+      const res  = await fetch("/api/signup", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          fullName: form.fullName,
-          phone: form.phone,
-          password: form.password,
-        }),
+        body: JSON.stringify({ fullName: form.fullName, phone: form.phone, password: form.password }),
       });
-
       const data = await res.json();
-
-      if (!res.ok) {
-        setServerError(data.error || "Something went wrong");
-        return;
-      }
-
-      router.push("/sign-in?registered=1");
+      if (!res.ok) { setServerError(data.error || "Something went wrong"); return; }
+      // auto sign-in after registration then redirect to home
+      setSignedIn(true, { id: data.id ?? 0, name: form.fullName, phone: form.phone });
+      setTimeout(() => router.push("/"), 0);
     } catch {
       setServerError("Network error. Please try again.");
     } finally {
@@ -102,7 +106,7 @@ export default function SignUpPage() {
         <p className="mb-8 text-sm text-slate-500">Sign up to get started with CapitalCare</p>
 
         {serverError && (
-          <div className="mb-4 rounded-xl bg-red-50 border border-red-200 px-4 py-3 text-sm text-red-600">
+          <div className="mb-4 rounded-xl border border-red-200 bg-red-50 px-4 py-3 text-sm text-red-600">
             {serverError}
           </div>
         )}
@@ -116,22 +120,23 @@ export default function SignUpPage() {
               value={form.fullName}
               onChange={(e) => set("fullName", e.target.value)}
               placeholder="John Doe"
-              className="rounded-xl border border-slate-200 bg-slate-50 px-4 py-2.5 text-sm text-slate-900 placeholder-slate-400 outline-none focus:border-sky-400 focus:ring-2 focus:ring-sky-100"
+              className={inputCls + " w-full"}
             />
             {errors.fullName && <p className="text-xs text-red-500">{errors.fullName}</p>}
           </div>
 
-          {/* Phone + OTP send */}
+          {/* Phone */}
           <div className="grid gap-1.5">
             <label className="text-sm font-medium text-slate-700">Phone Number</label>
             <div className="flex gap-2">
               <input
                 type="tel"
+                inputMode="numeric"
                 value={form.phone}
-                onChange={(e) => set("phone", e.target.value)}
+                onChange={handlePhone}
                 placeholder="9876543210"
                 maxLength={10}
-                className="flex-1 rounded-xl border border-slate-200 bg-slate-50 px-4 py-2.5 text-sm text-slate-900 placeholder-slate-400 outline-none focus:border-sky-400 focus:ring-2 focus:ring-sky-100"
+                className={inputCls + " flex-1"}
               />
               <button
                 type="button"
@@ -144,7 +149,7 @@ export default function SignUpPage() {
             {errors.phone && <p className="text-xs text-red-500">{errors.phone}</p>}
           </div>
 
-          {/* OTP verify */}
+          {/* OTP */}
           {otpSent && (
             <div className="grid gap-1.5">
               <label className="text-sm font-medium text-slate-700">OTP</label>
@@ -155,7 +160,7 @@ export default function SignUpPage() {
                   onChange={(e) => set("otp", e.target.value)}
                   placeholder="Enter OTP"
                   maxLength={6}
-                  className="flex-1 rounded-xl border border-slate-200 bg-slate-50 px-4 py-2.5 text-sm text-slate-900 placeholder-slate-400 outline-none focus:border-sky-400 focus:ring-2 focus:ring-sky-100"
+                  className={inputCls + " flex-1"}
                 />
                 <button
                   type="button"
@@ -170,17 +175,48 @@ export default function SignUpPage() {
             </div>
           )}
 
-          {/* Password */}
+          {/* Password with toggle */}
           <div className="grid gap-1.5">
             <label className="text-sm font-medium text-slate-700">Password</label>
-            <input
-              type="password"
-              value={form.password}
-              onChange={(e) => set("password", e.target.value)}
-              placeholder="Min. 6 characters"
-              className="rounded-xl border border-slate-200 bg-slate-50 px-4 py-2.5 text-sm text-slate-900 placeholder-slate-400 outline-none focus:border-sky-400 focus:ring-2 focus:ring-sky-100"
-            />
+            <div className="relative">
+              <input
+                type={showPwd ? "text" : "password"}
+                value={form.password}
+                onChange={(e) => set("password", e.target.value)}
+                placeholder="Min. 6 characters"
+                className={inputCls + " w-full pr-10"}
+              />
+              <button
+                type="button"
+                onClick={() => setShowPwd((v) => !v)}
+                className="absolute right-3 top-1/2 -translate-y-1/2 text-slate-400 hover:text-slate-600"
+                aria-label={showPwd ? "Hide password" : "Show password"}
+              >
+                {showPwd ? <HiOutlineEyeOff className="h-4 w-4" /> : <HiOutlineEye className="h-4 w-4" />}
+              </button>
+            </div>
             {errors.password && <p className="text-xs text-red-500">{errors.password}</p>}
+          </div>
+
+          <div className="flex flex-col gap-1">
+            <label className="flex items-start gap-2.5 cursor-pointer select-none">
+              <input
+                type="checkbox"
+                checked={terms}
+                onChange={(e) => { setTerms(e.target.checked); setErrors((err) => ({ ...err, terms: "" })); }}
+                className="mt-0.5 h-4 w-4 rounded border-slate-300 accent-sky-500"
+              />
+              <span className="text-sm text-slate-600">
+                I agree to the{" "}
+                <a href="/terms-and-conditions" target="_blank" rel="noopener noreferrer"
+                  className="font-medium text-sky-600 hover:underline">
+                  Terms &amp; Conditions
+                </a>
+              </span>
+            </label>
+            {(errors as Record<string, string>).terms && (
+              <p className="text-xs text-red-500">{(errors as Record<string, string>).terms}</p>
+            )}
           </div>
 
           <button
@@ -194,9 +230,7 @@ export default function SignUpPage() {
 
         <p className="mt-6 text-center text-sm text-slate-500">
           Already have an account?{" "}
-          <Link href="/sign-in" className="font-medium text-sky-600 hover:underline">
-            Sign in
-          </Link>
+          <Link href="/sign-in" className="font-medium text-sky-600 hover:underline">Sign in</Link>
         </p>
       </div>
     </div>

@@ -19,6 +19,17 @@ export function CardPreview({ data, cardRef }: Props) {
     ? data.name.split(" ").map((w) => w[0]).join("").slice(0, 2).toUpperCase()
     : "CC";
 
+  const isEmpty = !data.name && !data.phone && !data.email;
+
+  if (isEmpty) {
+    return (
+      <div className="flex flex-col items-center justify-center gap-3 rounded-3xl border-2 border-dashed border-slate-300 px-8 py-16 text-center dark:border-slate-700">
+        <p className="text-sm font-semibold text-slate-500 dark:text-slate-400">Complete your profile</p>
+        <p className="text-xs text-slate-400 dark:text-slate-500">Save your profile details to generate your digital card.</p>
+      </div>
+    );
+  }
+
   return (
     /* Gradient border wrapper */
     <div className="rounded-3xl bg-linear-to-br from-green-400 via-yellow-300 to-yellow-500 p-[3px] shadow-xl">
