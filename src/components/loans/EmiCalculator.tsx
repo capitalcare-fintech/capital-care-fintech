@@ -1,19 +1,10 @@
+
 "use client";
 
-import { useMemo, useState } from "react";
-
-type EmiCalculatorProps = {
-  title?: string;
-  minAmount?: number;
-  maxAmount?: number;
-  defaultAmount?: number;
-  minRate?: number;
-  maxRate?: number;
-  defaultRate?: number;
-  minTenure?: number;
-  maxTenure?: number;
-  defaultTenure?: number;
-};
+import { useEffect, useMemo, useState } from "react";
+import Image from "next/image";
+import Link from "next/link";
+import { loanConfigurations, type LoanConfig } from "@/lib/loanConfig";
 
 const rupee = new Intl.NumberFormat("en-IN", {
   style: "currency",
@@ -21,14 +12,15 @@ const rupee = new Intl.NumberFormat("en-IN", {
   maximumFractionDigits: 0,
 });
 
+const PRIMARY_LOANS = ["personal-loan", "business-loan", "home-loan"];
+
 function calculateEmi(principal: number, annualRatePercent: number, tenureMonths: number) {
   const monthlyRate = annualRatePercent / 12 / 100;
 
-  if (monthlyRate === 0) {
-    const emi = principal / tenureMonths;
+  if (monthlyRate === 0 || tenureMonths === 0 || principal === 0) {
     return {
-      emi,
-      totalPayment: emi * tenureMonths,
+      emi: 0,
+      totalPayment: 0,
       totalInterest: 0,
     };
   }
@@ -41,130 +33,236 @@ function calculateEmi(principal: number, annualRatePercent: number, tenureMonths
   return { emi, totalPayment, totalInterest };
 }
 
-function trackFillPercent(value: number, min: number, max: number) {
-  if (max <= min) return 0;
-  return ((value - min) / (max - min)) * 100;
+function getRandomValue(min: number, max: number, decimals: number = 0): number {
+  const random = Math.random() * (max - min) + min;
+  return Math.round(random * Math.pow(10, decimals)) / Math.pow(10, decimals);
 }
 
-export function EmiCalculator({
-  title = "Personal Loan EMI Calculator",
-  minAmount = 100000,
-  maxAmount = 5000000,
-  defaultAmount = 500000,
-  minRate = 8,
-  maxRate = 30,
-  defaultRate = 12,
-  minTenure = 6,
-  maxTenure = 84,
-  defaultTenure = 36,
-}: EmiCalculatorProps) {
-  const [amount, setAmount] = useState(defaultAmount);
-  const [rate, setRate] = useState(defaultRate);
-  const [tenure, setTenure] = useState(defaultTenure);
+export function EmiCalculator() {
+  const [selectedLoan, setSelectedLoan] = useState<LoanConfig>(loanConfigurations["personal-loan"]);
+  const [amount, setAmount] = useState(0);
+  const [rate, setRate] = useState(0);
+  const [tenure, setTenure] = useState(0);
+  const [isInitialized, setIsInitialized] = useState(false);
+
+  // Initialize with random values on first load
+  useEffect(() => {
+    if (!isInitialized) {
+      // const randomAmount = getRandomValue(0);
+      // const randomRate = getRandomValue(selectedLoan.minRate, selectedLoan.maxRate, 1);
+      // const randomTenure = getRandomValue(selectedLoan.minTenure, selectedLoan.maxTenure);
+      
+      setAmount(0);
+      setRate(0);
+      setTenure(0);
+      setIsInitialized(true);
+    }
+  }, [selectedLoan, isInitialized]);
 
   const { emi, totalPayment, totalInterest } = useMemo(
     () => calculateEmi(amount, rate, tenure),
     [amount, rate, tenure],
   );
 
-  const principalPercent = Math.max(0, Math.min(100, (amount / totalPayment) * 100));
+  const principalPercent = amount && totalPayment > 0 ? Math.max(0, Math.min(100, (amount / totalPayment) * 100)) : 0;
+
+  const handleLoanChange = (loanId: string) => {
+    const newLoan = loanConfigurations[loanId];
+    setSelectedLoan(newLoan);
+    setIsInitialized(false); // Reset to generate new random values
+  };
+
+  const handleAmountChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const value = Number(e.target.value) || 0;
+    setAmount(Math.max(0, value));
+  };
+
+  const handleRateChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const value = Number(e.target.value) || 0;
+    setRate(Math.max(0, value));
+  };
+
+  const handleTenureChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const value = Number(e.target.value) || 0;
+    setTenure(Math.max(0, value));
+  };
+  const showAmount=selectedLoan.name==="Personal Loan"||selectedLoan.name==="Business Loan";
 
   return (
-    <section className="rounded-3xl p-6 md:p-8 ">
-      <div className="mb-8 flex flex-wrap items-center justify-center gap-3">
-        <h2 className="text-xl font-bold text-slate-900 md:text-2xl">{title}</h2>
-        {/* <span className="rounded-full border border-sky-200 bg-sky-50 px-3 py-1 text-xs font-semibold uppercase tracking-wide text-sky-700">
-          Reusable widget
-        </span> */}
+    <section className="rounded-3xl p-4 md:p-8">
+      <div className="mb-8 text-center">
+        <h2 className="text-2xl font-bold text-slate-900 md:text-3xl">EMI Calculator</h2>
+        <p className="mt-2 text-sm text-slate-600">Select a loan type and calculate your monthly EMI</p>
       </div>
 
-      <div className="grid gap-8 md:grid-cols-[220px_1fr] px-35">
-        <div className="flex items-center justify-center">
-          <div
-            className="relative h-44 w-44 rounded-full"
-            style={{
-              background: `conic-gradient(#0891b2 ${principalPercent}%, #1e40af ${principalPercent}% 100%)`,
-            }}
-            aria-label="Principal versus interest chart"
-            role="img"
-          >
-            <div className="absolute inset-4 flex flex-col items-center justify-center rounded-full bg-white text-center">
-              <p className="text-xs font-semibold uppercase tracking-wide text-slate-500">Monthly EMI</p>
-              <p className="text-lg font-bold text-slate-900">{rupee.format(emi)}</p>
+      {/* Loan Type Selection - Horizontal Buttons */}
+      <div className="mb-8 flex flex-wrap gap-3">
+        {PRIMARY_LOANS.map((loanId) => {
+          const loan = loanConfigurations[loanId];
+          return (
+            <button
+              key={loanId}
+              onClick={() => handleLoanChange(loanId)}
+              className={`rounded-lg border-2 px-6 py-3 font-semibold transition-all ${
+                selectedLoan.id === loanId
+                  ? "border-sky-500 bg-sky-100 text-sky-700"
+                  : "border-slate-300 bg-white text-slate-700 hover:border-sky-400"
+              }`}
+            >
+              <span className="mr-2">{loan.icon}</span>
+              {loan.name}
+            </button>
+          );
+        })}
+      </div>
+
+      <div className="grid gap-6 lg:grid-cols-[1.2fr_1.2fr] min-h-[600px]">
+        {/* Left Sidebar - Loan Image & Details */}
+        <div className="rounded-2xl border border-slate-200 bg-slate-50 p-6 flex flex-col h-full">
+          {/* Loan Image */}
+          <div className="rounded-2xl relative w-full h-64 mb-6 overflow-hidden flex-shrink-0">
+            <Image
+              src={selectedLoan.image}
+              alt={selectedLoan.name}
+              fill
+              className="object-contain"
+              sizes="(max-width: 720px) 100vw, 50vw"
+            />
+          </div>
+
+          {/* Loan Details */}
+          <div className="space-y-4 flex-1 overflow-y-auto">
+            <h3 className="text-lg font-semibold text-slate-900">{selectedLoan.name}</h3>
+
+<div>
+  <p className="text-xs font-semibold uppercase text-slate-500">Interest Rate</p>
+  <p className="font-semibold text-slate-900 mt-1">
+    {selectedLoan.minRate.toFixed(2)}% p.a.
+  </p>
+</div>
+
+{showAmount && (
+  <div>
+  <p className="text-xs font-semibold uppercase text-slate-500">Max Loan Amount</p>
+  <p className="font-semibold text-slate-900 mt-1">{rupee.format(selectedLoan.maxAmount)}</p>
+</div>
+)}
+
+            <div>
+              <p className="text-xs font-semibold uppercase text-slate-500">Key Benefits</p>
+              <ul className="mt-2 space-y-1">
+                {selectedLoan.benefits.map((benefit) => (
+                  <li key={benefit} className="flex items-start gap-2 text-xs text-slate-700">
+                    <span className="mt-1 inline-block h-1.5 w-1.5 rounded-full bg-sky-500 flex-shrink-0" />
+                    {benefit}
+                  </li>
+                ))}
+              </ul>
+            </div>
+
+            <div>
+              <p className="text-xs font-semibold uppercase text-slate-500">Basic Documents</p>
+              <ul className="mt-2 space-y-1">
+                {selectedLoan.documents.slice(0, 2).map((doc) => (
+                  <li key={doc} className="flex items-start gap-2 text-xs text-slate-700">
+                    <span className="mt-1 inline-block h-1.5 w-1.5 rounded-full bg-sky-500 flex-shrink-0" />
+                    {doc}
+                  </li>
+                ))}
+              </ul>
             </div>
           </div>
+
+          <Link
+            href={`/loans/${selectedLoan.id}/apply`}
+            className="mt-4 flex w-full items-center justify-center rounded-lg bg-gradient-to-r from-sky-400 to-indigo-500 px-4 py-3 text-sm font-semibold text-white transition hover:brightness-110 flex-shrink-0"
+          >
+            Apply Now
+          </Link>
         </div>
 
-        <div className="space-y-5">
-          <label className="block">
-            <div className="mb-2 flex items-center justify-between text-sm font-semibold text-slate-700">
-              <span>Loan Amount</span>
-              <span>{rupee.format(amount)}</span>
-            </div>
-            <input
-              type="range"
-              min={minAmount}
-              max={maxAmount}
-              step={50000}
-              value={amount}
-              onChange={(e) => setAmount(Number(e.target.value))}
-              className="h-2 w-full cursor-pointer appearance-none rounded-lg bg-slate-200 accent-sky-600"
+        {/* Right Side - Calculator */}
+        <div className="rounded-2xl border border-slate-200 bg-white p-6 flex flex-col h-full">
+          {/* Pie Chart */}
+          <div className="flex justify-center mb-6 flex-shrink-0">
+            <div
+              className="relative h-48 w-48 rounded-full"
               style={{
-                backgroundImage: `linear-gradient(to right, #0284c7 ${trackFillPercent(amount, minAmount, maxAmount)}%, #e2e8f0 ${trackFillPercent(amount, minAmount, maxAmount)}%)`,
+                background: `conic-gradient(#0891b2 ${principalPercent}%, #1e40af ${principalPercent}% 100%)`,
               }}
-            />
-          </label>
+              aria-label="Principal versus interest chart"
+              role="img"
+            >
+              <div className="absolute inset-6 flex flex-col items-center justify-center rounded-full bg-white text-center">
+                <p className="text-xs font-semibold uppercase tracking-wide text-slate-500">Monthly EMI</p>
+                <p className="text-2xl font-bold text-slate-900">{rupee.format(emi)}</p>
+              </div>
+            </div>
+          </div>
 
-          <label className="block">
-            <div className="mb-2 flex items-center justify-between text-sm font-semibold text-slate-700">
-              <span>Rate of Interest</span>
-              <span>{rate.toFixed(1)}% p.a.</span>
+          {/* Input Fields - Smaller Width */}
+          <div className="space-y-4 flex-1 overflow-y-auto">
+            {/* Loan Amount Input */}
+            <div className="max-w-xs">
+              <label htmlFor="amount" className="block text-sm font-semibold text-slate-700 mb-2">
+                Loan Amount (₹)
+              </label>
+              <input
+                id="amount"
+                type="number"
+                value={amount || ""}
+                onChange={handleAmountChange}
+                className="w-full rounded-lg border border-slate-300 px-4 py-3 text-base focus:border-sky-500 focus:outline-none focus:ring-2 focus:ring-sky-200"
+                placeholder="Enter loan amount"
+              />
             </div>
-            <input
-              type="range"
-              min={minRate}
-              max={maxRate}
-              step={0.1}
-              value={rate}
-              onChange={(e) => setRate(Number(e.target.value))}
-              className="h-2 w-full cursor-pointer appearance-none rounded-lg bg-slate-200 accent-sky-600"
-              style={{
-                backgroundImage: `linear-gradient(to right, #0284c7 ${trackFillPercent(rate, minRate, maxRate)}%, #e2e8f0 ${trackFillPercent(rate, minRate, maxRate)}%)`,
-              }}
-            />
-          </label>
 
-          <label className="block">
-            <div className="mb-2 flex items-center justify-between text-sm font-semibold text-slate-700">
-              <span>Tenure</span>
-              <span>{tenure} months</span>
+            {/* Tenure Input */}
+            <div className="max-w-xs">
+              <label htmlFor="tenure" className="block text-sm font-semibold text-slate-700 mb-2">
+                Tenure (Months)
+              </label>
+              <input
+                id="tenure"
+                type="number"
+                value={tenure || ""}
+                onChange={handleTenureChange}
+                className="w-full rounded-lg border border-slate-300 px-4 py-3 text-base focus:border-sky-500 focus:outline-none focus:ring-2 focus:ring-sky-200"
+                placeholder="Enter tenure"
+              />
             </div>
-            <input
-              type="range"
-              min={minTenure}
-              max={maxTenure}
-              step={1}
-              value={tenure}
-              onChange={(e) => setTenure(Number(e.target.value))}
-              className="h-2 w-full cursor-pointer appearance-none rounded-lg bg-slate-200 accent-sky-600"
-              style={{
-                backgroundImage: `linear-gradient(to right, #0284c7 ${trackFillPercent(tenure, minTenure, maxTenure)}%, #e2e8f0 ${trackFillPercent(tenure, minTenure, maxTenure)}%)`,
-              }}
-            />
-          </label>
 
-          <div className="grid gap-3 rounded-2xl border border-slate-200 bg-slate-50 p-4 text-sm text-slate-700 md:grid-cols-3">
-            <div>
-              <p className="text-xs uppercase tracking-wide text-slate-500">Principal</p>
-              <p className="font-semibold text-slate-900">{rupee.format(amount)}</p>
+            {/* Interest Rate Input */}
+            <div className="max-w-xs">
+              <label htmlFor="rate" className="block text-sm font-semibold text-slate-700 mb-2">
+                Interest Rate (% p.a.)
+              </label>
+              <input
+                id="rate"
+                type="number"
+                value={rate || ""}
+                onChange={handleRateChange}
+                className="w-full rounded-lg border border-slate-300 px-4 py-3 text-base focus:border-sky-500 focus:outline-none focus:ring-2 focus:ring-sky-200"
+                placeholder="Enter rate"
+              />
             </div>
-            <div>
-              <p className="text-xs uppercase tracking-wide text-slate-500">Total Interest</p>
-              <p className="font-semibold text-slate-900">{rupee.format(totalInterest)}</p>
-            </div>
-            <div>
-              <p className="text-xs uppercase tracking-wide text-slate-500">Total Payable</p>
-              <p className="font-semibold text-slate-900">{rupee.format(totalPayment)}</p>
+
+            {/* Summary */}
+            <div className="grid gap-4 rounded-xl border border-sky-200 bg-sky-50 p-4 text-sm mt-6 max-w-xs">
+              <div className="flex items-center justify-between">
+                <span className="text-slate-600 font-medium">Principal</span>
+                <span className="font-semibold text-slate-900">{rupee.format(amount)}</span>
+              </div>
+              <div className="flex items-center justify-between">
+                <span className="text-slate-600 font-medium">Interest</span>
+                <span className="font-semibold text-slate-900">{rupee.format(totalInterest)}</span>
+              </div>
+              <div className="border-t border-sky-300 pt-3 mt-2">
+                <div className="flex items-center justify-between">
+                  <span className="font-semibold text-slate-900">Total</span>
+                  <span className="text-lg font-bold text-sky-600">{rupee.format(totalPayment)}</span>
+                </div>
+              </div>
             </div>
           </div>
         </div>

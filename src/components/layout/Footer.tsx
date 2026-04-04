@@ -112,7 +112,8 @@ export function Footer() {
               Contact Information
             </h4>
             <p className="mt-4 max-w-xl text-xs font-medium leading-relaxed text-slate-700 sm:text-sm">
-              Capital Care Fincorp Limited,
+              Capital Care Group,
+              {/* Capital Care Fintech Private Limited, */}
               <br />
               Office No. 337, 3rd Floor Shubham Tower, Neelam Chowk,
               <br />
@@ -122,7 +123,7 @@ export function Footer() {
         </div>
 
         <div className="mt-4 pt-4">
-          <div className="flex flex-wrap items-center justify-center gap-x-5 gap-y-2 text-center text-[11px] font-medium text-slate-600 sm:text-xs">
+          <div className="flex flex-wrap items-center justify-center font-semibold gap-x-10 gap-y-2 text-center text-[11px] font-medium text-slate-500 sm:text-xs">
             <Link href="/partners" className="hover:text-slate-900">
               Our Partners
             </Link>

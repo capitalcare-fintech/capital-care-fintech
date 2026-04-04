@@ -121,12 +121,12 @@ export function HeroSlider({
                   >
                     {active.ctaLabel}
                   </Link>
-                  <Link
+                  {/* <Link
                     href="/credit-score"
                     className="rounded-full border border-sky-200 bg-white px-5 py-2.5 text-sm font-semibold text-slate-700 hover:bg-sky-50"
                   >
                     Check credit score
-                  </Link>
+                  </Link> */}
                 </div>
               </motion.div>
             </AnimatePresence>

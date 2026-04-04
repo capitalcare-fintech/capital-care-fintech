@@ -37,9 +37,6 @@ export function InDemandLoans() {
             Popular picks right now
           </h2>
         </div>
-        <Link href="/loans" className="text-sm font-semibold text-sky-700 hover:text-sky-900">
-          View all
-        </Link>
       </div>
 
       <div className="mt-8 grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4">
