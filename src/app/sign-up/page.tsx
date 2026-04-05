@@ -119,7 +119,7 @@ export default function SignUpPage() {
               type="text"
               value={form.fullName}
               onChange={(e) => set("fullName", e.target.value)}
-              placeholder="John Doe"
+              placeholder="Name"
               className={inputCls + " w-full"}
             />
             {errors.fullName && <p className="text-xs text-red-500">{errors.fullName}</p>}
@@ -134,7 +134,7 @@ export default function SignUpPage() {
                 inputMode="numeric"
                 value={form.phone}
                 onChange={handlePhone}
-                placeholder="9876543210"
+                placeholder="Phone No."
                 maxLength={10}
                 className={inputCls + " flex-1"}
               />
