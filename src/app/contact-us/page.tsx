@@ -252,7 +252,7 @@ export default function ContactUsPage() {
                       type="text"
                       value={form.fullName}
                       onChange={(e) => update("fullName", e.target.value)}
-                      placeholder="John Doe"
+                      placeholder="Name"
                       className={inputCls}
                     />
                   </InputField>
@@ -261,7 +261,7 @@ export default function ContactUsPage() {
                       type="tel"
                       value={form.phone}
                       onChange={(e) => update("phone", e.target.value)}
-                      placeholder="9876543210"
+                      placeholder="Phone No."
                       maxLength={10}
                       className={inputCls}
                     />
@@ -273,7 +273,7 @@ export default function ContactUsPage() {
                     type="email"
                     value={form.email}
                     onChange={(e) => update("email", e.target.value)}
-                    placeholder="john@example.com"
+                    placeholder="Email"
                     className={inputCls}
                   />
                 </InputField>
@@ -369,7 +369,7 @@ export default function ContactUsPage() {
           >
             <iframe
               title="CapitalCare Office Location"
-              src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3507.3!2d77.0856!3d28.4595!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x0%3A0x0!2zMjjCsDI3JzM0LjIiTiA3N8KwMDUnMDguMiJF!5e0!3m2!1sen!2sin!4v1234567890"
+              src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3509.4!2d77.3040573!3d28.3904482!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x390cdd0073eb11f9%3A0x3c5b0a29d6df7fa9!2sOm%20Shubham%20Tower!5e0!3m2!1sen!2sin!4v1680000000000"
               width="100%"
               height="320"
               style={{ border: 0, display: "block" }}
