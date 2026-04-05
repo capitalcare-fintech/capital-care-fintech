@@ -76,7 +76,7 @@ function SectionHeading({ title, desc }: { title: string; desc: string }) {
 
 export default function BecomePartnerPage() {
   const router = useRouter();
-  const { ready } = useRequireAuth("/become-partner");
+  const ready = useRequireAuth("/become-partner");
   if (!ready) return null;
 
   return (
