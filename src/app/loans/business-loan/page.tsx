@@ -5,7 +5,8 @@ import Link from "next/link";
 import businessLoanImage from "@/assets/inDemand/buisness.png";
 import chargesImage from "@/assets/heroSlide/loan-image.png";
 import { useAuth } from "@/lib/useAuth";
-import { FaBuilding, FaCheckCircle, FaStar, FaUniversity, FaUsers } from "react-icons/fa";
+import { FaCheckCircle } from "react-icons/fa";
+import { TrustedCustomersStats } from "../../../components/loan/TrustedCustomersStats";
 
 const featureCards = [
 	{ title: "Higher loan eligibility", desc: "Get funding aligned to your business turnover and repayment profile." },
@@ -62,7 +63,7 @@ export default function BusinessLoanPage() {
 	const applyHref = signedIn ? "/dashboard" : "/sign-in?next=/loans/business-loan/apply";
 
 	return (
-		<main className="min-h-screen w-full bg-background py-8">
+		<main className="min-h-screen w-full bg-background py-4">
 			<div className="flex w-full flex-col gap-8">
 				<section className="w-full px-40 py-10 md:px-10 lg:px-16">
 					<div className="w-full">
@@ -96,31 +97,7 @@ export default function BusinessLoanPage() {
 					</div>
 				</section>
 
-				<section className="w-full px-4 md:px-10 lg:px-16">
-					<div className="rounded-2xl border border-sky-200/70 bg-white/90 px-5 py-5 shadow-[0_16px_45px_-28px_rgba(14,165,233,0.45)]">
-						<div className="grid grid-cols-2 gap-5 text-center md:grid-cols-5">
-							<div>
-								<p className="text-xs font-semibold md:text-sm">Trusted by our customers</p>
-							</div>
-							<div>
-								<p className="inline-flex items-center gap-2 text-lg font-bold md:text-2xl"><FaStar className="text-sky-500" />4.5</p>
-								<p className="text-sm text-slate-600 md:text-base">5 Rating</p>
-							</div>
-							<div>
-								<p className="inline-flex items-center gap-2 text-lg font-bold md:text-2xl"><FaUsers className="text-sky-600" />10K+</p>
-								<p className="text-sm text-slate-600 md:text-base">Happy Customers</p>
-							</div>
-							<div>
-								<p className="inline-flex items-center gap-2 text-lg font-bold md:text-2xl"><FaUniversity className="text-sky-600" />90+</p>
-								<p className="text-sm text-slate-600 md:text-base">Banks</p>
-							</div>
-							<div>
-								<p className="inline-flex items-center gap-2 text-lg font-bold md:text-2xl"><FaBuilding className="text-sky-600" />155</p>
-								<p className="text-sm text-slate-600 md:text-base">Branches and Franchises</p>
-							</div>
-						</div>
-					</div>
-				</section>
+				
 
 				<section className="w-full bg-linear-to-br from-white via-sky-50 to-cyan-50 px-4 py-10 md:px-10 lg:px-16">
 					<h2 className="text-center text-xl font-bold text-slate-900 md:text-2xl">Business Loan Features and Benefits</h2>
@@ -216,7 +193,7 @@ export default function BusinessLoanPage() {
 					</div>
 				</section>
 
-				<section className="w-full px-4 pb-10 md:px-10 lg:px-16">
+				<section className="w-full px-4 md:px-10 lg:px-16">
 					<h2 className="text-center text-lg font-bold text-slate-900 md:text-2xl">Types of Business Loan</h2>
 					<div className="mt-4 overflow-hidden rounded-2xl border border-slate-200 bg-white">
 						<table className="w-full border-collapse text-left text-sm md:text-base">
@@ -236,6 +213,10 @@ export default function BusinessLoanPage() {
 							</tbody>
 						</table>
 					</div>
+				</section>
+
+				<section className="w-full px-4 md:px-10 lg:px-16">
+					<TrustedCustomersStats />
 				</section>
 			</div>
 		</main>
