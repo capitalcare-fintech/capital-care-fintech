@@ -99,7 +99,7 @@ function SignInForm() {
               inputMode="numeric"
               value={form.phone}
               onChange={handlePhone}
-              placeholder="9876543210"
+              placeholder="Phone No."
               maxLength={10}
               className={inputCls}
             />
