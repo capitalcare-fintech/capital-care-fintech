@@ -6,8 +6,8 @@ import { HiOutlineStar, HiOutlineUsers, HiOutlineOfficeBuilding } from "react-ic
 const easeOut: [number, number, number, number] = [0.25, 0.1, 0.25, 1];
 
 const STATS = [
-  { icon: HiOutlineStar,             value: "4.5/5",         label: "Customer Rating",        sub: "Based on 10K+ reviews" },
-  { icon: HiOutlineUsers,            value: "10K+",          label: "Happy Customers",        sub: "And growing every day" },
+  { icon: HiOutlineStar,             value: "4.8/5",         label: "Customer Rating",        sub: "Based on 10K+ reviews" },
+  { icon: HiOutlineUsers,            value: "2K+",          label: "Happy Customers",        sub: "And growing every day" },
   // { icon: HiOutlineCurrencyRupee,    value: "₹5L Cr+",       label: "Loan Disbursed",         sub: "Across all categories" },
   { icon: HiOutlineOfficeBuilding,   value: "120+",           label: "Banks & NBFCs",          sub: "Trusted lending partners" },
  
