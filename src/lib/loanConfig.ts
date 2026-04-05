@@ -16,7 +16,7 @@ export const loanConfigurations: Record<string, LoanConfig> = {
   "personal-loan": {
     id: "personal-loan",
     name: "Personal Loan",
-    maxAmount: 5000000,
+    maxAmount: 10000000,
     minRate: 9.99,
     minTenure: 6,
     maxTenure: 84,
@@ -38,7 +38,7 @@ export const loanConfigurations: Record<string, LoanConfig> = {
   "business-loan": {
     id: "business-loan",
     name: "Business Loan",
-    maxAmount: 20000000,
+    maxAmount: 2500000,
     minRate: 8.5,
     minTenure: 12,
     maxTenure: 120,
