@@ -176,6 +176,16 @@ export default function InsuranceApplyForm({ insuranceType, heading }: Insurance
     updateField("dob", value);
   };
 
+  const handlePolicyExpiryDateChange = (value: string) => {
+    const [year] = value.split("-");
+    if (year && year.length > 4) return;
+    updateField("policyExpiryDate", value);
+  };
+
+  const handleManufacturingYearChange = (value: string) => {
+    updateField("manufacturingYear", value.replace(/\D/g, "").slice(0, 4));
+  };
+
   const validateBasicDetails = (): string => {
     if (!formData.fullName.trim()) return "Name as per PAN is required.";
     if (!formData.mobile.trim() || !/^\d{10}$/.test(formData.mobile.replace(/\D/g, ""))) {
@@ -686,12 +696,13 @@ export default function InsuranceApplyForm({ insuranceType, heading }: Insurance
           <label className="space-y-2">
             <span className="text-sm font-semibold text-slate-700">Manufacturing year</span>
             <input
-              type="number"
+              type="text"
+              inputMode="numeric"
+              maxLength={4}
               value={formData.manufacturingYear}
-              onChange={(e) => updateField("manufacturingYear", e.target.value)}
+              onChange={(e) => handleManufacturingYearChange(e.target.value)}
               className="w-full rounded-lg border border-slate-300 px-3 py-2 text-sm"
-              min="1990"
-              max={new Date().getFullYear()}
+              placeholder="YYYY"
             />
           </label>
           {/* <label className="space-y-2 md:col-span-2">
@@ -875,13 +886,13 @@ export default function InsuranceApplyForm({ insuranceType, heading }: Insurance
                 <input
                   type="date"
                   value={formData.policyExpiryDate}
-                  onChange={(e) => updateField("policyExpiryDate", e.target.value)}
+                  onChange={(e) => handlePolicyExpiryDateChange(e.target.value)}
                   className="w-full rounded-lg border border-slate-300 px-3 py-2 text-sm"
                 />
               </label>
             </>
           )}
-          {/* <label className="space-y-2">
+          <label className="space-y-2">
             <span className="text-sm font-semibold text-slate-700">Any claim in last year?</span>
             <select
               value={formData.previousClaim}
@@ -892,7 +903,7 @@ export default function InsuranceApplyForm({ insuranceType, heading }: Insurance
               <option value="yes">Yes</option>
               <option value="no">No</option>
             </select>
-          </label> */}
+          </label>
           {/* <label className="space-y-2">
             <span className="text-sm font-semibold text-slate-700">NCB Percentage (optional)</span>
             <input
