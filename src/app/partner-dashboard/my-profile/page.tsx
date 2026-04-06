@@ -75,7 +75,7 @@ export default function MyProfilePage() {
     const phone = user?.phone ?? "";
     if (!phone) { setLoading(false); return; }
 
-    fetch(`/api/profile?phone=${encodeURIComponent(phone)}`)
+    fetch(`/api/profile?phone=${encodeURIComponent(phone)}`, { cache: "no-store" })
       .then((r) => r.json())
       .then((json) => {
         if (json.profile) {
