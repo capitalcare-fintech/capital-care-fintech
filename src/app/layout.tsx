@@ -33,15 +33,11 @@ export default function RootLayout({
   return (
     <html lang="en" suppressHydrationWarning>
       <head>
-<<<<<<< HEAD
         <Script
           id="theme-init"
           strategy="beforeInteractive"
           dangerouslySetInnerHTML={{ __html: themeInitScript }}
         />
-=======
-        <script dangerouslySetInnerHTML={{ __html: themeInitScript }} />
->>>>>>> 6ec99ae336085601d72029eb4bc9e8127e2f7f4d
       </head>
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased transition-colors duration-300`}

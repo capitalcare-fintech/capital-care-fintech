@@ -34,11 +34,7 @@ export function DigitalCardPage() {
     const phone = user?.phone ?? "";
     if (!phone) { setLoading(false); return; }
 
-<<<<<<< HEAD
     fetch(`/api/profile?phone=${encodeURIComponent(phone)}`, { cache: "no-store" })
-=======
-    fetch(`/api/profile?phone=${encodeURIComponent(phone)}`)
->>>>>>> 6ec99ae336085601d72029eb4bc9e8127e2f7f4d
       .then((r) => r.json())
       .then((json) => {
         if (json.profile) {
