@@ -60,9 +60,12 @@ export function savePartnerSession(data: PartnerSession) {
 export function clearPartnerSession() {
   if (typeof window === "undefined") return;
   try {
-    // Only remove partner keys — never touch userToken
+    // Clear partner session
     deleteCookie();
     window.localStorage.removeItem(PARTNER_SESSION_KEY);
+    // Clear profile cache so next user sees a blank card/profile
+    window.localStorage.removeItem("profileData");
+    window.localStorage.removeItem("profileImage");
     window.dispatchEvent(new Event("capitalcare:partner-auth"));
   } catch {
     // ignore

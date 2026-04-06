@@ -60,6 +60,9 @@ export default function PartnerLoginPage() {
         setFirstLoginName(data.name);
         setView("set-password");
       } else {
+        // Clear previous user's cached profile data before saving new session
+        localStorage.removeItem("profileData");
+        localStorage.removeItem("profileImage");
         savePartnerSession({ name: data.partner.name, partnerId: data.partner.partnerId });
         setTimeout(() => router.push("/partner-dashboard"), 0);
       }
@@ -84,6 +87,9 @@ export default function PartnerLoginPage() {
       });
       const data = await res.json();
       if (!res.ok) { setSetPwdError(data.error || "Failed to set password"); return; }
+      // Clear previous user's cached profile data before saving new session
+      localStorage.removeItem("profileData");
+      localStorage.removeItem("profileImage");
       savePartnerSession({ name: data.partner.name, partnerId: data.partner.partnerId });
       setTimeout(() => router.push("/partner-dashboard"), 0);
     } catch {
