@@ -21,6 +21,11 @@ const geistMono = Geist_Mono({
 export const metadata: Metadata = {
   title: "CapitalCare | Fintech",
   description: "Loans, insurance, credit score, and financial tools.",
+  icons: './icon.png',
+  robots: {
+    index: true,
+    follow: true,
+  }
 };
 
 const themeInitScript = `(function(){try{var t=localStorage.getItem('capitalcare-theme');if(t==='dark')document.documentElement.classList.add('dark');else document.documentElement.classList.remove('dark');}catch(e){}})();`;
