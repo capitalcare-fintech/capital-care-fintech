@@ -25,6 +25,12 @@ export const metadata: Metadata = {
   robots: {
     index: true,
     follow: true,
+  },
+  openGraph:{
+    title: "CapitalCare | Fintech",
+    description: "proviving Loans, insurances and consultations also",
+    url: "https://www.capitalcarefintech.com",
+    siteName: "CapitalCare Fintech",
   }
 };
 
