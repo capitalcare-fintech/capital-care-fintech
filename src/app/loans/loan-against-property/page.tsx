@@ -58,7 +58,7 @@ const loanTypes = [
 
 export default function LoanAgainstPropertyPage() {
 	const { signedIn } = useAuth();
-	const applyHref = signedIn ? "/dashboard" : "/sign-in?next=/loans/loan-against-property/apply";
+	const applyHref = signedIn ? "/loans/loan-against-property/apply" : "/sign-in?next=/loans/loan-against-property/apply";
 
 	return (
 		<main className="min-h-screen w-full bg-background py-8">
@@ -77,7 +77,7 @@ export default function LoanAgainstPropertyPage() {
 
 						<div className="mt-5">
 							<Link
-								href="/loans/loan-against-property/apply"
+								href={applyHref}
 								className="inline-flex rounded-full bg-linear-to-r from-sky-400 to-indigo-500 px-6 py-2.5 text-sm font-semibold text-white hover:brightness-110"
 							>
 								Apply Now

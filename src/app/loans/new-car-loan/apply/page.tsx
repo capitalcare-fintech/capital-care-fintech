@@ -6,8 +6,6 @@ import { DOCUMENT_REQUIREMENTS, getDocumentsByCategory, CarLoanApplicantType } f
 
 type ResidenceType = "owned" | "owned-by-family" | "rented";
 
-const mockOtpValue = "1234";
-
 const CheckIcon = () => (
   <svg className="h-5 w-5" fill="currentColor" viewBox="0 0 20 20">
     <path
@@ -55,14 +53,10 @@ export default function NewCarLoanApplyPage() {
   const [submitting, setSubmitting] = useState(false);
   const [applicationId, setApplicationId] = useState("");
 
-  const [otpStage, setOtpStage] = useState<"pending" | "sent" | "verified">("pending");
-  const [generatedOtp, setGeneratedOtp] = useState("");
-  const [enteredOtp, setEnteredOtp] = useState("");
-
   const [formData, setFormData] = useState({
     fullName: "",
     email: "",
-    mobile: "",
+    mobile: typeof window !== "undefined" ? (sessionStorage.getItem("otp_verified_mobile") ?? "") : "",
     dob: "",
 
     monthlyIncome: "",
@@ -110,50 +104,6 @@ export default function NewCarLoanApplyPage() {
     const today = new Date();
     const maxDate = new Date(today.getFullYear() - 18, today.getMonth(), today.getDate());
     return maxDate.toISOString().split("T")[0];
-  };
-
-  const handleSendOtp = () => {
-    if (!formData.fullName.trim()) {
-      setError("Full name is required.");
-      return;
-    }
-    if (!formData.email.trim() || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(formData.email)) {
-      setError("Valid email is required.");
-      return;
-    }
-    if (!formData.mobile.trim() || !/^\d{10,}$/.test(formData.mobile.replace(/\D/g, ""))) {
-      setError("Valid mobile number is required.");
-      return;
-    }
-    if (!formData.dob) {
-      setError("Date of birth is required.");
-      return;
-    }
-    if (calculateAge(formData.dob) < 18) {
-      setError("You must be at least 18 years old to apply for a loan.");
-      return;
-    }
-
-    setGeneratedOtp(mockOtpValue);
-    setOtpStage("sent");
-    setError("");
-  };
-
-  const handleVerifyOtp = () => {
-    if (!enteredOtp.trim()) {
-      setError("Please enter OTP.");
-      return;
-    }
-
-    if (enteredOtp === mockOtpValue) {
-      setOtpStage("verified");
-      setError("");
-      setStep(2);
-      setEnteredOtp("");
-      return;
-    }
-
-    setError("Invalid OTP. Please try again.");
   };
 
   const handleApplicantSelect = (value: CarLoanApplicantType) => {
@@ -288,9 +238,6 @@ export default function NewCarLoanApplyPage() {
     setSubmitting(false);
     setApplicationId("");
     setDocuments({});
-    setOtpStage("pending");
-    setGeneratedOtp("");
-    setEnteredOtp("");
     setFormData({
       fullName: "",
       email: "",
@@ -365,110 +312,63 @@ export default function NewCarLoanApplyPage() {
                 <p className="mt-1 text-sm text-gray-600">Please provide basic contact details</p>
               </div>
 
-              {otpStage === "pending" && (
-                <>
-                  <div className="grid gap-4 md:grid-cols-2">
-                    <div>
-                      <label className="mb-2 block text-sm font-semibold text-gray-700">Full Name</label>
-                      <input
-                        value={formData.fullName}
-                        onChange={(e) => updateField("fullName", e.target.value)}
-                        placeholder="As per PAN"
-                        className="w-full rounded-lg border border-gray-300 px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
-                      />
-                    </div>
-
-                    <div>
-                      <label className="mb-2 block text-sm font-semibold text-gray-700">Email</label>
-                      <input
-                        type="email"
-                        value={formData.email}
-                        onChange={(e) => updateField("email", e.target.value)}
-                        placeholder="your@email.com"
-                        className="w-full rounded-lg border border-gray-300 px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
-                      />
-                    </div>
-
-                    <div>
-                      <label className="mb-2 block text-sm font-semibold text-gray-700">Mobile Number</label>
-                      <input
-                        type="tel"
-                        inputMode="numeric"
-                        value={formData.mobile}
-                        onChange={(e) => updateField("mobile", e.target.value.replace(/[^0-9]/g, ""))}
-                        maxLength={10}
-                        placeholder="10-digit mobile"
-                        className="w-full rounded-lg border border-gray-300 px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
-                      />
-                    </div>
-
-                    <div>
-                      <label className="mb-2 block text-sm font-semibold text-gray-700">Date of Birth</label>
-                      <input
-                        type="date"
-                        value={formData.dob}
-                        onChange={(e) => updateField("dob", e.target.value)}
-                        max={getMaxDateForAge18()}
-                        className="w-full rounded-lg border border-gray-300 px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
-                      />
-                    </div>
-                  </div>
-
-                  <button
-                    type="button"
-                    onClick={handleSendOtp}
-                    className="w-full rounded-lg bg-blue-600 px-4 py-2.5 text-sm font-semibold text-white transition hover:bg-blue-700"
-                  >
-                    Send OTP
-                  </button>
-                </>
-              )}
-
-              {(otpStage === "sent" || otpStage === "verified") && (
-                <div className="space-y-4">
-                  <div className="flex gap-2 rounded-lg border border-sky-200 bg-sky-50 p-3">
-                    <InfoIcon />
-                    <p className="text-sm text-sky-900">
-                      OTP sent to <strong>{formData.mobile}</strong>
-                      {generatedOtp && (
-                        <span className="mt-1 block text-xs">
-                          Test OTP: <strong>{generatedOtp}</strong>
-                        </span>
-                      )}
-                    </p>
-                  </div>
-
-                  {otpStage === "verified" ? (
-                    <div className="flex gap-2 rounded-lg border border-emerald-200 bg-emerald-50 p-3">
-                      <CheckIcon />
-                      <p className="text-sm text-emerald-800">OTP verified successfully</p>
-                    </div>
-                  ) : (
-                    <>
-                      <div>
-                        <label className="mb-2 block text-sm font-semibold text-gray-700">Enter 4-Digit OTP</label>
-                        <input
-                          type="text"
-                          inputMode="numeric"
-                          value={enteredOtp}
-                          onChange={(e) => setEnteredOtp(e.target.value.replace(/[^0-9]/g, "").slice(0, 4))}
-                          placeholder="0000"
-                          maxLength={4}
-                          className="w-full rounded-lg border border-gray-300 px-3 py-2 text-center text-lg font-semibold tracking-widest focus:outline-none focus:ring-2 focus:ring-blue-500"
-                        />
-                      </div>
-
-                      <button
-                        type="button"
-                        onClick={handleVerifyOtp}
-                        className="w-full rounded-lg bg-blue-600 px-4 py-2.5 text-sm font-semibold text-white transition hover:bg-blue-700"
-                      >
-                        Verify OTP
-                      </button>
-                    </>
-                  )}
+              <div className="grid gap-4 md:grid-cols-2">
+                <div>
+                  <label className="mb-2 block text-sm font-semibold text-gray-700">Full Name</label>
+                  <input
+                    value={formData.fullName}
+                    onChange={(e) => updateField("fullName", e.target.value)}
+                    placeholder="As per PAN"
+                    className="w-full rounded-lg border border-gray-300 px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
+                  />
                 </div>
-              )}
+
+                <div>
+                  <label className="mb-2 block text-sm font-semibold text-gray-700">Email</label>
+                  <input
+                    type="email"
+                    value={formData.email}
+                    onChange={(e) => updateField("email", e.target.value)}
+                    placeholder="your@email.com"
+                    className="w-full rounded-lg border border-gray-300 px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
+                  />
+                </div>
+
+                <div>
+                  <label className="mb-2 block text-sm font-semibold text-gray-700">Mobile Number</label>
+                  <input
+                    type="tel"
+                    value={formData.mobile}
+                    readOnly
+                    className="w-full rounded-lg border border-gray-200 bg-gray-50 px-3 py-2 text-sm text-gray-500 cursor-not-allowed"
+                  />
+                </div>
+
+                <div>
+                  <label className="mb-2 block text-sm font-semibold text-gray-700">Date of Birth</label>
+                  <input
+                    type="date"
+                    value={formData.dob}
+                    onChange={(e) => updateField("dob", e.target.value)}
+                    max={getMaxDateForAge18()}
+                    className="w-full rounded-lg border border-gray-300 px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
+                  />
+                </div>
+              </div>
+
+              <button
+                type="button"
+                onClick={() => {
+                  if (!formData.fullName.trim()) { setError("Full name is required."); return; }
+                  if (!formData.email.trim() || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(formData.email)) { setError("Valid email is required."); return; }
+                  if (!formData.dob) { setError("Date of birth is required."); return; }
+                  if (calculateAge(formData.dob) < 18) { setError("You must be at least 18 years old to apply."); return; }
+                  setError(""); setStep(2);
+                }}
+                className="w-full rounded-lg bg-blue-600 px-4 py-2.5 text-sm font-semibold text-white transition hover:bg-blue-700"
+              >
+                Continue
+              </button>
             </div>
           )}
 

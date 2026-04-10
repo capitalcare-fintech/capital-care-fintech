@@ -57,7 +57,7 @@ function SignInForm() {
 
       setSignedIn(true, data.user);
       const nextParam = params.get("next");
-      const nextPath = nextParam && nextParam.startsWith("/") ? nextParam : "/dashboard";
+      const nextPath = nextParam && nextParam.startsWith("/") ? nextParam : "/";
       router.push(nextPath);
     } catch {
       setServerError("Network error. Please try again.");

@@ -69,9 +69,9 @@ type FormDataState = {
 //   addons: string[];
 };
 
-const initialFormState: FormDataState = {
+const getInitialFormState = (): FormDataState => ({
   fullName: "",
-  mobile: "",
+  mobile: typeof window !== "undefined" ? (sessionStorage.getItem("otp_verified_mobile") ?? "") : "",
   dob: "",
   email: "",
 
@@ -114,10 +114,9 @@ const initialFormState: FormDataState = {
   previousClaim: "",
 //   ncbPercentage: "",
 //   addons: [],
-};
+});
 
 const stepLabels = ["Basic Details", "Coverage Details", "Eligibility Details", "Document Upload"];
-const mockOtpValue = "1234";
 
 function getTypeLabel(insuranceType: InsuranceType): string {
   if (insuranceType === "health-insurance") return "Health Insurance";
@@ -130,10 +129,7 @@ export default function InsuranceApplyForm({ insuranceType, heading }: Insurance
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
   const [applicationId, setApplicationId] = useState("");
-  const [otpStage, setOtpStage] = useState<"pending" | "sent" | "verified">("pending");
-  const [generatedOtp, setGeneratedOtp] = useState("");
-  const [enteredOtp, setEnteredOtp] = useState("");
-  const [formData, setFormData] = useState<FormDataState>(initialFormState);
+  const [formData, setFormData] = useState<FormDataState>(getInitialFormState);
   const [documents, setDocuments] = useState<Record<string, File | null>>({});
 
   const requiredDocs = useMemo(
@@ -144,12 +140,6 @@ export default function InsuranceApplyForm({ insuranceType, heading }: Insurance
 
   const updateField = (key: keyof FormDataState, value: string | string[]) => {
     setFormData((prev) => ({ ...prev, [key]: value }));
-
-    if (key === "fullName" || key === "mobile" || key === "dob" || key === "email") {
-      setOtpStage("pending");
-      setGeneratedOtp("");
-      setEnteredOtp("");
-    }
   };
 
   const calculateAge = (dateString: string): number => {
@@ -201,36 +191,6 @@ export default function InsuranceApplyForm({ insuranceType, heading }: Insurance
     return "";
   };
 
-  const handleSendOtp = () => {
-    const validationError = validateBasicDetails();
-    if (validationError) {
-      setError(validationError);
-      return;
-    }
-
-    setGeneratedOtp(mockOtpValue);
-    setOtpStage("sent");
-    setEnteredOtp("");
-    setError("");
-  };
-
-  const handleVerifyOtp = () => {
-    if (!enteredOtp.trim()) {
-      setError("Please enter OTP.");
-      return;
-    }
-
-    if (enteredOtp !== mockOtpValue) {
-      setError("Invalid OTP. Please try again.");
-      return;
-    }
-
-    setOtpStage("verified");
-    setError("");
-    setEnteredOtp("");
-    setStep(2);
-  };
-
   const handleCoverageForChange = (value: string) => {
     setFormData((prev) => ({
       ...prev,
@@ -252,7 +212,6 @@ export default function InsuranceApplyForm({ insuranceType, heading }: Insurance
     if (currentStep === 1) {
       const basicValidation = validateBasicDetails();
       if (basicValidation) return basicValidation;
-      if (otpStage !== "verified") return "Please verify OTP to continue.";
     }
 
     if (currentStep === 2) {
@@ -330,13 +289,7 @@ export default function InsuranceApplyForm({ insuranceType, heading }: Insurance
 
   const handleBack = () => {
     setError("");
-    if (step === 1 && otpStage !== "pending") {
-      setOtpStage("pending");
-      setGeneratedOtp("");
-      setEnteredOtp("");
-    } else {
-      setStep((prev) => Math.max(prev - 1, 1));
-    }
+    setStep((prev) => Math.max(prev - 1, 1));
   };
 
   const handleSubmit = async () => {
@@ -434,7 +387,7 @@ export default function InsuranceApplyForm({ insuranceType, heading }: Insurance
         <div className="mb-5 rounded-lg border border-red-200 bg-red-50 p-3 text-sm text-red-700">{error}</div>
       )}
 
-      {step === 1 && otpStage === "pending" && (
+      {step === 1 && (
         <div className="space-y-4">
           <div className="grid gap-4 md:grid-cols-2">
             <label className="space-y-2">
@@ -450,10 +403,8 @@ export default function InsuranceApplyForm({ insuranceType, heading }: Insurance
               <span className="text-sm font-semibold text-slate-700">Mobile Number</span>
               <input
                 value={formData.mobile}
-                onChange={(e) => updateField("mobile", e.target.value.replace(/\D/g, "").slice(0, 10))}
-                className="w-full rounded-lg border border-slate-300 px-3 py-2 text-sm"
-                maxLength={10}
-                placeholder="10-digit mobile"
+                readOnly
+                className="w-full rounded-lg border border-gray-200 bg-gray-50 px-3 py-2 text-sm text-gray-500 cursor-not-allowed"
               />
             </label>
             <label className="space-y-2">
@@ -476,47 +427,6 @@ export default function InsuranceApplyForm({ insuranceType, heading }: Insurance
                 placeholder="name@example.com"
               />
             </label>
-          </div>
-        </div>
-      )}
-
-      {step === 1 && (otpStage === "sent" || otpStage === "verified") && (
-        <div className="space-y-4">
-          <div className="rounded-lg border border-slate-200 bg-slate-50 p-4">
-            <p className="text-sm font-semibold text-slate-800">Enter OTP sent to {formData.mobile}</p>
-            {otpStage === "sent" && (
-              <div className="mt-3 flex flex-col gap-2 sm:flex-row">
-                <input
-                  value={enteredOtp}
-                  onChange={(e) => setEnteredOtp(e.target.value.replace(/\D/g, "").slice(0, 4))}
-                  placeholder="Enter 4-digit OTP"
-                  className="w-full rounded-lg border border-slate-300 px-3 py-2 text-sm sm:max-w-xs"
-                  maxLength={4}
-                />
-                <button
-                  type="button"
-                  onClick={handleVerifyOtp}
-                  className="rounded-lg bg-emerald-700 px-4 py-2 text-sm font-semibold text-white transition hover:bg-emerald-800"
-                >
-                  Verify OTP
-                </button>
-                <button
-                  type="button"
-                  onClick={handleSendOtp}
-                  className="rounded-lg border border-slate-300 px-4 py-2 text-sm font-semibold text-slate-700"
-                >
-                  Resend
-                </button>
-              </div>
-            )}
-
-            {otpStage === "verified" && (
-              <p className="mt-3 text-sm font-semibold text-emerald-700">✓ OTP verified successfully.</p>
-            )}
-
-            {generatedOtp && otpStage === "sent" && (
-              <p className="mt-2 text-xs text-slate-500">Mock OTP for testing: {generatedOtp}</p>
-            )}
           </div>
         </div>
       )}
@@ -965,35 +875,19 @@ export default function InsuranceApplyForm({ insuranceType, heading }: Insurance
         <button
           type="button"
           onClick={handleBack}
-          disabled={(step === 1 && otpStage === "pending") || loading}
+          disabled={step === 1 || loading}
           className="rounded-lg border border-slate-300 px-4 py-2 text-sm font-semibold text-slate-700 disabled:cursor-not-allowed disabled:opacity-50"
         >
           Back
         </button>
 
-        {step === 1 && otpStage === "pending" ? (
-          <button
-            type="button"
-            onClick={handleSendOtp}
-            className="rounded-lg bg-sky-700 px-4 py-2 text-sm font-semibold text-white transition hover:bg-sky-800"
-          >
-            Send OTP
-          </button>
-        ) : step === 1 && otpStage === "verified" ? (
+        {step < 4 ? (
           <button
             type="button"
             onClick={handleNext}
             className="rounded-lg bg-sky-700 px-4 py-2 text-sm font-semibold text-white transition hover:bg-sky-800"
           >
-            Next
-          </button>
-        ) : step < 4 && step > 1 ? (
-          <button
-            type="button"
-            onClick={handleNext}
-            className="rounded-lg bg-sky-700 px-4 py-2 text-sm font-semibold text-white transition hover:bg-sky-800"
-          >
-            Continue
+            {step === 1 ? "Next" : "Continue"}
           </button>
         ) : step === 4 ? (
           <button

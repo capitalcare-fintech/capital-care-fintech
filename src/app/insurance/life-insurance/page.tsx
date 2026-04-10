@@ -1,5 +1,8 @@
+"use client";
+
 import Image from "next/image";
 import Link from "next/link";
+import { useAuth } from "@/lib/useAuth";
 import {
     lifeInsurance1,
     lifeInsurance2,
@@ -128,6 +131,8 @@ const payoutOptions = [
 ];
 
 export default function LifeInsurancePage() {
+    const { signedIn } = useAuth();
+    const applyHref = signedIn ? "/insurance/life-insurance/apply" : "/sign-in?next=/insurance/life-insurance/apply";
     return (
         <main className="w-full overflow-hidden bg-slate-50 text-slate-900">
             <section className="relative w-full bg-[radial-gradient(circle_at_top_left,#e0f2fe_0%,#f8fafc_40%,#ffffff_100%)] px-4 pb-16 pt-10 md:px-10 lg:px-16 xl:px-24">
@@ -160,8 +165,7 @@ export default function LifeInsurancePage() {
 
                         <div className="flex flex-wrap gap-3">
                           <Link
-                                href="/insurance/life-insurance/apply"
-                                // href="/sign-in?next=/insurance/life-insurance/apply"
+                                href={applyHref}
                                 className="inline-flex items-center justify-center rounded-xl bg-cyan-700 px-6 py-3 text-sm font-semibold text-white transition hover:bg-cyan-800"
                             >
                                 Apply Now
@@ -311,7 +315,7 @@ export default function LifeInsurancePage() {
                 </div>
                  <div className="mt-8 flex justify-center ">
                         <Link
-                            href="/sign-in?next=/insurance/life-insurance"
+                            href={applyHref}
                             className="inline-flex items-center justify-center rounded-xl bg-cyan-500 px-8 py-3 text-sm font-semibold text-white transition hover:bg-cyan-600"
                         >
                             Apply Now

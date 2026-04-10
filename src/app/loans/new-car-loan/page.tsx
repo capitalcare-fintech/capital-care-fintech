@@ -58,7 +58,7 @@ const loanTypes = [
 
 export default function NewCarLoanPage() {
 	const { signedIn } = useAuth();
-	const applyHref = signedIn ? "/dashboard" : "/sign-in?next=/loans/new-car-loan/apply";
+	const applyHref = signedIn ? "/loans/new-car-loan/apply" : "/sign-in?next=/loans/new-car-loan/apply";
 
 	return (
 		<main className="min-h-screen w-full bg-background py-8">
@@ -77,7 +77,7 @@ export default function NewCarLoanPage() {
 
 						<div className="mt-5">
 							<Link
-								href="/loans/new-car-loan/apply"
+								href={applyHref}
 								className="inline-flex rounded-full bg-linear-to-r from-sky-400 to-indigo-500 px-6 py-2.5 text-sm font-semibold text-white hover:brightness-110"
 							>
 								Apply Now

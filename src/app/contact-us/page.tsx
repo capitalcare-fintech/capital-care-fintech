@@ -252,7 +252,7 @@ export default function ContactUsPage() {
                       type="text"
                       value={form.fullName}
                       onChange={(e) => update("fullName", e.target.value)}
-                      placeholder="John Doe"
+                      placeholder="Enter your name"
                       className={inputCls}
                     />
                   </InputField>
@@ -261,7 +261,7 @@ export default function ContactUsPage() {
                       type="tel"
                       value={form.phone}
                       onChange={(e) => update("phone", e.target.value)}
-                      placeholder="9876543210"
+                      placeholder="10-digit mobile number"
                       maxLength={10}
                       className={inputCls}
                     />
@@ -273,7 +273,7 @@ export default function ContactUsPage() {
                     type="email"
                     value={form.email}
                     onChange={(e) => update("email", e.target.value)}
-                    placeholder="john@example.com"
+                    placeholder="Enter your email"
                     className={inputCls}
                   />
                 </InputField>

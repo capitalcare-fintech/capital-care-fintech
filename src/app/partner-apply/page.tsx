@@ -161,7 +161,7 @@ export default function PartnerApplyPage() {
             >
               <div className="grid gap-5 sm:grid-cols-2">
                 <Field label="Full Name" icon={HiOutlineUser} error={errors.fullName}>
-                  <input type="text" value={form.fullName} onChange={(e) => set("fullName", e.target.value)} placeholder="John Doe" className={inputCls} />
+                  <input type="text" value={form.fullName} onChange={(e) => set("fullName", e.target.value)} placeholder="Enter your name" className={inputCls} />
                 </Field>
                 <Field label="Mobile Number" icon={HiOutlinePhone} error={errors.mobile}>
                   <input type="tel" value={form.mobile} onChange={(e) => set("mobile", e.target.value.replace(/\D/g, "").slice(0, 10))} placeholder="9876543210" className={inputCls} />
@@ -169,7 +169,7 @@ export default function PartnerApplyPage() {
               </div>
 
               <Field label="Email Address" icon={HiOutlineMail} error={errors.email}>
-                <input type="email" value={form.email} onChange={(e) => set("email", e.target.value)} placeholder="john@example.com" className={inputCls} />
+                <input type="email" value={form.email} onChange={(e) => set("email", e.target.value)} placeholder="Enter your email" className={inputCls} />
               </Field>
 
               <div className="grid gap-5 sm:grid-cols-2">

@@ -1,252 +1,31 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
 import { HiOutlineEye, HiOutlineEyeOff } from "react-icons/hi";
 import { setSignedIn } from "@/lib/authClient";
 import { useRedirectIfAuthed } from "@/lib/useRedirectIfAuthed";
+import {
+  loadMsg91Widget,
+  getMsg91Window,
+  extractMsg91AccessToken,
+  extractMsg91ErrorMessage,
+  normalizeOtpIdentifier,
+  withTimeout,
+  MSG91_CAPTCHA_CONTAINER_ID,
+} from "@/lib/msg91";
 
 type Field = "fullName" | "phone" | "otp" | "password";
 
-type Msg91VerifyResponse = {
-  type?: string;
-  message?: string;
-  verified?: boolean;
-  accessToken?: string;
-  token?: string;
-};
-
-type Msg91ErrorResponse = {
-  message?: string | string[];
-  error?: string;
-  errors?: string[];
-  type?: string;
-  code?: number;
-};
-
-type Msg91InitConfig = {
-  widgetId: string;
-  tokenAuth: string;
-  exposeMethods: boolean;
-  success: () => void;
-  failure: () => void;
-  captchaRenderId?: string;
-  captchaVerified?: (verified: boolean) => void;
-};
-
-type Msg91Window = Window & {
-  initSendOTP?: (config: Msg91InitConfig) => void;
-  sendOtp?: (
-    identifier: string,
-    success?: (response: unknown) => void,
-    failure?: (error: unknown) => void
-  ) => void;
-  verifyOtp?: (
-    otp: string,
-    success?: (response: unknown) => void,
-    failure?: (error: unknown) => void,
-    reqId?: string | null
-  ) => void;
-};
-
-const MSG91_WIDGET_SCRIPT_ID = "msg91-otp-provider-script";
-const MSG91_WIDGET_SCRIPT_URL = "https://verify.msg91.com/otp-provider.js";
-const MSG91_CAPTCHA_CONTAINER_ID = "msg91-captcha-root";
-const MSG91_WIDGET_ID = process.env.NEXT_PUBLIC_MSG91_WIDGET_ID ?? "";
-const MSG91_WIDGET_TOKEN_AUTH = process.env.NEXT_PUBLIC_MSG91_WIDGET_TOKEN_AUTH ?? "";
-const MSG91_METHOD_WAIT_MS = 7000;
-let msg91WidgetBootstrapPromise: Promise<void> | null = null;
-
 const inputCls = "rounded-xl border border-slate-200 bg-slate-50 px-4 py-2.5 text-sm text-slate-900 placeholder-slate-400 outline-none focus:border-sky-400 focus:ring-2 focus:ring-sky-100";
 
-function getMsg91Window() {
-  return window as Msg91Window;
-}
-
-function msg91Log(step: string, details?: unknown) {
+function log(step: string, details?: unknown) {
   console.log(`[MSG91 signup] ${step}`, details ?? "");
 }
 
-function msg91Error(step: string, details?: unknown) {
+function logError(step: string, details?: unknown) {
   console.error(`[MSG91 signup] ${step}`, details ?? "");
-}
-
-function extractMsg91AccessToken(response: unknown) {
-  if (typeof response === "string") {
-    return response;
-  }
-
-  if (!response || typeof response !== "object") {
-    return "";
-  }
-
-  const payload = response as Msg91VerifyResponse;
-  return payload.accessToken ?? payload.token ?? (typeof payload.message === "string" ? payload.message : "");
-}
-
-function extractMsg91ErrorMessage(error: unknown, fallback: string) {
-  if (error instanceof Error && error.message) {
-    return error.message;
-  }
-
-  if (!error || typeof error !== "object") {
-    return fallback;
-  }
-
-  const payload = error as Msg91ErrorResponse;
-
-  if (Array.isArray(payload.message) && payload.message.length > 0) {
-    return payload.message.join(", ");
-  }
-
-  if (typeof payload.message === "string" && payload.message.trim()) {
-    return payload.message;
-  }
-
-  if (Array.isArray(payload.errors) && payload.errors.length > 0) {
-    return payload.errors.join(", ");
-  }
-
-  if (typeof payload.error === "string" && payload.error.trim()) {
-    return payload.error;
-  }
-
-  return fallback;
-}
-
-function normalizeOtpIdentifier(phone: string) {
-  const clean = phone.replace(/\D/g, "");
-  if (/^91\d{10}$/.test(clean)) return `+${clean}`;
-  if (/^\d{10}$/.test(clean)) return `+91${clean}`;
-  return phone;
-}
-
-async function loadMsg91Widget() {
-  const msg91Window = getMsg91Window();
-
-  msg91Log("loadMsg91Widget:start", {
-    hasInitSendOTP: typeof msg91Window.initSendOTP === "function",
-    hasSendOtp: typeof msg91Window.sendOtp === "function",
-    hasVerifyOtp: typeof msg91Window.verifyOtp === "function",
-    hasWidgetElement: Boolean(document.querySelector("msg91-otp-provider")),
-  });
-
-  if (msg91Window.sendOtp && msg91Window.verifyOtp && document.querySelector("msg91-otp-provider")) {
-    msg91Log("loadMsg91Widget:already-ready");
-    return;
-  }
-
-  if (msg91WidgetBootstrapPromise) {
-    return msg91WidgetBootstrapPromise;
-  }
-
-  msg91WidgetBootstrapPromise = new Promise<void>((resolve, reject) => {
-    if (!MSG91_WIDGET_ID || !MSG91_WIDGET_TOKEN_AUTH) {
-      msg91Error("loadMsg91Widget:missing-env", {
-        hasWidgetId: Boolean(MSG91_WIDGET_ID),
-        hasTokenAuth: Boolean(MSG91_WIDGET_TOKEN_AUTH),
-      });
-      reject(new Error("MSG91 OTP widget is not configured."));
-      return;
-    }
-
-    const waitForWidgetMethods = () => {
-      const startedAt = Date.now();
-
-      msg91Log("loadMsg91Widget:wait-for-methods");
-
-      const poll = () => {
-        if (msg91Window.sendOtp && msg91Window.verifyOtp) {
-          msg91Log("loadMsg91Widget:methods-ready");
-          resolve();
-          return;
-        }
-
-        if (Date.now() - startedAt > MSG91_METHOD_WAIT_MS) {
-          msg91Error("loadMsg91Widget:methods-timeout", {
-            hasSendOtp: typeof msg91Window.sendOtp === "function",
-            hasVerifyOtp: typeof msg91Window.verifyOtp === "function",
-          });
-          reject(new Error("MSG91 widget initialized but OTP methods are unavailable."));
-          return;
-        }
-
-        window.setTimeout(poll, 100);
-      };
-
-      poll();
-    };
-
-    const initializeWidget = () => {
-      if (!msg91Window.initSendOTP) {
-        msg91Error("loadMsg91Widget:init-missing");
-        reject(new Error("MSG91 OTP widget failed to initialize."));
-        return;
-      }
-
-      try {
-        msg91Log("loadMsg91Widget:initSendOTP-call", {
-          widgetId: MSG91_WIDGET_ID,
-          tokenAuthSet: Boolean(MSG91_WIDGET_TOKEN_AUTH),
-        });
-        msg91Window.initSendOTP({
-          widgetId: MSG91_WIDGET_ID,
-          tokenAuth: MSG91_WIDGET_TOKEN_AUTH,
-          exposeMethods: true,
-          captchaRenderId: MSG91_CAPTCHA_CONTAINER_ID,
-          captchaVerified: (verified) => {
-            msg91Log("captcha:verified-state", { verified });
-          },
-          success: () => undefined,
-          failure: () => undefined,
-        });
-        waitForWidgetMethods();
-      } catch (error) {
-        msg91Error("loadMsg91Widget:init-error", error);
-        reject(error instanceof Error ? error : new Error("MSG91 OTP widget failed to initialize."));
-      }
-    };
-
-    const existingScript = document.getElementById(MSG91_WIDGET_SCRIPT_ID) as HTMLScriptElement | null;
-
-    if (existingScript) {
-      msg91Log("loadMsg91Widget:script-exists");
-      if (msg91Window.initSendOTP) {
-        initializeWidget();
-      } else {
-        existingScript.addEventListener("load", initializeWidget, { once: true });
-        existingScript.addEventListener(
-          "error",
-          () => {
-            msg91Error("loadMsg91Widget:existing-script-error");
-            reject(new Error("Failed to load MSG91 OTP widget."));
-          },
-          { once: true }
-        );
-      }
-      return;
-    }
-
-    msg91Log("loadMsg91Widget:inject-script", { src: MSG91_WIDGET_SCRIPT_URL });
-    const script = document.createElement("script");
-    script.id = MSG91_WIDGET_SCRIPT_ID;
-    script.async = true;
-    script.src = MSG91_WIDGET_SCRIPT_URL;
-    script.onload = () => {
-      msg91Log("loadMsg91Widget:script-loaded");
-      initializeWidget();
-    };
-    script.onerror = () => {
-      msg91Error("loadMsg91Widget:script-error");
-      reject(new Error("Failed to load MSG91 OTP widget."));
-    };
-    document.head.appendChild(script);
-  }).finally(() => {
-    msg91WidgetBootstrapPromise = null;
-  });
-
-  return msg91WidgetBootstrapPromise;
 }
 
 export default function SignUpPage() {
@@ -260,9 +39,25 @@ export default function SignUpPage() {
   const [otpAccessToken, setOtpAccessToken] = useState("");
   const [serverError, setServerError] = useState("");
   const [loading, setLoading] = useState(false);
-  const [otpLoading, setOtpLoading] = useState(false);
+  const [sendLoading, setSendLoading] = useState(false);
+  const [verifyLoading, setVerifyLoading] = useState(false);
   const [showPwd, setShowPwd] = useState(false);
   const [terms, setTerms] = useState(false);
+  const [resendTimer, setResendTimer] = useState(0);
+
+  // Pre-initialize the widget on mount so the captcha renders before Send OTP is clicked
+  useEffect(() => {
+    loadMsg91Widget().catch(() => {
+      // silently ignore — error will surface when user clicks Send OTP
+    });
+  }, []);
+
+  // Countdown tick
+  useEffect(() => {
+    if (resendTimer <= 0) return;
+    const id = setTimeout(() => setResendTimer((t) => t - 1), 1000);
+    return () => clearTimeout(id);
+  }, [resendTimer]);
 
   function set(field: Field, value: string) {
     setForm((f) => ({ ...f, [field]: value }));
@@ -295,50 +90,44 @@ export default function SignUpPage() {
       setErrors((e) => ({ ...e, phone: "Enter a valid 10-digit phone number" }));
       return;
     }
-    msg91Log("sendOtp:clicked", { phone: form.phone });
-    setOtpLoading(true);
+    log("sendOtp:clicked", { phone: form.phone, isResend: otpSent });
+    setSendLoading(true);
     setOtpVerified(false);
     setOtpAccessToken("");
     setServerError("");
 
     try {
       await loadMsg91Widget();
-      const msg91Window = getMsg91Window();
+      const w = getMsg91Window();
 
-      if (!msg91Window.sendOtp) {
-        msg91Error("sendOtp:method-missing");
-        throw new Error("MSG91 OTP widget is unavailable.");
+      if (otpSent) {
+        if (!w.retryOtp) throw new Error("MSG91 OTP widget is unavailable.");
+        await withTimeout<void>((resolve, reject) =>
+          w.retryOtp!(
+            "11",
+            () => { log("retryOtp:success"); resolve(undefined); },
+            (error) => { logError("retryOtp:error", error); reject(new Error(extractMsg91ErrorMessage(error, "Unable to resend OTP right now."))); }
+          )
+        );
+      } else {
+        if (!w.sendOtp) throw new Error("MSG91 OTP widget is unavailable.");
+        await withTimeout<void>((resolve, reject) =>
+          w.sendOtp!(
+            normalizeOtpIdentifier(form.phone),
+            () => { log("sendOtp:success"); resolve(undefined); },
+            (error) => { logError("sendOtp:error", error); reject(new Error(extractMsg91ErrorMessage(error, "Unable to send OTP right now."))); }
+          )
+        );
       }
 
-      const identifier = normalizeOtpIdentifier(form.phone);
-      msg91Log("sendOtp:calling-widget", {
-        identifier,
-        hasSendOtp: typeof msg91Window.sendOtp === "function",
-        hasVerifyOtp: typeof msg91Window.verifyOtp === "function",
-      });
-
-      msg91Window.sendOtp(
-        identifier,
-        () => {
-          msg91Log("sendOtp:success-callback");
-          setOtpSent(true);
-          setOtpLoading(false);
-          setErrors((e) => ({ ...e, phone: "", otp: "" }));
-        },
-        (error) => {
-          const message = extractMsg91ErrorMessage(error, "Unable to send OTP right now.");
-          msg91Error("sendOtp:error-callback", error);
-          setOtpLoading(false);
-          setErrors((e) => ({ ...e, phone: message }));
-        }
-      );
+      setOtpSent(true);
+      setErrors((e) => ({ ...e, phone: "", otp: "" }));
+      setResendTimer(30);
     } catch (error) {
-      msg91Error("sendOtp:exception", error);
-      setOtpLoading(false);
-      setErrors((e) => ({
-        ...e,
-        phone: error instanceof Error ? error.message : "Unable to send OTP right now.",
-      }));
+      logError("sendOtp:exception", error);
+      setErrors((e) => ({ ...e, phone: error instanceof Error ? error.message : "Unable to send OTP right now." }));
+    } finally {
+      setSendLoading(false);
     }
   }
 
@@ -347,59 +136,39 @@ export default function SignUpPage() {
       setErrors((e) => ({ ...e, otp: "Enter the OTP first" }));
       return;
     }
-
-    msg91Log("verifyOtp:clicked", { otpLength: form.otp.length });
-    setOtpLoading(true);
+    log("verifyOtp:clicked", { otpLength: form.otp.length });
+    setVerifyLoading(true);
     setServerError("");
 
     try {
       await loadMsg91Widget();
-      const msg91Window = getMsg91Window();
+      const w = getMsg91Window();
+      if (!w.verifyOtp) throw new Error("MSG91 OTP widget is unavailable.");
 
-      if (!msg91Window.verifyOtp) {
-        msg91Error("verifyOtp:method-missing");
-        throw new Error("MSG91 OTP widget is unavailable.");
+      const response = await withTimeout<unknown>((resolve, reject) =>
+        w.verifyOtp!(
+          form.otp,
+          (res) => { log("verifyOtp:success", res); resolve(res); },
+          (error) => { logError("verifyOtp:error", error); reject(new Error(error instanceof Error ? error.message : "Invalid OTP")); }
+        )
+      );
+
+      const accessToken = extractMsg91AccessToken(response);
+      if (!accessToken) {
+        logError("verifyOtp:no-access-token", response);
+        throw new Error("OTP verified, but no access token was returned.");
       }
 
-      msg91Log("verifyOtp:calling-widget", {
-        hasSendOtp: typeof msg91Window.sendOtp === "function",
-        hasVerifyOtp: typeof msg91Window.verifyOtp === "function",
-      });
-
-      msg91Window.verifyOtp(
-        form.otp,
-        (response) => {
-          msg91Log("verifyOtp:success-callback", response);
-          const accessToken = extractMsg91AccessToken(response);
-
-          if (!accessToken) {
-            msg91Error("verifyOtp:no-access-token", response);
-            setOtpLoading(false);
-            setErrors((e) => ({ ...e, otp: "OTP verified, but no access token was returned." }));
-            return;
-          }
-
-          setOtpAccessToken(accessToken);
-          setOtpVerified(true);
-          setOtpLoading(false);
-          setErrors((e) => ({ ...e, otp: "" }));
-        },
-        (error) => {
-          const message = error instanceof Error ? error.message : "Invalid OTP";
-          msg91Error("verifyOtp:error-callback", error);
-          setOtpLoading(false);
-          setErrors((e) => ({ ...e, otp: message }));
-          setOtpVerified(false);
-          setOtpAccessToken("");
-        }
-      );
+      setOtpAccessToken(accessToken);
+      setOtpVerified(true);
+      setErrors((e) => ({ ...e, otp: "" }));
     } catch (error) {
-      msg91Error("verifyOtp:exception", error);
-      setOtpLoading(false);
-      setErrors((e) => ({
-        ...e,
-        otp: error instanceof Error ? error.message : "Invalid OTP",
-      }));
+      logError("verifyOtp:exception", error);
+      setErrors((e) => ({ ...e, otp: error instanceof Error ? error.message : "Invalid OTP" }));
+      setOtpVerified(false);
+      setOtpAccessToken("");
+    } finally {
+      setVerifyLoading(false);
     }
   }
 
@@ -452,7 +221,6 @@ export default function SignUpPage() {
         )}
 
         <form onSubmit={handleSubmit} className="grid gap-5" noValidate>
-          <div id={MSG91_CAPTCHA_CONTAINER_ID} className="min-h-1" />
 
           {/* Full Name */}
           <div className="grid gap-1.5">
@@ -461,7 +229,7 @@ export default function SignUpPage() {
               type="text"
               value={form.fullName}
               onChange={(e) => set("fullName", e.target.value)}
-              placeholder="John Doe"
+              placeholder="Name as per official documents"
               className={inputCls + " w-full"}
             />
             {errors.fullName && <p className="text-xs text-red-500">{errors.fullName}</p>}
@@ -476,20 +244,25 @@ export default function SignUpPage() {
                 inputMode="numeric"
                 value={form.phone}
                 onChange={handlePhone}
-                placeholder="9876543210"
+                placeholder="10-digit mobile number"
                 maxLength={10}
                 className={inputCls + " flex-1"}
               />
               <button
                 type="button"
                 onClick={sendOtp}
-                disabled={otpLoading}
-                className="rounded-xl border border-sky-200 bg-sky-50 px-4 py-2.5 text-sm font-semibold text-sky-700 hover:bg-sky-100"
+                disabled={sendLoading || verifyLoading || resendTimer > 0}
+                className="rounded-xl border border-sky-200 bg-sky-50 px-4 py-2.5 text-sm font-semibold text-sky-700 hover:bg-sky-100 disabled:opacity-60"
               >
-                {otpLoading ? "Sending..." : otpSent ? "Resend" : "Send OTP"}
+                {sendLoading
+                  ? otpSent ? "Resending..." : "Sending..."
+                  : otpSent
+                    ? resendTimer > 0 ? `Resend in ${resendTimer}s` : "Resend"
+                    : "Send OTP"}
               </button>
             </div>
             {errors.phone && <p className="text-xs text-red-500">{errors.phone}</p>}
+            <div id={MSG91_CAPTCHA_CONTAINER_ID} className="min-h-1 mt-3" />
           </div>
 
           {/* OTP */}
@@ -508,10 +281,10 @@ export default function SignUpPage() {
                 <button
                   type="button"
                   onClick={verifyOtp}
-                  disabled={otpVerified || otpLoading}
+                  disabled={otpVerified || verifyLoading || sendLoading}
                   className="rounded-xl border border-sky-200 bg-sky-50 px-4 py-2.5 text-sm font-semibold text-sky-700 hover:bg-sky-100 disabled:opacity-50"
                 >
-                  {otpLoading ? "Verifying..." : otpVerified ? "Verified ✓" : "Verify"}
+                  {verifyLoading ? "Verifying..." : otpVerified ? "Verified ✓" : "Verify"}
                 </button>
               </div>
               {errors.otp && <p className="text-xs text-red-500">{errors.otp}</p>}
