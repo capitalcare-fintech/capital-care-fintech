@@ -21,7 +21,7 @@ const geistMono = Geist_Mono({
 export const metadata: Metadata = {
   title: "CapitalCare | Fintech",
   description: "Loans, insurance, credit score, and financial tools.",
-  icons: './icon.png',
+  icons: '@/public/favicon.ico',
   robots: {
     index: true,
     follow: true,
