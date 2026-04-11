@@ -2,7 +2,7 @@ import type { StaticImageData } from "next/image";
 import heroInsuranceImage from "@/assets/heroSlide/insurance-image.png";
 import heroLoanImage from "@/assets/heroSlide/loan-image.png";
 import inDemandBusinessImage from "@/assets/inDemand/buisness.png";
-import inDemandEducationImage from "@/assets/inDemand/property.jpg";
+import inDemandEducationImage from "@/assets/inDemand/education.png";
 import inDemandHomeImage from "@/assets/inDemand/home.png";
 import inDemandPersonalImage from "@/assets/inDemand/personal.png";
 
@@ -43,7 +43,7 @@ export const NAV_ITEMS: NavItem[] = [
   // { label: "Credit-Score", href: "/credit-score" },
   { label: "Contact-Us", href: "/contact-us" },
   { label: "About-us", href: "/about-us" },
-  { label: "Become Our Partner", href: "/partner-apply", newTab: true },
+  { label: "Become Our Partner", href: "/partner-login", newTab: true },
 ];
 
 export type HeroSlide = {
@@ -91,44 +91,32 @@ export const IN_DEMAND_LOANS: InDemandCard[] = [
   {
     title: "Personal Loan",
     subtitle: "Instant to 24h",
-    href: "/loans/personal-loan",
+    href: "/loans/personal-loan/apply",
     image: inDemandPersonalImage,
     imageAlt: "Personal loan form illustration",
   },
   {
-    title: "Loan Against Property",
-    subtitle: "Collateral-backed security",
-    href: "/loans/loan-against-property",
+    title: "L.A.P",
+    // title: "Loan Against Property",
+    // subtitle: "Collateral-backed security",
+    subtitle: "Loan Against Property",
+    href: "/loans/loan-against-property/apply",
     image: inDemandEducationImage,
     imageAlt: "Loan against property illustration",
   },
   {
     title: "Business Loan",
     subtitle: "Grow smarter",
-    href: "/loans/business-loan",
+    href: "/loans/business-loan/apply",
     image: inDemandBusinessImage,
     imageAlt: "Business growth financing illustration",
   },
   {
     title: "Home Loan",
     subtitle: "Long-term comfort",
-    href: "/loans/home-loan",
+    href: "/loans/home-loan/apply",
     image: inDemandHomeImage,
     imageAlt: "Home loan and mortgage illustration",
-  },
-  {
-    title: "New Car Loan",
-    subtitle: "Drive new sooner",
-    href: "/loans/new-car-loan",
-    image: inDemandPersonalImage,
-    imageAlt: "New car loan illustration",
-  },
-  {
-    title: "Used Car Loan",
-    subtitle: "Pre-owned made easy",
-    href: "/loans/used-car-loan",
-    image: inDemandEducationImage,
-    imageAlt: "Used car loan illustration",
   },
 ];
 

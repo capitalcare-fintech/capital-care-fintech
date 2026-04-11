@@ -5,7 +5,8 @@ import Link from "next/link";
 import homeImage from "@/assets/inDemand/home.png";
 import chargesImage from "@/assets/heroSlide/loan-image.png";
 import { useAuth } from "@/lib/useAuth";
-import { FaBuilding, FaCheckCircle, FaStar, FaUniversity, FaUsers } from "react-icons/fa";
+import { FaCheckCircle } from "react-icons/fa";
+import { TrustedCustomersStats } from "../../../components/loan/TrustedCustomersStats";
 
 const featureCards = [
 	{ title: "Higher home ownership eligibility", desc: "Get structured eligibility for purchasing a residential property with lender-backed plans." },
@@ -89,32 +90,6 @@ export default function UsedCarLoanPage() {
 							<p className="flex items-center gap-2"><FaCheckCircle className="text-sky-600" />Quotation-based processing</p>
 							<p className="flex items-center gap-2"><FaCheckCircle className="text-sky-600" />Flexible EMI structures</p>
 							<p className="flex items-center gap-2"><FaCheckCircle className="text-sky-600" />Guided Documentation Support</p>
-						</div>
-					</div>
-				</section>
-
-				<section className="w-full px-4 md:px-10 lg:px-16">
-					<div className="rounded-2xl border border-sky-200/70 bg-white/90 px-5 py-5 shadow-[0_16px_45px_-28px_rgba(14,165,233,0.45)]">
-						<div className="grid grid-cols-2 gap-5 text-center md:grid-cols-5">
-							<div>
-								<p className="text-xs font-semibold md:text-sm">Trusted by our customers</p>
-							</div>
-							<div>
-								<p className="inline-flex items-center gap-2 text-lg font-bold md:text-2xl"><FaStar className="text-sky-500" />4.5</p>
-								<p className="text-sm text-slate-600 md:text-base">5 Rating</p>
-							</div>
-							<div>
-								<p className="inline-flex items-center gap-2 text-lg font-bold md:text-2xl"><FaUsers className="text-sky-600" />10K+</p>
-								<p className="text-sm text-slate-600 md:text-base">Happy Customers</p>
-							</div>
-							<div>
-								<p className="inline-flex items-center gap-2 text-lg font-bold md:text-2xl"><FaUniversity className="text-sky-600" />90+</p>
-								<p className="text-sm text-slate-600 md:text-base">Banks</p>
-							</div>
-							<div>
-								<p className="inline-flex items-center gap-2 text-lg font-bold md:text-2xl"><FaBuilding className="text-sky-600" />155</p>
-								<p className="text-sm text-slate-600 md:text-base">Branches and Franchises</p>
-							</div>
 						</div>
 					</div>
 				</section>
@@ -233,6 +208,10 @@ export default function UsedCarLoanPage() {
 							</tbody>
 						</table>
 					</div>
+				</section>
+
+				<section className="w-full px-4 md:px-10 lg:px-16">
+					<TrustedCustomersStats />
 				</section>
 			</div>
 		</main>

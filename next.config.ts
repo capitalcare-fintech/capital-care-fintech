@@ -1,7 +1,10 @@
 import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
-  /* config options here */
+  serverExternalPackages: ["jspdf"],
+    // output: 'export',
+
 };
 
 export default nextConfig;
+// module.exports = nextConfig;

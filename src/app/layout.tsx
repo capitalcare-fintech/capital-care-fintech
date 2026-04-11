@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import Script from "next/script";
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
 import { Navbar } from "@/components/layout/Navbar";
@@ -20,6 +21,16 @@ const geistMono = Geist_Mono({
 export const metadata: Metadata = {
   title: "CapitalCare | Fintech",
   description: "Loans, insurance, credit score, and financial tools.",
+  robots: {
+    index: true,
+    follow: true,
+  },
+  openGraph:{
+    title: "CapitalCare | Fintech",
+    description: "proviving Loans, insurances and consultations also",
+    url: "https://www.capitalcarefintech.com",
+    siteName: "CapitalCare Fintech",
+  }
 };
 
 const themeInitScript = `(function(){try{var t=localStorage.getItem('capitalcare-theme');if(t==='dark')document.documentElement.classList.add('dark');else document.documentElement.classList.remove('dark');}catch(e){}})();`;
@@ -32,7 +43,11 @@ export default function RootLayout({
   return (
     <html lang="en" suppressHydrationWarning>
       <head>
-        <script dangerouslySetInnerHTML={{ __html: themeInitScript }} />
+        <Script
+          id="theme-init"
+          strategy="beforeInteractive"
+          dangerouslySetInnerHTML={{ __html: themeInitScript }}
+        />
       </head>
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased transition-colors duration-300`}

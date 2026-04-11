@@ -4,9 +4,9 @@ import Image from "next/image";
 import Link from "next/link";
 import personalLoanImage from "@/assets/inDemand/personal.png";
 import chargesImage from "@/assets/heroSlide/loan-image.png";
-import { EmiCalculator } from "@/components/loans/EmiCalculator";
 import { useAuth } from "@/lib/useAuth";
-import { FaBuilding, FaCheckCircle, FaStar, FaUniversity, FaUsers } from "react-icons/fa";
+import { FaCheckCircle } from "react-icons/fa";
+import { TrustedCustomersStats } from "../../../components/loan/TrustedCustomersStats";
 
 const featureCards = [
   { title: "Swift approval", desc: "Upload basic documents and get fast conditional approval." },
@@ -100,36 +100,6 @@ export default function PersonalLoanPage() {
               </div>
             </div>
           </div>
-        </section>
-
-        <section className="w-full px-4 md:px-10 lg:px-16">
-          <div className="rounded-2xl border border-sky-200/70 bg-white/90 px-5 py-5 shadow-[0_16px_45px_-28px_rgba(14,165,233,0.45)]">
-            <div className="grid grid-cols-2 gap-5 text-center md:grid-cols-5">
-              <div>
-                <p className="text-xs font-semibold md:text-sm">Trusted by our customers</p>
-              </div>
-              <div>
-                <p className="inline-flex items-center gap-2 text-lg font-bold md:text-2xl"><FaStar className="text-sky-500" />4.5</p>
-                <p className="text-sm text-slate-600 md:text-base">5 Rating</p>
-              </div>
-              <div>
-                <p className="inline-flex items-center gap-2 text-lg font-bold md:text-2xl"><FaUsers className="text-sky-600" />10K+</p>
-                <p className="text-sm text-slate-600 md:text-base">Happy Customers</p>
-              </div>
-              <div>
-                <p className="inline-flex items-center gap-2 text-lg font-bold md:text-2xl"><FaUniversity className="text-sky-600" />90+</p>
-                <p className="text-sm text-slate-600 md:text-base">Banks</p>
-              </div>
-              <div>
-                <p className="inline-flex items-center gap-2 text-lg font-bold md:text-2xl"><FaBuilding className="text-sky-600" />155</p>
-                <p className="text-sm text-slate-600 md:text-base">Branches and Franchises</p>
-              </div>
-            </div>
-          </div>
-        </section>
-
-        <section className="w-full px-4 md:px-10 lg:px-16">
-          <EmiCalculator title="Personal Loan EMI Calculator" defaultAmount={1600000} defaultRate={11.2} defaultTenure={24} />
         </section>
 
         <section className="w-full bg-linear-to-br from-white via-sky-50 to-cyan-50 px-4 py-10 md:px-10 lg:px-16">
@@ -246,6 +216,10 @@ export default function PersonalLoanPage() {
               </tbody>
             </table>
           </div>
+        </section>
+
+         <section className="w-full px-4 md:px-10 lg:px-16">
+          <TrustedCustomersStats />
         </section>
       </div>
     </main>
