@@ -59,7 +59,7 @@ export function Footer() {
               <h4 className="text-sm font-semibold text-slate-900 sm:text-base">Follow Us On:</h4>
               <div className="mt-4 flex flex-wrap gap-3">
                 <a
-                  href="https://facebook.com"
+                  href="https://www.facebook.com/profile.php?id=61579520275708"
                   target="_blank"
                   rel="noopener noreferrer"
                   aria-label="Facebook"
@@ -68,7 +68,7 @@ export function Footer() {
                   <FaFacebookF className="h-6 w-6" />
                 </a>
                 <a
-                  href="https://instagram.com"
+                  href="https://www.instagram.com/digital_capitalcare_fintech/"
                   target="_blank"
                   rel="noopener noreferrer"
                   aria-label="Instagram"
@@ -77,7 +77,7 @@ export function Footer() {
                   <FaInstagram className="h-6 w-6" />
                 </a>
                 <a
-                  href="https://x.com"
+                  href="https://x.com/care_capit25227"
                   target="_blank"
                   rel="noopener noreferrer"
                   aria-label="X"
@@ -94,15 +94,15 @@ export function Footer() {
                 >
                   <FaLinkedinIn className="h-6 w-6" />
                 </a>
-                <a
+                {/* <a
                   href="https://youtube.com"
                   target="_blank"
                   rel="noopener noreferrer"
                   aria-label="YouTube"
-                  className="inline-flex h-8 w-12 items-center justify-center rounded-xl bg-red-600 text-white transition hover:brightness-110"
+                  className="inline-flex h-8 w-8 items-center justify-center rounded-md bg-red-600 text-white transition hover:brightness-110"
                 >
                   <FaYoutube className="h-6 w-6" />
-                </a>
+                </a> */}
               </div>
             </div>
           </div>
