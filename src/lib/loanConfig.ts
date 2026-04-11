@@ -1,7 +1,7 @@
 export interface LoanConfig {
   id: string;
   name: string;
-  maxAmount: number;
+  maxAmount: string | number;
   minRate: number;
   minTenure: number;
   maxTenure: number;
@@ -16,7 +16,7 @@ export const loanConfigurations: Record<string, LoanConfig> = {
   "personal-loan": {
     id: "personal-loan",
     name: "Personal Loan",
-    maxAmount: 10000000,
+    maxAmount: '1 Cr',
     minRate: 9.99,
     minTenure: 6,
     maxTenure: 84,
@@ -38,7 +38,7 @@ export const loanConfigurations: Record<string, LoanConfig> = {
   "business-loan": {
     id: "business-loan",
     name: "Business Loan",
-    maxAmount: 2500000,
+    maxAmount: '2.5 Cr',
     minRate: 8.5,
     minTenure: 12,
     maxTenure: 120,
@@ -60,7 +60,7 @@ export const loanConfigurations: Record<string, LoanConfig> = {
   "home-loan": {
     id: "home-loan",
     name: "Home Loan",
-    maxAmount: 100000000,
+    maxAmount: '10cr',
     minRate: 7.05,
     minTenure: 60,
     maxTenure: 360,

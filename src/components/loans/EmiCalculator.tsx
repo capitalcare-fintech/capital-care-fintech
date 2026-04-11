@@ -144,7 +144,7 @@ export function EmiCalculator() {
 {showAmount && (
   <div>
   <p className="text-xs font-semibold uppercase text-slate-500">Max Loan Amount</p>
-  <p className="font-semibold text-slate-900 mt-1">upto {rupee.format(selectedLoan.maxAmount)}</p>
+  <p className="font-semibold text-slate-900 mt-1">upto {selectedLoan.maxAmount}</p>
 </div>
 )}
 

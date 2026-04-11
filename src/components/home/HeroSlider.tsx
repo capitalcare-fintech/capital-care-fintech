@@ -66,8 +66,8 @@ export function HeroSlider({
 
   return (
     <section className="w-full px-4 pt-10 md:px-6">
-      <div className="relative overflow-hidden rounded-3xl border border-sky-200/70 bg-linear-to-br from-white via-sky-50 to-cyan-50 shadow-[0_16px_45px_-28px_rgba(14,165,233,0.45)]">
-        <div className="pointer-events-none absolute inset-0 opacity-80 [background:radial-gradient(900px_circle_at_20%_20%,rgba(56,189,248,0.18),transparent_45%),radial-gradient(800px_circle_at_80%_40%,rgba(99,102,241,0.12),transparent_55%),radial-gradient(700px_circle_at_40%_90%,rgba(14,165,233,0.10),transparent_55%)]" />
+      <div className="relative">
+        <div className="pointer-events-none absolute" />
 
         {data.length > 1 ? (
           <>

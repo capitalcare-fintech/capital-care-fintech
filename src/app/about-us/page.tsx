@@ -1,24 +1,23 @@
 import Image from "next/image";
 import Link from "next/link";
-import teamMemberA from "@/assets/reviews/manIcon.png";
-import teamMemberB from "@/assets/reviews/womanIcon.png";
+import teamMemberA from "@/assets/profile/risabhbhaiya.jpg";
+import teamMemberB from "@/assets/reviews/manIcon.png";
 import { aboutUs, mission, whyCapitalCare } from "./content";
 
 const team = [
   {
-    name: "Aarav Malhotra",
+    name: "Rishabh Singh",
     role: "Founder & CEO",
     image: teamMemberA,
+    link: 'https://in.linkedin.com/company/linkedin/jobs',
+    aboutUs: "/",
   },
   {
-    name: "Naina Sethi",
+    name: "Manish",
     role: "Chief Marketing Officer",
     image: teamMemberB,
-  },
-  {
-    name: "Rajat Khanna",
-    role: "Chief Financial Officer",
-    image: teamMemberA,
+    link: "/",
+    aboutUs: "/",
   },
 ];
 
@@ -57,7 +56,8 @@ export default function AboutUsPage() {
           <div className="mx-auto w-full max-w-sm rounded-3xl border border-white/25 bg-white/10 p-3 backdrop-blur-sm">
             <div className="relative h-56 overflow-hidden rounded-2xl md:h-60">
               <Image
-                src={visionImage}
+              src={"dafd"}
+                // src={visionImage}
                 alt="Capital Care vision"
                 fill
                 className="object-cover"
@@ -96,17 +96,17 @@ export default function AboutUsPage() {
                 <p className="text-sm font-medium text-cyan-100">{member.role}</p>
 
                 <div className="mt-4 inline-flex h-9 w-9 items-center justify-center rounded-md bg-white text-blue-900">
-                  <span className="text-sm font-bold">in</span>
+                  <Link href={member.link} target="_blank" className="text-sm font-bold">in</Link>
                 </div>
 
-                <div className="mt-5">
+                {/* <div className="mt-5">
                   <Link
-                    href="/contact-us"
+                    href={member.aboutUs}
                     className="inline-flex rounded-full border border-cyan-200 bg-white/10 px-5 py-2 text-sm font-semibold text-white transition hover:bg-white/20"
                   >
                     Read more
                   </Link>
-                </div>
+                </div> */}
               </article>
             ))}
           </div>
