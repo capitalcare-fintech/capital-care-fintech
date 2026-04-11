@@ -10,6 +10,7 @@ import { InDemandLoans } from "@/components/home/InDemandLoans";
 import { Reviews } from "@/components/home/Reviews";
 import { Partners } from "@/components/home/Partners";
 import { EmiCalculator } from "@/components/loans/EmiCalculator";
+import EmiCalculatorSlider from "@/components/EmiCalculatorSlider";
 
 export default function Home() {
   return (
@@ -17,9 +18,10 @@ export default function Home() {
       {/* <CreditScorePopup /> */}
       <HeroSlider />
       {/* <TrendingLoans /> */}
-      <div className="px-4 md:px-10 lg:px-16">
+      {/* <div className="px-4 md:px-10 lg:px-16">
         <EmiCalculator />
-      </div>
+      </div> */}
+      <EmiCalculatorSlider />
       <WhyChooseUs />
       <InDemandLoans />
       <LoanDetailSection />

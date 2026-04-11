@@ -30,3 +30,40 @@ body {
     background-color 0.35s ease,
     color 0.35s ease;
 }
+
+.emi-slider {
+  -webkit-appearance: none;
+  appearance: none;
+  background: transparent;
+}
+
+.emi-slider::-webkit-slider-runnable-track {
+  height: 5px;
+  border-radius: 9999px;
+}
+
+.emi-slider::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 22px;
+  height: 22px;
+  margin-top: -8px;
+  border: 3px solid #ffffff;
+  border-radius: 9999px;
+  background: #0f2f66;
+  box-shadow: 0 3px 10px rgba(15, 23, 42, 0.18);
+}
+
+.emi-slider::-moz-range-track {
+  height: 5px;
+  border-radius: 9999px;
+}
+
+.emi-slider::-moz-range-thumb {
+  width: 22px;
+  height: 22px;
+  border: 3px solid #ffffff;
+  border-radius: 9999px;
+  background: #0f2f66;
+  box-shadow: 0 3px 10px rgba(15, 23, 42, 0.18);
+}
