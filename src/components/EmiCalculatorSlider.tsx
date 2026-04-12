@@ -69,7 +69,7 @@ export function EmiCalculatorSlider() {
   };
 
   return (
-    <section className="rounded-[28px] bg-[#eef3fb] px-5 py-5 shadow-[0_10px_30px_rgba(15,23,42,0.04)] md:px-8 md:py-8">
+    <section className="rounded-[28px] bg-[#eaf1fc] px-5 py-5 shadow-[0_10px_30px_rgba(15,23,42,0.04)] md:px-8 md:py-8">
       <div className="mx-auto max-w-7xl">
         <div className="mb-6 flex items-center justify-center gap-2 text-center">
           <span className="hidden h-px w-20 bg-slate-300 sm:block" />

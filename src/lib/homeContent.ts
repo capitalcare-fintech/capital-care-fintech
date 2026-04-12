@@ -5,6 +5,13 @@ import inDemandBusinessImage from "@/assets/inDemand/buisness.png";
 import inDemandEducationImage from "@/assets/inDemand/education.png";
 import inDemandHomeImage from "@/assets/inDemand/home.png";
 import inDemandPersonalImage from "@/assets/inDemand/personal.png";
+import healthInsurance from "@/assets/health-insurance/health-insuranceForm.png";
+import lifeInsurance from "@/assets/life-insurance/lifeInsurance6.png";
+import motorInsurance from "@/assets/motor-insurance/motorInsurance4.jpg";
+import homeLoan from "@/assets/exploreProducts/homeLoan.png";
+import businessLoan from "@/assets/exploreProducts/buisnessLoan.png";
+import personalLoan from "@/assets/exploreProducts/personalLoan.png";
+import lap from "@/assets/inDemand/buisness.png";
 
 export type NavItem =
   | {
@@ -52,30 +59,89 @@ export type HeroSlide = {
   description: string;
   ctaLabel: string;
   ctaHref: string;
+  advantages?: string[]
   image: StaticImageData;
   imageAlt: string;
 };
 
 export const HERO_SLIDES: HeroSlide[] = [
+ {
+  eyebrow: "Home Loan",
+  title: "Turn your dream home into reality.",
+  description:
+    "Get affordable home loans with low interest rates, flexible tenure, and quick approvals tailored to your needs.",
+  ctaLabel: "Apply for home loan",
+  ctaHref: "/loans/home-loan",
+  image: homeLoan,
+  imageAlt: "Home loan financing and house purchase illustration",
+  advantages: ["Low interest rates", "Flexible tenure", "Quick approval"],
+},
   {
-    eyebrow: "Loans",
-    title: "Fast approvals, transparent rates.",
-    description:
-      "Compare loan options built for your goals — from short-term needs to long-term growth.",
-    ctaLabel: "Explore personal loan",
-    ctaHref: "/loans/personal-loan",
-    image: heroLoanImage,
-    imageAlt: "Loan approval and financing illustration",
+    eyebrow: "Health Insurance",
+  title: "Protect your health, secure your future.",
+  description:
+    "Get comprehensive health coverage for you and your family with cashless hospitalization and wide network hospitals.",
+  ctaLabel: "View health plans",
+  ctaHref: "/insurance/health-insurance",
+  image: healthInsurance,
+  imageAlt: "Health insurance and medical protection illustration",
+  advantages: ["Cashless treatment", "Wide network", "Affordable premiums"],
   },
   {
-    eyebrow: "Insurance",
-    title: "Coverage that actually fits.",
-    description:
-      "Pick plans with clear benefits, flexible add-ons, and support when you need it most.",
-    ctaLabel: "Explore insurance",
-    ctaHref: "/insurance",
-    image: heroInsuranceImage,
-    imageAlt: "Health and insurance protection illustration",
+   eyebrow: "Loan Against Property",
+  title: "Unlock the value of your property.",
+  description:
+    "Leverage your property to get high-value loans at competitive interest rates for personal or business needs.",
+  ctaLabel: "Check LAP options",
+  ctaHref: "/loans/loan-against-property",
+  image: lap,
+  imageAlt: "Loan against property illustration",
+  advantages: ["High loan value", "Lower interest rates", "Long repayment tenure"],
+  },
+  {
+     eyebrow: "Life Insurance",
+  title: "Secure your family’s future today.",
+  description:
+    "Ensure financial protection for your loved ones with flexible life insurance plans and long-term benefits.",
+  ctaLabel: "Explore life insurance",
+  ctaHref: "/insurance/life-insurance",
+  image: lifeInsurance,
+  imageAlt: "Life insurance protection illustration",
+  advantages: ["Financial security", "Tax benefits", "Long-term coverage"],
+
+  },
+  {
+   eyebrow: "Motor Insurance",
+  title: "Drive with confidence and protection.",
+  description:
+    "Protect your vehicle against accidents, theft, and damages with comprehensive motor insurance plans.",
+  ctaLabel: "Get motor insurance",
+  ctaHref: "/insurance/motor-insurance",
+  image: motorInsurance,
+  imageAlt: "Car insurance and protection illustration",
+  advantages: ["Instant policy", "Cashless garages", "Affordable plans"],
+  },
+  {
+    eyebrow: "Personal Loan",
+  title: "Fast approvals, transparent rates.",
+  description:
+    "Compare personal loan options for your needs — from emergencies to big life goals with zero hidden charges.",
+  ctaLabel: "Explore personal loan",
+  ctaHref: "/loans/personal-loan",
+  image: personalLoan,
+  imageAlt: "Personal loan and financial support illustration",
+  advantages: ["Instant approval", "No collateral", "Flexible repayment"],
+  },
+  {
+   eyebrow: "Business Loan",
+  title: "Fuel your business growth.",
+  description:
+    "Access capital to expand operations, manage cash flow, or invest in new opportunities with ease.",
+  ctaLabel: "Get business loan",
+  ctaHref: "/loans/business-loan",
+  image: businessLoan,
+  imageAlt: "Business growth and funding illustration",
+  advantages: ["High loan amount", "Minimal documentation", "Quick disbursal"],
   },
 ];
 
