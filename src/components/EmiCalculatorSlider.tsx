@@ -46,6 +46,12 @@ function clampValue(value: number, min: number, max: number) {
   return Math.min(max, Math.max(min, value));
 }
 
+function parseNumberInput(value: string) {
+  const normalized = value.trim().replace(/^0+(?=\d)/, "");
+  const parsed = Number(normalized);
+  return Number.isFinite(parsed) ? parsed : 0;
+}
+
 export function EmiCalculatorSlider() {
   const [amount, setAmount] = useState(100000);
   const [rate, setRate] = useState(6.5);
@@ -57,15 +63,15 @@ export function EmiCalculatorSlider() {
   );
 
   const handleAmountChange = (event: ChangeEvent<HTMLInputElement>) => {
-    setAmount(clampValue(Number(event.target.value) || 0, 0, 100000000));
+    setAmount(clampValue(parseNumberInput(event.target.value), 0, 100000000));
   };
 
   const handleRateChange = (event: ChangeEvent<HTMLInputElement>) => {
-    setRate(clampValue(Number(event.target.value) || 0, 0, 30));
+    setRate(clampValue(parseNumberInput(event.target.value), 0, 30));
   };
 
   const handleTenureChange = (event: ChangeEvent<HTMLInputElement>) => {
-    setTenure(clampValue(Number(event.target.value) || 0, 1, 30));
+    setTenure(clampValue(parseNumberInput(event.target.value), 1, 30));
   };
 
   return (
@@ -93,7 +99,8 @@ export function EmiCalculatorSlider() {
                   <span className="mr-1 text-slate-500">₹</span>
                   <input
                     id="loan-amount"
-                    type="number"
+                    type="text"
+                    inputMode="numeric"
                     value={amount}
                     onChange={handleAmountChange}
                     className="w-24 border-0 bg-transparent p-0 text-sm outline-none focus:ring-0"
@@ -123,7 +130,8 @@ export function EmiCalculatorSlider() {
                 <div className="flex items-center rounded-md bg-white px-3 py-1.5 text-sm shadow-sm ring-1 ring-slate-200">
                   <input
                     id="interest-rate"
-                    type="number"
+                    type="text"
+                    inputMode="decimal"
                     value={rate}
                     onChange={handleRateChange}
                     className="w-16 border-0 bg-transparent p-0 text-sm outline-none focus:ring-0"
@@ -155,7 +163,8 @@ export function EmiCalculatorSlider() {
                 <div className="flex items-center rounded-md bg-white px-3 py-1.5 text-sm shadow-sm ring-1 ring-slate-200">
                   <input
                     id="loan-tenure"
-                    type="number"
+                    type="text"
+                    inputMode="numeric"
                     value={tenure}
                     onChange={handleTenureChange}
                     className="w-16 border-0 bg-transparent p-0 text-sm outline-none focus:ring-0"
