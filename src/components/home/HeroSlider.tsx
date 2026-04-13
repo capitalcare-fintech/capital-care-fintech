@@ -35,6 +35,7 @@ export function HeroSlider({
   const data = useMemo(() => slides ?? HERO_SLIDES, [slides]);
   const [index, setIndex] = useState(0);
   const [direction, setDirection] = useState(1);
+  const [navbarHeight, setNavbarHeight] = useState(72);
 
   const goPrev = () => {
     setDirection(-1);
@@ -54,6 +55,19 @@ export function HeroSlider({
     }, autoMs);
     return () => window.clearInterval(id);
   }, [autoMs, data.length]);
+
+  useEffect(() => {
+    const updateNavbarHeight = () => {
+      const navbar = document.querySelector("header.sticky.top-0") as HTMLElement | null;
+      if (navbar) {
+        setNavbarHeight(navbar.offsetHeight);
+      }
+    };
+
+    updateNavbarHeight();
+    window.addEventListener("resize", updateNavbarHeight);
+    return () => window.removeEventListener("resize", updateNavbarHeight);
+  }, []);
 
   const active = data[index] ?? data[0];
   if (!active) return null;
@@ -176,7 +190,10 @@ export function HeroSlider({
   */
 
   return (
-    <section className="relative overflow-hidden bg-[radial-gradient(circle_at_top_left,#dbeafe_0%,#f8fafc_40%,#ffffff_100%)] p-2">
+    <section
+      className="relative overflow-hidden flex flex-col justify-center bg-[radial-gradient(circle_at_top_left,#dbeafe_0%,#f8fafc_40%,#ffffff_100%)] p-2"
+      style={{ minHeight: `calc(100dvh - ${navbarHeight}px)` }}
+    >
       <div className="pointer-events-none absolute inset-0">
         <div className="absolute -left-14 top-10 h-52 w-52 rounded-full bg-sky-200/30 blur-2xl" />
         <div className="absolute -right-14 bottom-8 h-56 w-56 rounded-full bg-indigo-200/30 blur-3xl" />
