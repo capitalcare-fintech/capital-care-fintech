@@ -10,7 +10,7 @@ import {
   FaYoutube,
 } from "react-icons/fa";
 import { FaXTwitter } from "react-icons/fa6";
-import capitalCareLogo from "@/assets/logo/capitalCareLogo.png";
+import capitalCareLogo from "@/assets/logo/capitalCareLogo.jpeg";
 
 export function Footer() {
   return (
