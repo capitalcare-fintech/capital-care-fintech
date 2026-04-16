@@ -1,8 +1,14 @@
-export const description = `Capital Care is a forward-thinking fintech company dedicated to building a financially secure and empowered society. Our vision is to transform the perception of loans from being seen as a burden to becoming a smart and planned financial decision.\n\nFounded in December 2025, Capital Care serves as a trusted bridge between individuals and leading banks and NBFCs. We specialize in providing tailored financial solutions for salaried professionals, ensuring quick access to funds when it matters most.
+export const description = `Capital Care Fintech is a forward-thinking fintech company dedicated to building a financially secure and empowered society. Our vision is to transform the perception of loans from being seen as a burden to becoming a smart and planned financial decision.\n\nFounded in December 2025, Capital Care serves as a trusted bridge between individuals and leading banks and NBFCs. We specialize in providing tailored financial solutions for salaried professionals, ensuring quick access to funds when it matters most.
 
-Our services include personal loans, home loans, business loans, and insurance solutions, all designed to meet the evolving needs of modern professionals. With a strong network of trusted financial partners, we ensure competitive interest rates, fast approvals, and a seamless application experience.
+Our services are designed to make financing simple, fast, and accessible across India.
 
-Aligned with the regulatory standards of the Reserve Bank of India (RBI), Capital Care emphasizes transparency, reliability, and customer-first service. We are committed to simplifying financial services and helping individuals make informed and confident financial decisions.`;
+Personal Loan Services: instant personal loan approval, low interest rates, minimal documentation, and availability for salaried and self-employed individuals.
+
+Insurance Services: life insurance, health insurance, vehicle insurance, and family protection plans tailored to different needs.
+
+Capital Care Fintech is a trusted financial services company offering personal loans up to ₹10 Lakhs, a fast and easy approval process, trusted insurance plans, and 100% secure and transparent services.\n
+Our mission is to make financing simple, fast, and accessible with minimal documentation and quick approvals. 
+ `;
 
 
 export const mission = [
@@ -12,15 +18,16 @@ export const mission = [
     "To empower individuals with smart financial decision-making",
 ];
 export const whyCapitalCare = [
-    "RBI-aligned and compliant financial services",
-    "Specialized solutions for salaried individuals",
-    "Quick approvals with minimal documentation",
+    "Quick Loan Disbursal",
+    "No Hidden Charges",
+    "Trusted Financial Experts",
+    "Simple Online Application Process",
     "Strong partnerships with top banks and NBFCs",
     "End-to-end support from application to disbursal",
 ];
 
 export const aboutUs = {
-    title: "CAPITAL CARE",
+    title: "CAPITAL CARE FINTECH",
     description: description,
     mission: mission,
     choose: whyCapitalCare,

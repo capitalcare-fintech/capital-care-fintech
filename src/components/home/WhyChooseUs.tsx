@@ -15,15 +15,15 @@ const easeOut: [number, number, number, number] = [0.25, 0.1, 0.25, 1];
 const FEATURES = [
     {
         icon: HiOutlineUser,
-        title: "Personalized Loan Options",
-        desc: "We match you with loan products tailored to your financial profile, goals, and repayment capacity.",
+        title: "Trusted Financial Experts",
+        desc: "Our experienced advisors match you with loan products tailored to your financial profile, goals, and repayment capacity.",
         iconBg: "bg-sky-50 text-sky-500",
         border: "hover:border-sky-300",
     },
     {
         icon: HiOutlineLightningBolt,
-        title: "One-day Approval & Disbursal",
-        desc: "From application to money in your account — our streamlined process gets it done in under 24 hours.",
+        title: "Quick Loan Disbursal",
+        desc: "From application to money in your account, our streamlined process delivers fast approvals and quick loan disbursal.",
         iconBg: "bg-indigo-50 text-indigo-500",
         border: "hover:border-indigo-300",
     },
@@ -36,8 +36,8 @@ const FEATURES = [
     },
     {
         icon: HiOutlineDocumentText,
-        title: "Minimal Documentation",
-        desc: "No stacks of paperwork. Just a few key documents uploaded digitally — and you're good to go.",
+        title: "Simple Online Application Process",
+        desc: "Apply digitally in minutes with minimal documentation and a guided, simple online application process.",
         iconBg: "bg-emerald-50 text-emerald-500",
         border: "hover:border-emerald-300",
     },
@@ -50,8 +50,8 @@ const FEATURES = [
     },
     {
         icon: HiOutlineReceiptTax,
-        title: "Lowest Interest Rates",
-        desc: "We compare rates across 70+ banks and NBFCs so you always get the most competitive deal available.",
+        title: "No Hidden Charges",
+        desc: "Our pricing stays transparent from start to finish, so you always know the complete cost with no hidden charges.",
         iconBg: "bg-amber-50 text-amber-500",
         border: "hover:border-amber-300",
     },
@@ -72,11 +72,11 @@ export function WhyChooseUs() {
                 <h2 className="mt-2 text-2xl font-bold tracking-tight text-slate-900 md:text-3xl">
                     Why Choose{" "}
                     <span className="bg-linear-to-r from-sky-500 to-indigo-500 bg-clip-text text-transparent">
-                        CapitalCare
+                        Capital Care Fintech
                     </span>
                 </h2>
                 <p className="mx-auto mt-3 max-w-lg text-sm text-slate-500">
-                    We combine technology, transparency, and trust to make your financial journey smooth and rewarding.
+                    Get quick loan disbursal, no hidden charges, trusted financial experts, and a simple online application process in one seamless experience.
                 </p>
             </motion.div>
 

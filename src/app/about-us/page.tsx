@@ -72,7 +72,7 @@ export default function AboutUsPage() {
         <div className="mx-auto w-full max-w-6xl">
           <div className="mx-auto max-w-4xl rounded-2xl bg-white/95 px-5 py-5 text-center shadow-sm md:px-6">
             <h2 className="text-3xl font-bold tracking-tight text-sky-900">
-              Faces of <span className="text-cyan-500">Capital Care</span>
+              Faces of <span className="text-cyan-500">Capital Care Fintech</span>
             </h2>
             <p className="mt-1 text-sm text-slate-600">Meet the minds behind our success</p>
           </div>
@@ -128,7 +128,7 @@ export default function AboutUsPage() {
           </div>
 
           <div className="rounded-2xl border border-sky-100 bg-sky-50/70 p-6">
-            <h3 className="text-xl font-bold text-sky-900">Why Choose Capital Care</h3>
+            <h3 className="text-xl font-bold text-sky-900">Why Choose Capital Care Fintech?</h3>
             <ul className="mt-4 space-y-3 text-sm leading-6 text-slate-700">
               {whyCapitalCare.map((item) => (
                 <li key={item} className="flex gap-3">

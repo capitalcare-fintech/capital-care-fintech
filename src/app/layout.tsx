@@ -19,15 +19,15 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "CapitalCare | Fintech",
-  description: "Loans, insurance, credit score, and financial tools.",
+  title: "Capital Care Fintech | Personal Loans & Insurance Services in India",
+  description: "Capital Care Fintech offers personal loan services with instant approval, low interest rates, and minimal documentation for salaried and self-employed individuals, plus life, health, vehicle, and family protection insurance services.",
   robots: {
     index: true,
     follow: true,
   },
   openGraph:{
     title: "CapitalCare | Fintech",
-    description: "proviving Loans, insurances and consultations also",
+    description: "Personal loan and insurance services in India with fast approvals, low interest rates, minimal documentation, and secure transparent support.",
     url: "https://www.capitalcarefintech.com",
     siteName: "CapitalCare Fintech",
   }

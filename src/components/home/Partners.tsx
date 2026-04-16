@@ -11,7 +11,7 @@ export function Partners() {
             Our Partners
           </h2>
           <p className="mt-2 text-sm text-slate-600 md:text-base">
-            Partnering with top financial providers to bring you reliable loan and insurance solutions, all in one place.
+                Partnering with top financial providers to deliver personal loan services and trusted insurance services, including life, health, vehicle, and family protection plans.
           </p>
           </div>
         </div>
