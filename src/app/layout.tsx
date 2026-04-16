@@ -7,6 +7,7 @@ import { FooterShell } from "@/components/layout/FooterShell";
 import { ThemeProvider } from "@/context/ThemeProvider";
 import { SidebarProvider } from "@/context/SidebarProvider";
 import { Sidebar } from "@/components/layout/Sidebar";
+import { FaviconBrowserScheme } from "@/components/layout/FaviconBrowserScheme";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -30,7 +31,8 @@ export const metadata: Metadata = {
     description: "Personal loan and insurance services in India with fast approvals, low interest rates, minimal documentation, and secure transparent support.",
     url: "https://www.capitalcarefintech.com",
     siteName: "CapitalCare Fintech",
-  }
+  },
+  
 };
 
 const themeInitScript = `(function(){try{var t=localStorage.getItem('capitalcare-theme');if(t==='dark')document.documentElement.classList.add('dark');else document.documentElement.classList.remove('dark');}catch(e){}})();`;
@@ -43,6 +45,12 @@ export default function RootLayout({
   return (
     <html lang="en" suppressHydrationWarning>
       <head>
+        {/* Single icon: Chromium ignores media on rel=icon (last link won). FaviconBrowserScheme sets href from matchMedia. */}
+        <link
+          id="theme-favicon"
+          rel="icon"
+          href="/faviconLight.png"
+        />
         <Script
           id="theme-init"
           strategy="beforeInteractive"
@@ -54,6 +62,7 @@ export default function RootLayout({
       >
         <ThemeProvider>
           <SidebarProvider>
+            <FaviconBrowserScheme />
             <div className="min-h-screen bg-sky-50 text-slate-900 transition-colors duration-300 dark:bg-slate-950 dark:text-slate-100">
               <div className="pointer-events-none fixed inset-0 -z-10 opacity-90 transition-opacity duration-300 dark:opacity-40 [background:radial-gradient(1100px_circle_at_20%_10%,rgba(56,189,248,0.16),transparent_55%),radial-gradient(1000px_circle_at_80%_20%,rgba(99,102,241,0.10),transparent_55%),radial-gradient(900px_circle_at_50%_90%,rgba(14,165,233,0.10),transparent_55%)]" />
               <Navbar />

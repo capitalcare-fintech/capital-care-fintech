@@ -6,7 +6,7 @@ import { usePathname } from "next/navigation";
 import { useEffect, useMemo, useRef, useState } from "react";
 import { HiOutlineMoon, HiOutlineSun } from "react-icons/hi";
 import { NAV_ITEMS, type NavItem } from "@/lib/homeContent";
-import capitalCareLogo from "@/assets/logo/capitalCareLogo.png";
+import capitalCareLogo from "@/assets/logo/capitalCareLogo.jpeg";
 import { useAuth } from "@/lib/useAuth";
 import { useSidebar } from "@/context/SidebarProvider";
 import { useTheme } from "@/context/ThemeProvider";
