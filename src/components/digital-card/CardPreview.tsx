@@ -1,7 +1,7 @@
 "use client";
 
 import Image from "next/image";
-import capitalCareLogo from "@/assets/logo/capitalCareLogo.png";
+import capitalCareLogo from "@/assets/logo/capitalCareLogo.jpeg";
 import { HiOutlinePhone, HiOutlineMail, HiOutlineUser } from "react-icons/hi";
 
 export type CardData = {
@@ -32,7 +32,7 @@ export function CardPreview({ data, cardRef }: Props) {
 
   return (
     /* Gradient border wrapper */
-    <div className="rounded-3xl bg-linear-to-br from-green-400 via-yellow-300 to-yellow-500 p-[3px] shadow-xl">
+    <div className="rounded-3xl bg-linear-to-br from-green-400 via-yellow-300 to-yellow-500 p-0.75 shadow-xl">
       {/* Card body — white bg for capture, theme-adaptive visually */}
       <div
         ref={cardRef}
