@@ -20,7 +20,7 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "Capital Care Fintech | Personal Loans & Insurance Services in India",
+  title: "Capital Care Fintech | Loans & Insurance Services in India",
   description: "Capital Care Fintech offers personal loan services with instant approval, low interest rates, and minimal documentation for salaried and self-employed individuals, plus life, health, vehicle, and family protection insurance services.",
   robots: {
     index: true,
