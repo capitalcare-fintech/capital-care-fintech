@@ -2,21 +2,21 @@
 
 import Image from "next/image";
 import Link from "next/link";
-import homeImage from "@/assets/inDemand/home.png";
-import chargesImage from "@/assets/heroSlide/loan-image.png";
+import homeLoanHeroImage from "@/assets/loans/hl-1.png";
+import homeLoanApplyImage from "@/assets/loans/hl-3.png";
+import homeLoanChargesImage from "@/assets/loans/hl-2.png";
 import { useAuth } from "@/lib/useAuth";
-import { FaCheckCircle } from "react-icons/fa";
 import { TrustedCustomersStats } from "../../../components/loan/TrustedCustomersStats";
 
 const featureCards = [
-	{ title: "Higher home ownership eligibility", desc: "Get structured eligibility for purchasing a residential property with lender-backed plans." },
-	{ title: "Flexible tenure options", desc: "Choose practical repayment tenures to keep EMIs manageable for your monthly income." },
-	{ title: "Profile-based programs", desc: "Separate journeys for salaried and self-employed applicants with relevant checks." },
-	{ title: "Salaried and self-employed options", desc: "Both salaried and self-employed applicants can apply with profile-based documents." },
-	{ title: "Structured verification", desc: "Property papers, agreement to sale, and income profile checks are handled in an organized process." },
-	{ title: "Competitive pricing", desc: "Compare suitable lender options and choose practical interest and fee structures." },
-	{ title: "Transparent processing", desc: "Know lender-level processing and legal charges before final disbursal." },
-	{ title: "Guided documentation", desc: "Our team supports document checklist completion from start to finish." },
+  { id: "01", title: "Higher home ownership eligibility", desc: "Get structured eligibility for purchasing a residential property with lender-backed plans." },
+  { id: "02", title: "Flexible tenure options", desc: "Choose practical repayment tenures to keep EMIs manageable for your monthly income." },
+  { id: "03", title: "Profile-based programs", desc: "Separate journeys for salaried and self-employed applicants with relevant checks." },
+  { id: "04", title: "Salaried and self-employed options", desc: "Both salaried and self-employed applicants can apply with profile-based documents." },
+  { id: "05", title: "Structured verification", desc: "Property papers, agreement to sale, and income profile checks are handled in an organized process." },
+  { id: "06", title: "Competitive pricing", desc: "Compare suitable lender options and choose practical interest and fee structures." },
+  { id: "07", title: "Transparent processing", desc: "Know lender-level processing and legal charges before final disbursal." },
+  { id: "08", title: "Guided documentation", desc: "Our team supports document checklist completion from start to finish." },
 ];
 
 const eligibility = [
@@ -50,170 +50,271 @@ const chargeRows = [
 ];
 
 const loanTypes = [
-	["Ready-to-Move Home Loan", "Structured financing for immediate home purchase and possession."],
-	["Under-Construction Home Loan", "Disbursement tied to project stages for new developments."],
-	["Resale Property Home Loan", "Home loan options for purchasing pre-owned residential property."],
-	["Home Loan Balance Transfer", "Transfer existing home loan for better rates and terms."],
-	["Top-Up Home Loan", "Additional funding over your existing home loan eligibility."],
+  ["Ready-to-Move Home Loan", "Structured financing for immediate home purchase and possession."],
+  ["Under-Construction Home Loan", "Disbursement tied to project stages for new developments."],
+  ["Resale Property Home Loan", "Home loan options for purchasing pre-owned residential property."],
+  ["Home Loan Balance Transfer", "Transfer existing home loan for better rates and terms."],
+  ["Top-Up Home Loan", "Additional funding over your existing home loan eligibility."],
+];
+
+const heroHighlights = [
+  "For salaried and self-employed",
+  "Higher purchase eligibility",
+  "Flexible EMI structures",
+  "Guided documentation support",
 ];
 
 export default function HomeLoanPage() {
-	const { signedIn } = useAuth();
-	const applyHref = signedIn ? "/loans/home-loan/apply" : "/sign-in?next=/loans/home-loan/apply";
+  const { signedIn } = useAuth();
+  const applyHref = signedIn ? "/loans/home-loan/apply" : "/sign-in?next=/loans/home-loan/apply";
 
-	return (
-		<main className="min-h-screen w-full bg-background py-8">
-			<div className="flex w-full flex-col gap-8">
-				<section className="w-full px-40 py-10 md:px-10 lg:px-16">
-					<div className="w-full">
-						<h1 className="text-xl font-bold text-slate-900 md:text-3xl">Home Loan</h1>
-						<p className="mt-4 w-full text-sm leading-relaxed text-slate-900 md:text-lg">
-							Home Loan helps you purchase your dream residential property with structured eligibility and profile-based
-							lender matching. Capital Care supports you with guided documentation and smooth processing.
-						</p>
-						<p className="mt-3 w-full text-sm leading-relaxed text-slate-700 md:text-base">
-							The process is simple: fill your profile details, verify OTP, upload required documents, and submit.
-							Once submitted, our loan team reviews your profile and property documents and helps you move ahead.
-						</p>
+  return (
+    <main className="min-h-screen w-full bg-background pb-8">
+      <div className="flex w-full flex-col gap-8">
+        <section className="relative w-full bg-[radial-gradient(circle_at_top_left,#dbeafe_0%,#f8fafc_40%,#ffffff_100%)] px-4 pb-14 p-10 md:px-10 lg:px-16 xl:px-24">
+          <div className="absolute -left-10 top-16 h-44 w-44 rounded-full bg-sky-200/30 blur-2xl" aria-hidden />
+          <div className="absolute right-0 top-0 h-64 w-64 rounded-full bg-indigo-200/30 blur-3xl" aria-hidden />
 
-						<div className="mt-5">
-							<Link
-								href={applyHref}
-								className="inline-flex rounded-full bg-linear-to-r from-sky-400 to-indigo-500 px-6 py-2.5 text-sm font-semibold text-white hover:brightness-110"
-							>
-								Apply Now
-							</Link>
-						</div>
+          <div className="relative grid items-center gap-8 lg:grid-cols-[1.1fr_0.9fr]">
+            <div className="space-y-6">
+              <p className="inline-flex rounded-full border border-sky-200 bg-white/80 px-4 py-2 text-xs font-semibold uppercase tracking-[0.2em] text-sky-700">
+                Home Loan
+              </p>
+              <h1 className="text-xl font-bold leading-tight text-slate-900 md:text-3xl">
+                Purchase your dream home with flexible financing and structured eligibility.
+              </h1>
+              <p className="max-w-3xl text-sm leading-relaxed text-slate-800 md:text-base">
+                Compare top lenders, choose the right tenure for your budget, and complete a simple online
+                application in minutes with CapitalCare.
+              </p>
+              <p className="max-w-3xl text-sm leading-relaxed text-slate-700 md:text-base">
+                The process is practical and property-light: submit your details, upload required documents, and our
+                loan team will guide you through approval and disbursal.
+              </p>
 
-						<div className="mt-5 grid gap-3 text-sm text-slate-900 md:grid-cols-2 md:text-sm xl:grid-cols-4">
-							<p className="flex items-center gap-2"><FaCheckCircle className="text-sky-600" />For Salaried and Self Employed</p>
-							<p className="flex items-center gap-2"><FaCheckCircle className="text-sky-600" />High Home Purchase Eligibility</p>
-							<p className="flex items-center gap-2"><FaCheckCircle className="text-sky-600" />Competitive EMI Structures</p>
-							<p className="flex items-center gap-2"><FaCheckCircle className="text-sky-600" />Guided Documentation Support</p>
-						</div>
-					</div>
-				</section>
+              <div className="grid gap-3 sm:grid-cols-2">
+                {heroHighlights.map((item) => (
+                  <p
+                    key={item}
+                    className="rounded-2xl border border-slate-200 bg-white/90 px-4 py-3 text-sm font-medium text-slate-800 shadow-sm"
+                  >
+                    {item}
+                  </p>
+                ))}
+              </div>
 
-				<section className="w-full bg-linear-to-br from-white via-sky-50 to-cyan-50 px-4 py-10 md:px-10 lg:px-16">
-					<h2 className="text-center text-xl font-bold text-slate-900 md:text-2xl">Home Loan Features and Benefits</h2>
-					<p className="mx-auto mt-4 max-w-6xl text-center text-sm text-slate-800 md:text-base">
-						Access secured funding with structured documentation and profile-specific lender options.
-					</p>
+              <div className="flex flex-wrap gap-3">
+                <Link
+                  href={applyHref}
+                  className="inline-flex items-center justify-center rounded-xl bg-sky-700 px-6 py-3 text-sm font-semibold text-white transition hover:bg-sky-800"
+                >
+                  Apply Now
+                </Link>
+              </div>
+            </div>
 
-					<div className="mt-8 grid gap-5 md:grid-cols-2">
-						{featureCards.map((feature, index) => (
-							<article key={feature.title} className="rounded-3xl border border-sky-200/60 bg-white/95 p-5 shadow-[0_16px_45px_-28px_rgba(14,165,233,0.45)]">
-								<div className="mb-2 inline-flex rounded-full bg-sky-100 px-4 py-2 text-sm font-bold text-sky-700 md:text-lg">
-									{String(index + 1).padStart(2, "0")}
-								</div>
-								<h3 className="text-base font-bold text-slate-900 md:text-lg">{feature.title}</h3>
-								<p className="mt-2 text-sm text-slate-700 md:text-base">{feature.desc}</p>
-							</article>
-						))}
-					</div>
-				</section>
+            <div className="overflow-hidden rounded-4xl border border-slate-200 bg-white shadow-[0_30px_80px_-40px_rgba(15,23,42,0.4)]">
+              <Image
+                src={homeLoanHeroImage}
+                alt="Home loan overview"
+                className="h-auto w-full object-cover"
+                priority
+              />
+            </div>
+          </div>
+        </section>
 
-				<section className="w-full px-4 md:px-10 lg:px-16">
-					<h2 className="text-lg font-bold text-slate-900 md:text-2xl">What are the Eligibility Criteria for Home Loan?</h2>
-					<ul className="mt-4 list-disc space-y-2 pl-6 text-sm text-slate-800 md:text-base">
-						{eligibility.map((item) => (
-							<li key={item}>{item}</li>
-						))}
-					</ul>
-				</section>
+        <section className="w-full bg-slate-100 px-4 py-12 md:px-10 lg:px-16 xl:px-24">
+          <h2 className="text-center text-lg font-bold leading-tight text-slate-900 md:text-2xl">
+            Online Home Loan <span className="text-cyan-600">Features and Benefits</span>
+          </h2>
+          <p className="mx-auto mt-3 max-w-4xl text-center text-sm leading-relaxed text-slate-800 md:text-base">
+            Home loans remain a preferred way to manage property purchases with flexible repayment and structured eligibility.
+          </p>
 
-				<section className="w-full px-4 md:px-10 lg:px-16">
-					<h2 className="text-lg font-bold text-slate-900 md:text-2xl">What Documents are Required for Home Loan?</h2>
-					<ul className="mt-4 list-disc space-y-2 pl-6 text-sm text-slate-800 md:text-base">
-						{documents.map((item) => (
-							<li key={item}>{item}</li>
-						))}
-					</ul>
-				</section>
+          <div className="mt-8 grid gap-6 md:grid-cols-2 xl:grid-cols-2">
+            {featureCards.map((feature) => (
+              <article
+                key={feature.id}
+                className="rounded-2xl border border-slate-200 bg-white p-6 shadow-[0_20px_45px_-35px_rgba(15,23,42,0.45)]"
+              >
+                <div className="mb-4 inline-flex h-12 w-12 items-center justify-center rounded-full bg-cyan-100 text-2xl font-semibold text-cyan-700">
+                  {feature.id}
+                </div>
+                <h3 className="text-base font-bold text-cyan-700 md:text-lg">{feature.title}</h3>
+                <p className="mt-3 text-sm leading-relaxed text-slate-800 md:text-base">{feature.desc}</p>
+              </article>
+            ))}
+          </div>
+        </section>
 
-				<section className="w-full px-4 md:px-10 lg:px-16">
-					<h2 className="text-lg font-bold text-slate-900 md:text-2xl">How to Apply for Home Loan?</h2>
-					<div className="mt-5 grid gap-6 lg:grid-cols-[1fr_0.4fr]">
-						<ol className="space-y-3">
-							{applySteps.map((step, index) => (
-								<li key={step} className="flex items-center gap-3 rounded-xl border border-sky-200 bg-white px-4 py-3 text-sm text-slate-800 md:text-base">
-									<span className="rounded-full bg-sky-100 px-3 py-1 text-sm font-semibold text-sky-700">{String(index + 1).padStart(2, "0")}</span>
-									<span>{step}</span>
-								</li>
-							))}
-						</ol>
-						<div className="relative min-h-72 overflow-hidden rounded-2xl border border-slate-200 bg-white">
-							<Image src={homeImage} alt="Apply home loan" fill className="object-cover" sizes="(max-width: 1024px) 100vw, 30vw" />
-						</div>
-					</div>
+        <section className="w-full bg-slate-100 px-4 py-10 md:px-10 lg:px-16 xl:px-24">
+          <div className="grid items-start gap-8 lg:grid-cols-[1fr_0.9fr]">
+            <div>
+              <h2 className="text-lg font-bold text-slate-900 md:text-2xl">
+                How to Apply for <span className="text-cyan-600">Home Loan Easy Approval?</span>
+              </h2>
+              <p className="mt-3 text-sm leading-relaxed text-slate-800 md:text-base">
+                The application journey is simple. Share your details, verify your number, upload documents,
+                and submit for review by our loan team.
+              </p>
 
-					<div className="mt-6 rounded-2xl border border-sky-200 bg-sky-50 p-4 text-sm text-slate-700 md:text-base">
-						Submit details with property documents and agreement to sale; our team coordinates lender-side next steps.
-					</div>
+              <div className="mt-6 grid gap-4 md:grid-cols-2">
+                {applySteps.map((step, index) => (
+                  <article
+                    key={step}
+                    className="rounded-2xl border border-slate-200 bg-white p-5 shadow-[0_20px_45px_-30px_rgba(15,23,42,0.45)]"
+                  >
+                    <h3 className="text-base font-bold text-slate-900 md:text-lg">Step {String(index + 1).padStart(2, "0")}</h3>
+                    <p className="mt-2 text-sm leading-relaxed text-slate-800 md:text-base">{step}</p>
+                  </article>
+                ))}
+              </div>
 
-					<div className="mt-6 flex justify-center">
-						<Link
-							href={applyHref}
-							className="rounded-full bg-linear-to-r from-sky-400 to-indigo-500 px-10 py-3 text-sm font-semibold text-slate-950 transition hover:brightness-110 md:text-base"
-						>
-							Apply Now
-						</Link>
-					</div>
-				</section>
+              <div className="mt-6">
+                <Link
+                  href={applyHref}
+                  className="inline-flex items-center justify-center rounded-full border border-slate-900 bg-black px-7 py-3 text-sm font-semibold text-slate-200 transition hover:border-slate-900 hover:bg-slate-200 hover:text-slate-900"
+                >
+                  Apply Now
+                </Link>
+              </div>
+            </div>
 
-				<section className="w-full px-4 md:px-10 lg:px-16">
-					<h2 className="text-lg font-bold text-slate-900 md:text-2xl">Home Loan Interest Rate and Applicable Charges</h2>
-					<div className="mt-4 grid gap-6 lg:grid-cols-[1fr_0.4fr]">
-						<div className="overflow-hidden rounded-2xl border border-slate-200 bg-white">
-							<table className="w-full border-collapse text-left text-sm md:text-base">
-								<thead className="bg-slate-100">
-									<tr>
-										<th className="border border-slate-200 px-4 py-3">Specifics</th>
-										<th className="border border-slate-200 px-4 py-3">Charges</th>
-									</tr>
-								</thead>
-								<tbody>
-									{chargeRows.map((row) => (
-										<tr key={row[0]}>
-											<td className="border border-slate-200 px-4 py-3">{row[0]}</td>
-											<td className="border border-slate-200 px-4 py-3">{row[1]}</td>
-										</tr>
-									))}
-								</tbody>
-							</table>
-						</div>
-						<div className="relative min-h-80 overflow-hidden rounded-2xl border border-slate-200 bg-white">
-							<Image src={chargesImage} alt="Home loan charges" fill className="object-cover" sizes="(max-width: 1024px) 100vw, 30vw" />
-						</div>
-					</div>
-				</section>
+            <div className="flex items-center justify-center">
+              <div className="mx-auto w-full max-w-2xl overflow-hidden rounded-3xl border border-slate-200 bg-white shadow-[0_20px_60px_-35px_rgba(2,132,199,0.45)]">
+                <Image
+                  src={homeLoanApplyImage}
+                  alt="Home loan application process"
+                  className="h-auto w-full object-cover object-center"
+                />
+              </div>
+            </div>
+          </div>
+        </section>
 
-				<section className="w-full px-4 pb-10 md:px-10 lg:px-16">
-					<h2 className="text-center text-lg font-bold text-slate-900 md:text-2xl">Types of Home Loan</h2>
-					<div className="mt-4 overflow-hidden rounded-2xl border border-slate-200 bg-white">
-						<table className="w-full border-collapse text-left text-sm md:text-base">
-							<thead className="bg-slate-100">
-								<tr>
-									<th className="border border-slate-200 px-4 py-3">Type</th>
-									<th className="border border-slate-200 px-4 py-3">Description</th>
-								</tr>
-							</thead>
-							<tbody>
-								{loanTypes.map((row) => (
-									<tr key={row[0]}>
-										<td className="border border-slate-200 px-4 py-3 font-semibold text-slate-900">{row[0]}</td>
-										<td className="border border-slate-200 px-4 py-3">{row[1]}</td>
-									</tr>
-								))}
-							</tbody>
-						</table>
-					</div>
-				</section>
+        <section className="w-full bg-slate-50 px-4 py-10 md:px-10 lg:px-16 xl:px-24">
+          <h2 className="text-center text-lg font-bold leading-tight text-slate-900 md:text-2xl">
+            Home Loan <span className="text-sky-700">Eligibility and Documents</span>
+          </h2>
+          <p className="mx-auto mt-3 max-w-4xl text-center text-sm leading-relaxed text-slate-800 md:text-base">
+            Review these criteria and documents together before applying to avoid delays during verification.
+          </p>
 
-				<section className="w-full px-4 md:px-10 lg:px-16">
-					<TrustedCustomersStats />
-				</section>
-			</div>
-		</main>
-	);
+          <div className="mt-8 grid gap-6 lg:grid-cols-2">
+            <article className="rounded-3xl border border-slate-200 bg-[linear-gradient(90deg,#ffffff_0%,#eff6ff_100%)] p-6 shadow-[0_20px_55px_-35px_rgba(15,23,42,0.45)] md:p-8">
+              <h3 className="text-base font-bold leading-tight text-slate-900 md:text-xl">
+                Eligibility <span className="text-sky-700">Criteria</span>
+              </h3>
+              <p className="mt-3 text-sm leading-relaxed text-slate-800 md:text-base">
+                Basic checks help lenders evaluate repayment capability and process applications faster.
+              </p>
+
+              <ul className="mt-5 space-y-3 text-sm leading-relaxed text-slate-800 md:text-base">
+                {eligibility.map((item) => (
+                  <li key={item} className="flex items-start gap-3">
+                    <span aria-hidden className="mt-1 text-sky-700">✧</span>
+                    <span>{item}</span>
+                  </li>
+                ))}
+              </ul>
+
+              <div className="mt-6">
+                <Link
+                  href="/contact-us"
+                  className="inline-flex items-center justify-center rounded-full border border-slate-900 bg-black px-7 py-3 text-sm font-semibold text-slate-200 transition hover:border-slate-900 hover:bg-slate-200 hover:text-slate-900"
+                >
+                  Talk to Advisor
+                </Link>
+              </div>
+            </article>
+
+            <article className="rounded-3xl border border-slate-200 bg-[linear-gradient(90deg,#ffffff_0%,#eff6ff_100%)] p-6 shadow-[0_20px_55px_-35px_rgba(15,23,42,0.45)] md:p-8">
+              <h3 className="text-base font-bold leading-tight text-slate-900 md:text-xl">
+                Required <span className="text-sky-700">Documents</span>
+              </h3>
+              <p className="mt-3 text-sm leading-relaxed text-slate-800 md:text-base">
+                Keep these documents ready to reduce review time and improve approval turnaround.
+              </p>
+
+              <ul className="mt-5 space-y-3 text-sm leading-relaxed text-slate-800 md:text-base">
+                {documents.map((item) => (
+                  <li key={item} className="flex items-start gap-3">
+                    <span aria-hidden className="mt-1 text-sky-700">✧</span>
+                    <span>{item}</span>
+                  </li>
+                ))}
+              </ul>
+            </article>
+          </div>
+        </section>
+
+        <section className="w-full bg-slate-50 px-4 py-12 md:px-10 lg:px-16 xl:px-24">
+          <div className="grid items-center gap-8 rounded-3xl border border-slate-200 bg-[linear-gradient(90deg,#ffffff_0%,#eef2ff_100%)] p-6 shadow-[0_20px_55px_-35px_rgba(15,23,42,0.45)] lg:grid-cols-[1.15fr_0.85fr] md:p-8">
+            <div>
+              <h2 className="text-lg font-bold leading-tight text-slate-900 md:text-2xl">
+                Home Loan <span className="text-sky-700">Interest Rate and Applicable Charges</span>
+              </h2>
+              <p className="mt-3 text-sm leading-relaxed text-slate-800 md:text-base">
+                Keep these rate and fee components in mind while comparing lenders for better transparency and budgeting.
+              </p>
+
+              <ul className="mt-5 space-y-3 text-sm leading-relaxed text-slate-800 md:text-base">
+                {chargeRows.map((row) => (
+                  <li key={row[0]} className="flex items-start gap-3">
+                    <span aria-hidden className="mt-1 text-sky-700">✧</span>
+                    <span>
+                      <span className="font-semibold text-slate-900">{row[0]}:</span> {row[1]}
+                    </span>
+                  </li>
+                ))}
+              </ul>
+
+              <div className="mt-6">
+                <Link
+                  href={applyHref}
+                  className="inline-flex items-center justify-center rounded-full border border-slate-900 bg-black px-7 py-3 text-sm font-semibold text-slate-200 transition hover:border-slate-900 hover:bg-slate-200 hover:text-slate-900"
+                >
+                  Apply Now
+                </Link>
+              </div>
+            </div>
+
+            <div className="mx-auto w-full max-w-md overflow-hidden rounded-3xl">
+              <Image
+                src={homeLoanChargesImage}
+                alt="Home loan rate and charges"
+                className="h-auto w-full object-contain"
+              />
+            </div>
+          </div>
+        </section>
+
+        <section className="w-full bg-slate-100 px-4 pb-10 pt-4 md:px-10 lg:px-16 xl:px-24">
+          <h2 className="text-center text-lg font-bold leading-tight text-slate-900 md:text-2xl">
+            Types of <span className="text-cyan-600">Home Loan</span>
+          </h2>
+          <p className="mx-auto mt-3 max-w-4xl text-center text-sm leading-relaxed text-slate-800 md:text-base">
+            Choose the right loan category based on your property needs and repayment comfort.
+          </p>
+
+          <div className="mx-auto mt-8 grid w-full max-w-5xl gap-4 md:grid-cols-2">
+            {loanTypes.map((row) => (
+              <article
+                key={row[0]}
+                className="rounded-2xl border border-slate-200 bg-white p-5 shadow-[0_14px_32px_-26px_rgba(15,23,42,0.42)]"
+              >
+                <h3 className="border-l-4 border-cyan-500 pl-3 text-base font-bold text-slate-900 md:text-lg">{row[0]}</h3>
+                <p className="mt-3 text-sm leading-relaxed text-slate-700 md:text-base">{row[1]}</p>
+              </article>
+            ))}
+          </div>
+        </section>
+
+         <section className="w-full px-4 md:px-10 lg:px-16">
+          <TrustedCustomersStats />
+        </section>
+      </div>
+    </main>
+  );
 }

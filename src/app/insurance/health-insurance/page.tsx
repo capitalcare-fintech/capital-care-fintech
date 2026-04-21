@@ -211,7 +211,7 @@ export default function HealthInsurancePage() {
                   />
                 </div>
                 <div className="p-5 md:p-6">
-                  <h3 className="text-lg font-bold text-rose-500 md:text-2xl">{type.title}</h3>
+                  <h3 className="text-lg font-bold text-black md:text-2xl">{type.title}</h3>
                   <p className="mt-3 text-sm leading-relaxed text-slate-800 md:text-base">{type.description}</p>
                   <p className="mt-3 text-sm leading-relaxed text-slate-800 md:text-base">{type.details}</p>
                 </div>
