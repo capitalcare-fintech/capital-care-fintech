@@ -6,15 +6,11 @@ import { getSignedIn } from "@/lib/authClient";
 
 /**
  * Protects a page. Returns `ready=true` only when the user is confirmed signed in.
- * Redirects to sign-in (with ?next=) otherwise.
+ * Always starts as false to avoid SSR/client hydration mismatch.
  */
 export function useRequireAuth(redirectTo = "/sign-in") {
   const router = useRouter();
-  // Initialise synchronously — avoids a flash of the spinner on fast loads
-  const [ready, setReady] = useState<boolean>(() => {
-    if (typeof window === "undefined") return false;
-    return getSignedIn();
-  });
+  const [ready, setReady] = useState(false);
 
   useEffect(() => {
     if (getSignedIn()) {

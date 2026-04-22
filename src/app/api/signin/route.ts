@@ -34,6 +34,17 @@ export async function POST(req: NextRequest) {
 
     const db = getDB();
 
+    // Auto-create users table if it doesn't exist yet
+    await db.query(`
+      CREATE TABLE IF NOT EXISTS users (
+        id         INT AUTO_INCREMENT PRIMARY KEY,
+        fullName   VARCHAR(255) NOT NULL,
+        phone      VARCHAR(15)  NOT NULL UNIQUE,
+        password   VARCHAR(255) NOT NULL,
+        created_at DATETIME     NOT NULL DEFAULT CURRENT_TIMESTAMP
+      )
+    `);
+
     const [rows] = (await queryWithRetry(
       db,
       "SELECT id, fullName, phone, password FROM users WHERE phone = ?",

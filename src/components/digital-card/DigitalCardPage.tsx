@@ -23,7 +23,6 @@ export function DigitalCardPage() {
     if (cached) {
       try {
         const p = JSON.parse(cached) as CardData;
-        console.log("Profile Data:", p);
         setData({ ...p, profileImage: savedImage || p.profileImage || "" });
         setLoading(false);
         return; // skip API call if we have fresh cache
@@ -45,7 +44,6 @@ export function DigitalCardPage() {
             relationshipManager: json.profile.relationshipManager ?? "",
             profileImage:        savedImage || (json.profile.profileImage ?? ""),
           };
-          console.log("Profile Data:", d);
           setData(d);
           localStorage.setItem("profileData", JSON.stringify(d));
         } else {

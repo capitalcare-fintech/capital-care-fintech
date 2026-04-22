@@ -4,8 +4,6 @@ import { useEffect, useRef, useState } from "react";
 import { HiOutlineCamera, HiCheckCircle, HiXCircle } from "react-icons/hi";
 import { getUser } from "@/lib/authClient";
 
-console.log("Profile page loaded");
-
 // ─── types ────────────────────────────────────────────────────────────────────
 
 type Address = {

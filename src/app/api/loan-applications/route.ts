@@ -105,32 +105,21 @@ function parseStoredRow(row: StoredApplication) {
 
 export async function POST(req: NextRequest) {
   try {
-    console.log("[POST /api/loan-applications] ✅ Request received");
-
     const body = await req.formData();
     const loanTypeRaw = normalizeFormValue(body.get("loanType") ?? body.get("loan_type"));
     const loanSubtypeRaw = normalizeFormValue(body.get("loanSubtype") ?? body.get("loan_subtype"));
     const formDataRaw = normalizeFormValue(body.get("formData") ?? body.get("form_data"));
 
-    console.log("[POST /api/loan-applications] 📋 Form parsed", {
-      loanType: loanTypeRaw,
-      loanSubtype: loanSubtypeRaw,
-      hasFormData: !!formDataRaw,
-    });
-
     if (!isLoanType(loanTypeRaw)) {
-      console.log("[POST /api/loan-applications] ❌ Invalid loan type:", loanTypeRaw);
       return NextResponse.json({ success: false, error: "Invalid loan type" }, { status: 400 });
     }
 
     const subtypeConfig = LOAN_APPLICATION_CONFIG[loanTypeRaw].subtypes[loanSubtypeRaw];
     if (!subtypeConfig) {
-      console.log("[POST /api/loan-applications] ❌ Invalid loan subtype:", loanSubtypeRaw);
       return NextResponse.json({ success: false, error: "Invalid loan subtype" }, { status: 400 });
     }
 
     if (!formDataRaw) {
-      console.log("[POST /api/loan-applications] ❌ Missing form data");
       return NextResponse.json({ success: false, error: "Missing form data" }, { status: 400 });
     }
 
@@ -138,7 +127,6 @@ export async function POST(req: NextRequest) {
     try {
       formData = JSON.parse(formDataRaw);
     } catch {
-      console.log("[POST /api/loan-applications] ❌ Invalid form data JSON");
       return NextResponse.json({ success: false, error: "Invalid form data format" }, { status: 400 });
     }
 
@@ -148,11 +136,6 @@ export async function POST(req: NextRequest) {
         files.push({ key, file: value });
       }
     }
-
-    console.log("[POST /api/loan-applications] 📎 Files extracted", {
-      count: files.length,
-      names: files.map((f) => f.file.name),
-    });
 
     const fileMap = new Map(files.map((item) => [item.key, item.file]));
     const fieldErrors: Record<string, string[]> = {};
@@ -196,17 +179,11 @@ export async function POST(req: NextRequest) {
     }
 
     if (Object.keys(fieldErrors).length > 0) {
-      console.log("[POST /api/loan-applications] ⚠️ Validation failed", {
-        errorCount: Object.keys(fieldErrors).length,
-        errors: Object.keys(fieldErrors),
-      });
       return NextResponse.json(
         { success: false, error: "Validation failed", fieldErrors },
         { status: 400 },
       );
     }
-
-    console.log("[POST /api/loan-applications] ✅ All validations passed");
 
     await ensureLoanApplicationsTable();
 
@@ -232,14 +209,6 @@ export async function POST(req: NextRequest) {
     const fullName = normalizeFormValue(formData.fullName);
     const db = getDB();
 
-    console.log("[POST /api/loan-applications] 💾 Inserting application", {
-      applicationId,
-      loanType: loanTypeRaw,
-      loanSubtype: loanSubtypeRaw,
-      fullName,
-      email,
-    });
-
     await db.query(
       `INSERT INTO loan_applications
       (application_id, loan_type, loan_subtype, full_name, email, mobile, status, form_data, documents_metadata)
@@ -256,9 +225,6 @@ export async function POST(req: NextRequest) {
       ],
     );
 
-    console.log("[POST /api/loan-applications] ✅ Application inserted to DB", { applicationId });
-
-    console.log("[POST /api/loan-applications] 📧 Sending admin email");
     await sendLoanApplicationAdminEmail({
       applicationId,
       loanTypeLabel: LOAN_APPLICATION_CONFIG[loanTypeRaw].label,
@@ -270,9 +236,6 @@ export async function POST(req: NextRequest) {
       files,
     });
 
-    console.log("[POST /api/loan-applications] ✅ Admin email sent");
-
-    console.log("[POST /api/loan-applications] 📧 Sending user confirmation email");
     await sendUserApplicationConfirmationEmail({
       applicationId,
       loanTypeLabel: LOAN_APPLICATION_CONFIG[loanTypeRaw].label,
@@ -281,10 +244,6 @@ export async function POST(req: NextRequest) {
       mobile,
       panNumber,
     });
-
-    console.log("[POST /api/loan-applications] ✅ User confirmation email sent");
-
-    console.log("[POST /api/loan-applications] 🎉 Request completed successfully", { applicationId });
 
     return NextResponse.json(
       {
@@ -298,7 +257,7 @@ export async function POST(req: NextRequest) {
       { status: 201 },
     );
   } catch (error) {
-    console.error("[POST /api/loan-applications] ❌ Error:", error);
+    console.error("[POST /api/loan-applications] Error:", error);
     return NextResponse.json({ success: false, error: "Internal server error" }, { status: 500 });
   }
 }
