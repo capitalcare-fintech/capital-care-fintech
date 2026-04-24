@@ -1,8 +1,23 @@
+import type { Metadata } from "next";
 import Image from "next/image";
 import Link from "next/link";
 import teamMemberA from "@/assets/profile/risabhbhaiya.jpg";
 import teamMemberB from "@/assets/reviews/manIcon.png";
 import { aboutUs, mission, whyCapitalCare } from "./content";
+
+export const metadata: Metadata = {
+  title: "About Us | Capital Care Fintech",
+  description:
+    "Learn about Capital Care Fintech, a trusted financial services company in India offering personal loans and insurance solutions with quick approvals, low interest rates, and transparent support.",
+  openGraph: {
+    title: "About Capital Care Fintech",
+    description:
+      "Know our mission, values, and services including personal loans and insurance solutions across India.",
+    url: "https://www.capitalcarefintech.com/about-us",
+    siteName: "Capital Care Fintech",
+    type: "website",
+  },
+};
 
 const team = [
   {

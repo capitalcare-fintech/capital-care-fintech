@@ -25,7 +25,7 @@ const LOANS: LoanDetail[] = [
     title: "Business Loan",
     description:
       "Whether you're scaling operations, buying equipment, or managing cash flow — our business loans are designed to move as fast as your ambitions. Get up to ₹2.5 Crore with minimal documentation.",
-    features: ["Up to ₹2.5 Crore", "Approval in 24 hrs", "Flexible tenure", "No collateral required"],
+    features: ["Up to ₹2.5 Crore", "Minimum documentation required", "Flexible tenure", "No collateral required"],
     href: "/loans/business-loan/apply",
     image: businessLoanImage,
     imageAlt: "Business loan financing",
@@ -36,7 +36,7 @@ const LOANS: LoanDetail[] = [
     title: "Personal Loan",
     description:
       "From medical emergencies to dream vacations — a personal loan puts money in your hands when you need it most. No end-use restrictions.",
-    features: ["Up to ₹1 Crore", "Disbursal in 24 hrs", "Zero prepayment charges", "100% online process"],
+    features: ["Up to ₹1 Crore", "Minimum documentation required", "Zero prepayment charges", "100% online process"],
     href: "/loans/personal-loan/apply",
     image: personalLoanImage,
     imageAlt: "Personal loan funds",
