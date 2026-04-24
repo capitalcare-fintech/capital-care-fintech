@@ -1,19 +1,13 @@
 "use client";
 
 import Link from "next/link";
-import { useEffect, useMemo, useState } from "react";
-import { useAuth } from "@/lib/useAuth";
+import { useEffect, useState } from "react";
 
 export function CreditScorePopup() {
-  // const { signedIn } = useAuth();
   const [open, setOpen] = useState(false);
 
-  10
   useEffect(() => {
-    const timer = window.setTimeout(() => {
-      setOpen(true);
-    }, 900);
-
+    const timer = window.setTimeout(() => setOpen(true), 900);
     return () => window.clearTimeout(timer);
   }, []);
 
@@ -21,19 +15,10 @@ export function CreditScorePopup() {
     if (!open) return;
     const originalOverflow = document.body.style.overflow;
     document.body.style.overflow = "hidden";
-    return () => {
-      document.body.style.overflow = originalOverflow;
-    };
+    return () => { document.body.style.overflow = originalOverflow; };
   }, [open]);
 
-  // const ctaHref = useMemo(
-  //   () => (signedIn ? "/credit-score" : "/sign-in?next=/credit-score"),
-  //   [signedIn],
-  // );
-
-  const close = () => {
-    setOpen(false);
-  };
+  const close = () => setOpen(false);
 
   if (!open) return null;
 
