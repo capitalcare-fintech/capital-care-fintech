@@ -1,39 +1,33 @@
 "use client";
 
-import { useEffect, useMemo } from "react";
-import { useRouter } from "next/navigation";
-import { getSignedIn, getUser } from "@/lib/authClient";
-import { useAuth } from "@/lib/useAuth";
+import { useRequireAuth } from "@/lib/useRequireAuth";
+import { getUser } from "@/lib/authClient";
 
 export default function DashboardPage() {
-    const router = useRouter();
-    const { signOut } = useAuth();
-    const userName = useMemo(() => getUser()?.name ?? "", []);
+  const ready = useRequireAuth();
+  const user  = getUser();
 
-    useEffect(() => {
-        if (!getSignedIn()) {
-            router.replace("/sign-in");
-        }
-    }, [router]);
-
+  if (!ready) {
     return (
-        <div className="mx-auto w-full max-w-6xl px-4 py-16">
-            <div className="rounded-2xl border border-white/10 bg-white/5 p-8">
-                <h1 className="mb-2 text-2xl font-bold text-white">
-                    Welcome{userName ? `, ${userName}` : ""}
-                </h1>
-                <p className="mb-8 text-sm text-white/60">You are signed in to your CapitalCare account.</p>
-                <button
-                    type="button"
-                    onClick={() => {
-                        signOut();
-                        router.push("/");
-                    }}
-                    className="rounded-xl bg-linear-to-r from-sky-400 to-indigo-500 px-6 py-2.5 text-sm font-semibold text-slate-950 hover:brightness-110"
-                >
-                    Sign out
-                </button>
-            </div>
-        </div>
+      <div className="flex min-h-screen items-center justify-center">
+        <div className="h-8 w-8 animate-spin rounded-full border-4 border-sky-400 border-t-transparent" />
+      </div>
     );
+  }
+
+  return (
+    <div className="mx-auto w-full max-w-6xl px-4 py-16">
+      <div className="rounded-2xl border border-slate-200 bg-white p-8 shadow-sm dark:border-slate-700 dark:bg-slate-900">
+        <p className="mb-1 text-xs font-semibold uppercase tracking-widest text-sky-600 dark:text-sky-400">
+          Dashboard
+        </p>
+        <h1 className="text-2xl font-bold text-slate-900 dark:text-white">
+          Welcome{user?.name ? `, ${user.name}` : ""} 👋
+        </h1>
+        <p className="mt-2 text-sm text-slate-500 dark:text-slate-400">
+          You are signed in to your CapitalCare account.
+        </p>
+      </div>
+    </div>
+  );
 }

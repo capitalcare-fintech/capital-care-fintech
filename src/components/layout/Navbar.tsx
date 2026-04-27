@@ -2,7 +2,7 @@
 
 import Image from "next/image";
 import Link from "next/link";
-import { usePathname } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 import { useEffect, useMemo, useRef, useState } from "react";
 import { HiOutlineMoon, HiOutlineSun } from "react-icons/hi";
 import { NAV_ITEMS, type NavItem } from "@/lib/homeContent";
@@ -60,9 +60,11 @@ export function Navbar() {
   const pathname = usePathname();
   const isPartnerDashboard = isPartnerAppRoute(pathname);
   const items = useMemo(() => NAV_ITEMS, []);
-  const { signedIn, signOut } = useAuth();
+  const { signedIn, user, signOut } = useAuth();
+  const router = useRouter();
   const [openLabel, setOpenLabel] = useState<string | null>(null);
   const [mobileOpen, setMobileOpen] = useState(false);
+  const [userMenuOpen, setUserMenuOpen] = useState(false);
   const rootRef = useRef<HTMLElement | null>(null);
   const closeTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
   const { open: sidebarOpen, setOpen: setSidebarOpen, toggle: toggleSidebar } =
@@ -72,7 +74,10 @@ export function Navbar() {
   useEffect(() => {
     const onDown = (e: MouseEvent) => {
       if (!rootRef.current) return;
-      if (!rootRef.current.contains(e.target as Node)) setOpenLabel(null);
+      if (!rootRef.current.contains(e.target as Node)) {
+        setOpenLabel(null);
+        setUserMenuOpen(false);
+      }
     };
     window.addEventListener("pointerdown", onDown);
     return () => window.removeEventListener("pointerdown", onDown);
@@ -267,13 +272,36 @@ export function Navbar() {
 
           <div className="hidden items-center gap-2 md:flex">
             {signedIn ? (
-              <button
-                type="button"
-                onClick={() => signOut()}
-                className="rounded-full bg-linear-to-r from-sky-400 to-indigo-500 px-4 py-2 text-sm font-semibold text-slate-950 hover:brightness-110"
-              >
-                Sign out
-              </button>
+              <div className="relative">
+                <button
+                  type="button"
+                  onClick={() => setUserMenuOpen((v) => !v)}
+                  className="flex items-center gap-2 rounded-full border border-slate-200 bg-white px-4 py-2 text-sm font-medium text-slate-700 transition hover:bg-slate-100 dark:border-slate-700 dark:bg-slate-900 dark:text-slate-200 dark:hover:bg-slate-800"
+                >
+                  <span>Hi, {user?.name ?? "User"} 👋</span>
+                  <IconChevronDown className={`h-3.5 w-3.5 text-slate-400 transition-transform ${userMenuOpen ? "rotate-180" : ""}`} />
+                </button>
+                {userMenuOpen && (
+                  <div className="absolute right-0 mt-2 w-44 overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-xl dark:border-slate-700 dark:bg-slate-900">
+                    <div className="p-1.5">
+                      <Link
+                        href="/dashboard"
+                        onClick={() => setUserMenuOpen(false)}
+                        className="flex items-center gap-2 rounded-xl px-3 py-2 text-sm font-medium text-slate-700 hover:bg-slate-100 dark:text-slate-300 dark:hover:bg-slate-800"
+                      >
+                        My Account
+                      </Link>
+                      <button
+                        type="button"
+                        onClick={() => { signOut(); setUserMenuOpen(false); router.push("/"); }}
+                        className="flex w-full items-center gap-2 rounded-xl px-3 py-2 text-left text-sm font-medium text-red-600 hover:bg-red-50 dark:text-red-400 dark:hover:bg-red-950/40"
+                      >
+                        Sign out
+                      </button>
+                    </div>
+                  </div>
+                )}
+              </div>
             ) : (
               <>
                 <Link
@@ -341,16 +369,25 @@ export function Navbar() {
 
               <div className="mt-2 rounded-2xl border border-slate-200 bg-white p-2 dark:border-slate-700 dark:bg-slate-900">
                 {signedIn ? (
-                  <button
-                    type="button"
-                    onClick={() => {
-                      signOut();
-                      setMobileOpen(false);
-                    }}
-                    className="w-full rounded-xl bg-linear-to-r from-sky-400 to-indigo-500 px-4 py-3 text-sm font-semibold text-slate-950 hover:brightness-110"
-                  >
-                    Sign out
-                  </button>
+                  <div className="grid gap-1">
+                    <p className="px-3 py-2 text-sm font-semibold text-slate-700 dark:text-slate-200">
+                      Hi, {user?.name ?? "User"} 👋
+                    </p>
+                    <Link
+                      href="/dashboard"
+                      onClick={() => setMobileOpen(false)}
+                      className="rounded-xl px-3 py-2.5 text-sm font-medium text-slate-700 hover:bg-slate-100 dark:text-slate-300 dark:hover:bg-slate-800"
+                    >
+                      My Account
+                    </Link>
+                    <button
+                      type="button"
+                      onClick={() => { signOut(); setMobileOpen(false); router.push("/"); }}
+                      className="w-full rounded-xl px-3 py-2.5 text-left text-sm font-medium text-red-600 hover:bg-red-50 dark:text-red-400 dark:hover:bg-red-950/40"
+                    >
+                      Sign out
+                    </button>
+                  </div>
                 ) : (
                   <div className="grid grid-cols-2 gap-2">
                     <Link
