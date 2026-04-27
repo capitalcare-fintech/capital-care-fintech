@@ -28,7 +28,6 @@ function getCookie(): string {
 export function getSignedIn(): boolean {
   if (typeof window === "undefined") return false;
   try {
-    console.log("userToken:", window.localStorage.getItem(AUTH_FLAG_KEY));
     if (getCookie() === "true") return true;
     return window.localStorage.getItem(AUTH_FLAG_KEY) === "true";
   } catch {

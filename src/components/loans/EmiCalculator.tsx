@@ -45,13 +45,8 @@ export function EmiCalculator() {
   const [tenure, setTenure] = useState(0);
   const [isInitialized, setIsInitialized] = useState(false);
 
-  // Initialize with random values on first load
   useEffect(() => {
     if (!isInitialized) {
-      // const randomAmount = getRandomValue(0);
-      // const randomRate = getRandomValue(selectedLoan.minRate, selectedLoan.maxRate, 1);
-      // const randomTenure = getRandomValue(selectedLoan.minTenure, selectedLoan.maxTenure);
-      
       setAmount(0);
       setRate(0);
       setTenure(0);

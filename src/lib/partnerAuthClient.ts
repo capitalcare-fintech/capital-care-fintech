@@ -27,7 +27,6 @@ function getCookie(): string {
 export function getPartnerSignedIn(): boolean {
   if (typeof window === "undefined") return false;
   try {
-    console.log("partnerToken:", window.localStorage.getItem(PARTNER_SESSION_KEY));
     if (getCookie()) return true;
     return !!window.localStorage.getItem(PARTNER_SESSION_KEY);
   } catch {
