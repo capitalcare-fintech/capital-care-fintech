@@ -26,4 +26,5 @@ const disclaimer = {
     ]
 };
 
+
 export default disclaimer;
