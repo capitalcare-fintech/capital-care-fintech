@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import Script from "next/script";
+import { Analytics } from "@vercel/analytics/next"
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
 import { Navbar } from "@/components/layout/Navbar";
@@ -66,6 +67,7 @@ export default function RootLayout({
             <div className="min-h-screen bg-sky-50 text-slate-900 transition-colors duration-300 dark:bg-slate-950 dark:text-slate-100">
               <div className="pointer-events-none fixed inset-0 -z-10 opacity-90 transition-opacity duration-300 dark:opacity-40 [background:radial-gradient(1100px_circle_at_20%_10%,rgba(56,189,248,0.16),transparent_55%),radial-gradient(1000px_circle_at_80%_20%,rgba(99,102,241,0.10),transparent_55%),radial-gradient(900px_circle_at_50%_90%,rgba(14,165,233,0.10),transparent_55%)]" />
               <Navbar />
+              <Analytics />
               <main>{children}</main>
               <FooterShell />
               <Sidebar />
