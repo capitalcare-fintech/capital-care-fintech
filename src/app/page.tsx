@@ -11,10 +11,11 @@ import { Reviews } from "@/components/home/Reviews";
 import { Partners } from "@/components/home/Partners";
 import { EmiCalculator } from "@/components/loans/EmiCalculator";
 import EmiCalculatorSlider from "@/components/EmiCalculatorSlider";
-
+import InstantLoan from "@/components/home/InstantLoan";
 export default function Home() {
   return (
     <>
+    <InstantLoan />
       {/* <CreditScorePopup /> */}
       <HeroSlider />
       {/* <TrendingLoans /> */}

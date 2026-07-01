@@ -39,7 +39,7 @@ const team = [
 export default function AboutUsPage() {
   return (
     <section className="w-full">
-      <div className="relative bg-white px-4 py-12 md:px-6 md:py-14">
+      <div className="relative bg-white px-4 py-12 md:px-6 ">
         <div className="pointer-events-none absolute inset-0 opacity-60 [background:radial-gradient(900px_circle_at_88%_8%,rgba(56,189,248,0.14),transparent_45%)]" />
         <div className="relative mx-auto w-full max-w-6xl">
           <p className="text-sm font-bold uppercase tracking-[0.2em] text-cyan-600">About</p>
