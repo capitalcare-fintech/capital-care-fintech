@@ -115,7 +115,7 @@ export function Reviews() {
         </div>
 
         {/* See More Button */}
-        {!showMore && additionalReviews.length > 0 && (
+        {/* {!showMore && additionalReviews.length > 0 && (
           <div className="flex justify-center mt-8">
             <button
               onClick={() => setShowMore(true)}
@@ -127,10 +127,10 @@ export function Reviews() {
               See More Reviews
             </button>
           </div>
-        )}
+        ) */}
 
         {/* Show Less Button */}
-        {showMore && (
+        {/* {showMore && (
           <div className="flex justify-center mt-8">
             <button
               onClick={() => setShowMore(false)}
@@ -142,7 +142,7 @@ export function Reviews() {
               Show Less
             </button>
           </div>
-        )}
+        ) */}
       </div>
 
       {/* Bottom border line */}

@@ -137,11 +137,11 @@ export default function LifeInsurancePage() {
         <main className="w-full overflow-hidden bg-slate-50 text-slate-900">
             <section className="relative w-full bg-[radial-gradient(circle_at_top_left,#e0f2fe_0%,#f8fafc_40%,#ffffff_100%)] px-4 pb-16 pt-10 md:px-10 lg:px-16 xl:px-24">
                 <div className="absolute -left-10 top-16 h-44 w-44 rounded-full bg-sky-200/30 blur-2xl" aria-hidden />
-                <div className="absolute right-0 top-0 h-64 w-64 rounded-full bg-cyan-200/30 blur-3xl" aria-hidden />
+                <div className="absolute right-0 top-0 h-64 w-64 rounded-full bg-sky-200/30 blur-3xl" aria-hidden />
 
                 <div className="relative grid items-center gap-8 lg:grid-cols-[1.1fr_0.9fr]">
                     <div className="space-y-6">
-                        <p className="inline-flex rounded-full border border-cyan-200 bg-white/80 px-4 py-2 text-xs font-semibold uppercase tracking-[0.2em] text-cyan-700">
+                        <p className="inline-flex rounded-full border border-sky-200 bg-white/80 px-4 py-2 text-xs font-semibold uppercase tracking-[0.2em] text-sky-700">
                             Life Insurance
                         </p>
                         <h1 className="text-xl font-bold leading-tight text-slate-900 md:text-3xl">
@@ -166,7 +166,7 @@ export default function LifeInsurancePage() {
                         <div className="flex flex-wrap gap-3">
                           <Link
                                 href={applyHref}
-                                className="inline-flex items-center justify-center rounded-xl bg-cyan-700 px-6 py-3 text-sm font-semibold text-white transition hover:bg-cyan-800"
+                                className="inline-flex items-center justify-center rounded-xl bg-sky-700 px-6 py-3 text-sm font-semibold text-white transition hover:brightness-110"
                             >
                                 Apply Now
                             </Link>  
@@ -220,7 +220,7 @@ export default function LifeInsurancePage() {
                 <div className="grid items-center gap-8 rounded-3xl border border-slate-200 bg-[linear-gradient(90deg,#ffffff_0%,#ecfeff_100%)] p-6 shadow-[0_20px_55px_-35px_rgba(15,23,42,0.45)] lg:grid-cols-[1.15fr_0.85fr] md:p-8">
                     <div>
                         <h2 className="text-lg font-bold leading-tight text-slate-900 md:text-2xl">
-                            What are the <span className="text-cyan-700">documents required</span> to apply?
+                            What are the <span className="text-sky-700">documents required</span> to apply?
                         </h2>
                         <p className="mt-3 text-sm leading-relaxed text-slate-800 md:text-base">
                             Keeping basic KYC and income documents ready helps speed up proposal processing and underwriting.
@@ -229,7 +229,7 @@ export default function LifeInsurancePage() {
                         <ul className="mt-5 space-y-3 text-sm leading-relaxed text-slate-800 md:text-base">
                             {documentsRequired.map((item) => (
                                 <li key={item.title} className="flex items-start gap-3">
-                                    <span aria-hidden className="mt-1 text-cyan-700">✧</span>
+                                    <span aria-hidden className="mt-1 text-sky-700">✧</span>
                                     <span>
                                         <span className="font-semibold text-slate-900">{item.title}:</span> {item.description}
                                     </span>
@@ -304,10 +304,10 @@ export default function LifeInsurancePage() {
                             key={option.id}
                             className="rounded-2xl border border-slate-200 bg-white p-6 shadow-[0_20px_45px_-35px_rgba(15,23,42,0.45)]"
                         >
-                            <div className="mb-4 inline-flex h-12 w-12 items-center justify-center rounded-full bg-cyan-100 text-2xl font-semibold text-cyan-700">
+                            <div className="mb-4 inline-flex h-12 w-12 items-center justify-center rounded-full bg-sky-100 text-2xl font-semibold text-sky-700">
                                 {option.id}
                             </div>
-                            <h3 className="text-base font-bold text-cyan-700 md:text-lg">{option.title}</h3>
+                            <h3 className="text-base font-bold text-sky-700 md:text-lg">{option.title}</h3>
                             <p className="mt-3 text-sm leading-relaxed text-slate-800 md:text-base">{option.description}</p>
                         </article>
                     ))}
@@ -316,7 +316,7 @@ export default function LifeInsurancePage() {
                  <div className="mt-8 flex justify-center ">
                         <Link
                             href={applyHref}
-                            className="inline-flex items-center justify-center rounded-xl bg-cyan-500 px-8 py-3 text-sm font-semibold text-white transition hover:bg-cyan-600"
+                            className="inline-flex items-center justify-center rounded-xl bg-sky-700 px-8 py-3 text-sm font-semibold text-white transition hover:brightness-110"
                         >
                             Apply Now
                         </Link>

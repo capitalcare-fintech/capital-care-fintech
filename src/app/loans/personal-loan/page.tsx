@@ -129,7 +129,7 @@ export default function PersonalLoanPage() {
 
         <section className="w-full bg-slate-100 px-4 py-12 md:px-10 lg:px-16 xl:px-24">
           <h2 className="text-center text-lg font-bold leading-tight text-slate-900 md:text-2xl">
-            Online Personal Loan <span className="text-cyan-600">Features and Benefits</span>
+            Online Personal Loan <span className="text-sky-600">Features and Benefits</span>
           </h2>
           <p className="mx-auto mt-3 max-w-4xl text-center text-sm leading-relaxed text-slate-800 md:text-base">
             Quick personal loans remain a preferred way to manage urgent and planned expenses with flexible repayment.
@@ -141,10 +141,10 @@ export default function PersonalLoanPage() {
                 key={feature.id}
                 className="rounded-2xl border border-slate-200 bg-white p-6 shadow-[0_20px_45px_-35px_rgba(15,23,42,0.45)]"
               >
-                <div className="mb-4 inline-flex h-12 w-12 items-center justify-center rounded-full bg-cyan-100 text-2xl font-semibold text-cyan-700">
+                <div className="mb-4 inline-flex h-12 w-12 items-center justify-center rounded-full bg-sky-100 text-2xl font-semibold text-sky-700">
                   {feature.id}
                 </div>
-                <h3 className="text-base font-bold text-cyan-700 md:text-lg">{feature.title}</h3>
+                <h3 className="text-base font-bold text-sky-700 md:text-lg">{feature.title}</h3>
                 <p className="mt-3 text-sm leading-relaxed text-slate-800 md:text-base">{feature.desc}</p>
               </article>
             ))}
@@ -155,7 +155,7 @@ export default function PersonalLoanPage() {
           <div className="grid items-start gap-8 lg:grid-cols-[1fr_0.9fr]">
             <div>
               <h2 className="text-lg font-bold text-slate-900 md:text-2xl">
-                How to Apply for <span className="text-cyan-600">Personal Loan Easy Approval?</span>
+                How to Apply for <span className="text-sky-600">Personal Loan Easy Approval?</span>
               </h2>
               <p className="mt-3 text-sm leading-relaxed text-slate-800 md:text-base">
                 The application journey is simple. Share your details, verify your number, upload documents,
@@ -295,7 +295,7 @@ export default function PersonalLoanPage() {
 
         <section className="w-full bg-slate-100 px-4 pb-10 pt-4 md:px-10 lg:px-16 xl:px-24">
           <h2 className="text-center text-lg font-bold leading-tight text-slate-900 md:text-2xl">
-            Types of <span className="text-cyan-600">Online Personal Loan</span>
+            Types of <span className="text-sky-600">Online Personal Loan</span>
           </h2>
           <p className="mx-auto mt-3 max-w-4xl text-center text-sm leading-relaxed text-slate-800 md:text-base">
             Choose the right loan category based on your goal and repayment comfort.
@@ -307,7 +307,7 @@ export default function PersonalLoanPage() {
                 key={row[0]}
                 className="rounded-2xl border border-slate-200 bg-white p-5 shadow-[0_14px_32px_-26px_rgba(15,23,42,0.42)]"
               >
-                <h3 className="border-l-4 border-cyan-500 pl-3 text-base font-bold text-slate-900 md:text-lg">{row[0]}</h3>
+                <h3 className="border-l-4 border-sky-500 pl-3 text-base font-bold text-slate-900 md:text-lg">{row[0]}</h3>
                 <p className="mt-3 text-sm leading-relaxed text-slate-700 md:text-base">{row[1]}</p>
               </article>
             ))}
