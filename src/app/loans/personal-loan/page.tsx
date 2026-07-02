@@ -2,21 +2,21 @@
 
 import Image from "next/image";
 import Link from "next/link";
-import personalLoanImage from "@/assets/inDemand/personal.png";
-import chargesImage from "@/assets/heroSlide/loan-image.png";
+import personalLoanHeroImage from "@/assets/loans/pl-1.png";
+import personalLoanApplyImage from "@/assets/loans/pl-3.png";
+import personalLoanChargesImage from "@/assets/loans/pl-2.png";
 import { useAuth } from "@/lib/useAuth";
-import { FaCheckCircle } from "react-icons/fa";
 import { TrustedCustomersStats } from "../../../components/loan/TrustedCustomersStats";
 
 const featureCards = [
-  { title: "Swift approval", desc: "Upload basic documents and get fast conditional approval." },
-  { title: "Quick disbursement", desc: "Approved amount is digitally transferred to your account." },
-  { title: "Minimal documentation", desc: "Simple KYC and income checks keep the process lightweight." },
-  { title: "No collateral", desc: "Most personal loan options do not need collateral." },
-  { title: "Friendly interest options", desc: "Compare multiple lenders and select the best match." },
-  { title: "No hidden foreclosure surprises", desc: "Transparent lender terms for closure and prepayment." },
-  { title: "Customizable tenure", desc: "Choose repayment duration based on your monthly budget." },
-  { title: "Paperless process", desc: "Track your status online with easy digital communication." },
+  { id: "01", title: "Swift approval", desc: "Upload basic documents and get fast conditional approval." },
+  { id: "02", title: "Quick disbursement", desc: "Approved amount is digitally transferred to your account." },
+  { id: "03", title: "Minimal documentation", desc: "Simple KYC and income checks keep the process lightweight." },
+  { id: "04", title: "No collateral", desc: "Most personal loan options do not need collateral." },
+  { id: "05", title: "Friendly interest options", desc: "Compare multiple lenders and select the best match." },
+  { id: "06", title: "No hidden foreclosure surprises", desc: "Transparent lender terms for closure and prepayment." },
+  { id: "07", title: "Customizable tenure", desc: "Choose repayment duration based on your monthly budget." },
+  { id: "08", title: "Paperless process", desc: "Track your status online with easy digital communication." },
 ];
 
 const eligibility = [
@@ -60,161 +60,257 @@ const loanTypes = [
   ["Personal Overdraft Loan", "Get additional money whenever needed."],
 ];
 
+const heroHighlights = [
+  "For salaried individuals",
+  "No collateral required",
+  "Fast digital verification",
+  "Interest rate starts at 9.99% p.a.",
+];
+
 export default function PersonalLoanPage() {
   const { signedIn } = useAuth();
   const applyHref = signedIn ? "/loans/personal-loan/apply" : "/sign-in?next=/loans/personal-loan/apply";
 
   return (
-    <main className="min-h-screen w-full bg-background py-8">
+    <main className="min-h-screen w-full bg-background pb-8">
       <div className="flex w-full flex-col gap-8">
-        <section className="w-full px-40 py-10 md:px-10 lg:px-16">
-          <div className="w-full">
-            <div className="w-full">
-              <h1 className="text-xl font-bold text-slate-900 md:text-3xl">Personal Loan</h1>
-              <p className="mt-4 w-full text-sm leading-relaxed text-slate-900 md:text-lg">
-                Personal Loan is your go-to solution for managing financial emergencies. Meet all your urgent
-                financial needs with an instant personal loan while improving your credit score.
-                Explore personal loans at competitive interest rates with CapitalCare.
+        <section className="relative w-full bg-[radial-gradient(circle_at_top_left,#dbeafe_0%,#f8fafc_40%,#ffffff_100%)] px-4 pb-14 p-10 md:px-10 lg:px-16 xl:px-24">
+          <div className="absolute -left-10 top-16 h-44 w-44 rounded-full bg-sky-200/30 blur-2xl" aria-hidden />
+          <div className="absolute right-0 top-0 h-64 w-64 rounded-full bg-indigo-200/30 blur-3xl" aria-hidden />
+
+          <div className="relative grid items-center gap-8 lg:grid-cols-[1.1fr_0.9fr]">
+            <div className="space-y-6">
+              <p className="inline-flex rounded-full border border-sky-200 bg-white/80 px-4 py-2 text-xs font-semibold uppercase tracking-[0.2em] text-sky-700">
+                Personal Loan
               </p>
-              <p className="mt-3 w-full text-sm leading-relaxed text-slate-700 md:text-base">
-                The application journey is simple and practical: fill the required form fields,
-                upload your documents, and submit. There is no separate profile search step.
-                Once submitted, our loan team reviews your application and reaches out directly
-                to guide you through approval and disbursal.
+              <h1 className="text-xl font-bold leading-tight text-slate-900 md:text-3xl">
+                Handle urgent expenses confidently with a fast and flexible personal loan.
+              </h1>
+              <p className="max-w-3xl text-sm leading-relaxed text-slate-800 md:text-base">
+                Compare top lenders, choose the right tenure for your budget, and complete a simple online
+                application in minutes with CapitalCare.
+              </p>
+              <p className="max-w-3xl text-sm leading-relaxed text-slate-700 md:text-base">
+                The process is practical and paper-light: submit your details, upload required documents, and our
+                loan team will guide you through approval and disbursal.
               </p>
 
-              <div className="mt-5">
+              <div className="grid gap-3 sm:grid-cols-2">
+                {heroHighlights.map((item) => (
+                  <p
+                    key={item}
+                    className="rounded-2xl border border-slate-200 bg-white/90 px-4 py-3 text-sm font-medium text-slate-800 shadow-sm"
+                  >
+                    {item}
+                  </p>
+                ))}
+              </div>
+
+              <div className="flex flex-wrap gap-3">
                 <Link
                   href={applyHref}
-                  className="inline-flex rounded-full bg-linear-to-r from-sky-400 to-indigo-500 px-6 py-2.5 text-sm font-semibold text-white hover:brightness-110"
+                  className="inline-flex items-center justify-center rounded-xl bg-sky-700 px-6 py-3 text-sm font-semibold text-white transition hover:bg-sky-800"
                 >
                   Apply Now
                 </Link>
               </div>
+            </div>
 
-              <div className="mt-5 grid gap-3 text-sm text-slate-900 md:grid-cols-2 md:text-sm xl:grid-cols-4">
-                <p className="flex items-center gap-2"><FaCheckCircle className="text-sky-600" />For Salaried Individuals</p>
-                <p className="flex items-center gap-2"><FaCheckCircle className="text-sky-600" />No Collateral Required</p>
-                <p className="flex items-center gap-2"><FaCheckCircle className="text-sky-600" />Disbursal in 24 Hours</p>
-                <p className="flex items-center gap-2"><FaCheckCircle className="text-sky-600" />Interest Rate @ 9.99% p.a.</p>
-              </div>
+            <div className="overflow-hidden rounded-4xl border border-slate-200 bg-white shadow-[0_30px_80px_-40px_rgba(15,23,42,0.4)]">
+              <Image
+                src={personalLoanHeroImage}
+                alt="Personal loan overview"
+                className="h-auto w-full object-cover"
+                priority
+              />
             </div>
           </div>
         </section>
 
-        <section className="w-full bg-linear-to-br from-white via-sky-50 to-cyan-50 px-4 py-10 md:px-10 lg:px-16">
-          <h2 className="text-center text-xl font-bold text-slate-900 md:text-2xl">Online Personal Loan Features and Benefits</h2>
-          <p className="mx-auto mt-4 max-w-6xl text-center text-sm text-slate-800 md:text-base">
-            Quick personal loans are the commonly preferred approach to fulfilling monetary requirements.
+        <section className="w-full bg-slate-100 px-4 py-12 md:px-10 lg:px-16 xl:px-24">
+          <h2 className="text-center text-lg font-bold leading-tight text-slate-900 md:text-2xl">
+            Online Personal Loan <span className="text-sky-600">Features and Benefits</span>
+          </h2>
+          <p className="mx-auto mt-3 max-w-4xl text-center text-sm leading-relaxed text-slate-800 md:text-base">
+            Quick personal loans remain a preferred way to manage urgent and planned expenses with flexible repayment.
           </p>
 
-          <div className="mt-8 grid gap-5 md:grid-cols-2">
-            {featureCards.map((feature, index) => (
-              <article key={feature.title} className="rounded-3xl border border-sky-200/60 bg-white/95 p-5 shadow-[0_16px_45px_-28px_rgba(14,165,233,0.45)]">
-                <div className="mb-2 inline-flex rounded-full bg-sky-100 px-4 py-2 text-sm font-bold text-sky-700 md:text-lg">
-                  {String(index + 1).padStart(2, "0")}
+          <div className="mt-8 grid gap-6 md:grid-cols-2 xl:grid-cols-2">
+            {featureCards.map((feature) => (
+              <article
+                key={feature.id}
+                className="rounded-2xl border border-slate-200 bg-white p-6 shadow-[0_20px_45px_-35px_rgba(15,23,42,0.45)]"
+              >
+                <div className="mb-4 inline-flex h-12 w-12 items-center justify-center rounded-full bg-sky-100 text-2xl font-semibold text-sky-700">
+                  {feature.id}
                 </div>
-                <h3 className="text-base font-bold text-slate-900 md:text-lg">{feature.title}</h3>
-                <p className="mt-2 text-sm text-slate-700 md:text-base">{feature.desc}</p>
+                <h3 className="text-base font-bold text-sky-700 md:text-lg">{feature.title}</h3>
+                <p className="mt-3 text-sm leading-relaxed text-slate-800 md:text-base">{feature.desc}</p>
               </article>
             ))}
           </div>
         </section>
 
-        <section className="w-full px-4 md:px-10 lg:px-16">
-          <h2 className="text-lg font-bold text-slate-900 md:text-2xl">What are the Eligibility Criteria for a Quick Personal Loan?</h2>
-          <ul className="mt-4 list-disc space-y-2 pl-6 text-sm text-slate-800 md:text-base">
-            {eligibility.map((item) => (
-              <li key={item}>{item}</li>
-            ))}
-          </ul>
-        </section>
+        <section className="w-full bg-slate-100 px-4 py-10 md:px-10 lg:px-16 xl:px-24">
+          <div className="grid items-start gap-8 lg:grid-cols-[1fr_0.9fr]">
+            <div>
+              <h2 className="text-lg font-bold text-slate-900 md:text-2xl">
+                How to Apply for <span className="text-sky-600">Personal Loan Easy Approval?</span>
+              </h2>
+              <p className="mt-3 text-sm leading-relaxed text-slate-800 md:text-base">
+                The application journey is simple. Share your details, verify your number, upload documents,
+                and submit for review by our loan team.
+              </p>
 
-        <section className="w-full px-4 md:px-10 lg:px-16">
-          <h2 className="text-lg font-bold text-slate-900 md:text-2xl">What Documents are Required for Fast Approval Personal Loan?</h2>
-          <ul className="mt-4 list-disc space-y-2 pl-6 text-sm text-slate-800 md:text-base">
-            {documents.map((item) => (
-              <li key={item}>{item}</li>
-            ))}
-          </ul>
-        </section>
-
-        <section className="w-full px-4 md:px-10 lg:px-16">
-          <h2 className="text-lg font-bold text-slate-900 md:text-2xl">How to Apply for Personal Loan Easy Approval?</h2>
-          <div className="mt-5 grid gap-6 lg:grid-cols-[1fr_0.4fr]">
-            <ol className="space-y-3">
-              {applySteps.map((step, index) => (
-                <li key={step} className="flex items-center gap-3 rounded-xl border border-sky-200 bg-white px-4 py-3 text-sm text-slate-800 md:text-base">
-                  <span className="rounded-full bg-sky-100 px-3 py-1 text-sm font-semibold text-sky-700">{String(index + 1).padStart(2, "0")}</span>
-                  <span>{step}</span>
-                </li>
-              ))}
-            </ol>
-            <div className="relative min-h-72 overflow-hidden rounded-2xl border border-slate-200 bg-white">
-              <Image src={personalLoanImage} alt="Apply personal loan" fill className="object-cover" sizes="(max-width: 1024px) 100vw, 30vw" />
-            </div>
-          </div>
-
-          <div className="mt-6 rounded-2xl border border-sky-200 bg-sky-50 p-4 text-sm text-slate-700 md:text-base">
-            No separate search is required. Fill the form, upload documents, and submit. Our team will contact you.
-          </div>
-
-          <div className="mt-6 flex justify-center">
-            <Link
-              href={applyHref}
-              className="rounded-full bg-linear-to-r from-sky-400 to-indigo-500 px-10 py-3 text-sm font-semibold text-slate-950 transition hover:brightness-110 md:text-base"
-            >
-              Apply Now
-            </Link>
-          </div>
-        </section>
-
-        <section className="w-full px-4 md:px-10 lg:px-16">
-          <h2 className="text-lg font-bold text-slate-900 md:text-2xl">Personal Loan Interest Rate and Applicable Charges</h2>
-          <div className="mt-4 grid gap-6 lg:grid-cols-[1fr_0.4fr]">
-            <div className="overflow-hidden rounded-2xl border border-slate-200 bg-white">
-              <table className="w-full border-collapse text-left text-sm md:text-base">
-                <thead className="bg-slate-100">
-                  <tr>
-                    <th className="border border-slate-200 px-4 py-3">Specifics</th>
-                    <th className="border border-slate-200 px-4 py-3">Charges</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  {chargeRows.map((row) => (
-                    <tr key={row[0]}>
-                      <td className="border border-slate-200 px-4 py-3">{row[0]}</td>
-                      <td className="border border-slate-200 px-4 py-3">{row[1]}</td>
-                    </tr>
-                  ))}
-                </tbody>
-              </table>
-            </div>
-            <div className="relative min-h-80 overflow-hidden rounded-2xl border border-slate-200 bg-white">
-              <Image src={chargesImage} alt="Loan charges" fill className="object-cover" sizes="(max-width: 1024px) 100vw, 30vw" />
-            </div>
-          </div>
-        </section>
-
-        <section className="w-full px-4 pb-10 md:px-10 lg:px-16">
-          <h2 className="text-center text-lg font-bold text-slate-900 md:text-2xl">Types of Online Personal Loan</h2>
-          <div className="mt-4 overflow-hidden rounded-2xl border border-slate-200 bg-white">
-            <table className="w-full border-collapse text-left text-sm md:text-base">
-              <thead className="bg-slate-100">
-                <tr>
-                  <th className="border border-slate-200 px-4 py-3">Types of Personal Loan</th>
-                  <th className="border border-slate-200 px-4 py-3">Description</th>
-                </tr>
-              </thead>
-              <tbody>
-                {loanTypes.map((row) => (
-                  <tr key={row[0]}>
-                    <td className="border border-slate-200 px-4 py-3 font-semibold text-slate-900">{row[0]}</td>
-                    <td className="border border-slate-200 px-4 py-3">{row[1]}</td>
-                  </tr>
+              <div className="mt-6 grid gap-4 md:grid-cols-2">
+                {applySteps.map((step, index) => (
+                  <article
+                    key={step}
+                    className="rounded-2xl border border-slate-200 bg-white p-5 shadow-[0_20px_45px_-30px_rgba(15,23,42,0.45)]"
+                  >
+                    <h3 className="text-base font-bold text-slate-900 md:text-lg">Step {String(index + 1).padStart(2, "0")}</h3>
+                    <p className="mt-2 text-sm leading-relaxed text-slate-800 md:text-base">{step}</p>
+                  </article>
                 ))}
-              </tbody>
-            </table>
+              </div>
+
+              <div className="mt-6">
+                <Link
+                  href={applyHref}
+                  className="inline-flex items-center justify-center rounded-full border border-slate-900 bg-black px-7 py-3 text-sm font-semibold text-slate-200 transition hover:border-slate-900 hover:bg-slate-200 hover:text-slate-900"
+                >
+                  Apply Now
+                </Link>
+              </div>
+            </div>
+
+            <div className="flex items-center justify-center">
+              <div className="mx-auto w-full max-w-2xl overflow-hidden rounded-3xl border border-slate-200 bg-white shadow-[0_20px_60px_-35px_rgba(2,132,199,0.45)]">
+                <Image
+                  src={personalLoanApplyImage}
+                  alt="Personal loan application process"
+                  className="h-auto w-full object-cover object-center"
+                />
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <section className="w-full bg-slate-50 px-4 py-10 md:px-10 lg:px-16 xl:px-24">
+          <h2 className="text-center text-lg font-bold leading-tight text-slate-900 md:text-2xl">
+            Personal Loan <span className="text-sky-700">Eligibility and Documents</span>
+          </h2>
+          <p className="mx-auto mt-3 max-w-4xl text-center text-sm leading-relaxed text-slate-800 md:text-base">
+            Review these criteria and documents together before applying to avoid delays during verification.
+          </p>
+
+          <div className="mt-8 grid gap-6 lg:grid-cols-2">
+            <article className="rounded-3xl border border-slate-200 bg-[linear-gradient(90deg,#ffffff_0%,#eff6ff_100%)] p-6 shadow-[0_20px_55px_-35px_rgba(15,23,42,0.45)] md:p-8">
+              <h3 className="text-base font-bold leading-tight text-slate-900 md:text-xl">
+                Eligibility <span className="text-sky-700">Criteria</span>
+              </h3>
+              <p className="mt-3 text-sm leading-relaxed text-slate-800 md:text-base">
+                Basic checks help lenders evaluate repayment capability and process applications faster.
+              </p>
+
+              <ul className="mt-5 space-y-3 text-sm leading-relaxed text-slate-800 md:text-base">
+                {eligibility.map((item) => (
+                  <li key={item} className="flex items-start gap-3">
+                    <span aria-hidden className="mt-1 text-sky-700">✧</span>
+                    <span>{item}</span>
+                  </li>
+                ))}
+              </ul>
+
+              <div className="mt-6">
+                <Link
+                  href="/contact-us"
+                  className="inline-flex items-center justify-center rounded-full border border-slate-900 bg-black px-7 py-3 text-sm font-semibold text-slate-200 transition hover:border-slate-900 hover:bg-slate-200 hover:text-slate-900"
+                >
+                  Talk to Advisor
+                </Link>
+              </div>
+            </article>
+
+            <article className="rounded-3xl border border-slate-200 bg-[linear-gradient(90deg,#ffffff_0%,#eff6ff_100%)] p-6 shadow-[0_20px_55px_-35px_rgba(15,23,42,0.45)] md:p-8">
+              <h3 className="text-base font-bold leading-tight text-slate-900 md:text-xl">
+                Required <span className="text-sky-700">Documents</span>
+              </h3>
+              <p className="mt-3 text-sm leading-relaxed text-slate-800 md:text-base">
+                Keep these documents ready to reduce review time and improve approval turnaround.
+              </p>
+
+              <ul className="mt-5 space-y-3 text-sm leading-relaxed text-slate-800 md:text-base">
+                {documents.map((item) => (
+                  <li key={item} className="flex items-start gap-3">
+                    <span aria-hidden className="mt-1 text-sky-700">✧</span>
+                    <span>{item}</span>
+                  </li>
+                ))}
+              </ul>
+            </article>
+          </div>
+        </section>
+
+        <section className="w-full bg-slate-50 px-4 py-12 md:px-10 lg:px-16 xl:px-24">
+          <div className="grid items-center gap-8 rounded-3xl border border-slate-200 bg-[linear-gradient(90deg,#ffffff_0%,#eef2ff_100%)] p-6 shadow-[0_20px_55px_-35px_rgba(15,23,42,0.45)] lg:grid-cols-[1.15fr_0.85fr] md:p-8">
+            <div>
+              <h2 className="text-lg font-bold leading-tight text-slate-900 md:text-2xl">
+                Personal Loan <span className="text-sky-700">Interest Rate and Applicable Charges</span>
+              </h2>
+              <p className="mt-3 text-sm leading-relaxed text-slate-800 md:text-base">
+                Keep these rate and fee components in mind while comparing lenders for better transparency and budgeting.
+              </p>
+
+              <ul className="mt-5 space-y-3 text-sm leading-relaxed text-slate-800 md:text-base">
+                {chargeRows.map((row) => (
+                  <li key={row[0]} className="flex items-start gap-3">
+                    <span aria-hidden className="mt-1 text-sky-700">✧</span>
+                    <span>
+                      <span className="font-semibold text-slate-900">{row[0]}:</span> {row[1]}
+                    </span>
+                  </li>
+                ))}
+              </ul>
+
+              <div className="mt-6">
+                <Link
+                  href={applyHref}
+                  className="inline-flex items-center justify-center rounded-full border border-slate-900 bg-black px-7 py-3 text-sm font-semibold text-slate-200 transition hover:border-slate-900 hover:bg-slate-200 hover:text-slate-900"
+                >
+                  Apply Now
+                </Link>
+              </div>
+            </div>
+
+            <div className="mx-auto w-full max-w-md overflow-hidden rounded-3xl">
+              <Image
+                src={personalLoanChargesImage}
+                alt="Personal loan rate and charges"
+                className="h-auto w-full object-contain"
+              />
+            </div>
+          </div>
+        </section>
+
+        <section className="w-full bg-slate-100 px-4 pb-10 pt-4 md:px-10 lg:px-16 xl:px-24">
+          <h2 className="text-center text-lg font-bold leading-tight text-slate-900 md:text-2xl">
+            Types of <span className="text-sky-600">Online Personal Loan</span>
+          </h2>
+          <p className="mx-auto mt-3 max-w-4xl text-center text-sm leading-relaxed text-slate-800 md:text-base">
+            Choose the right loan category based on your goal and repayment comfort.
+          </p>
+
+          <div className="mx-auto mt-8 grid w-full max-w-5xl gap-4 md:grid-cols-2">
+            {loanTypes.map((row) => (
+              <article
+                key={row[0]}
+                className="rounded-2xl border border-slate-200 bg-white p-5 shadow-[0_14px_32px_-26px_rgba(15,23,42,0.42)]"
+              >
+                <h3 className="border-l-4 border-sky-500 pl-3 text-base font-bold text-slate-900 md:text-lg">{row[0]}</h3>
+                <p className="mt-3 text-sm leading-relaxed text-slate-700 md:text-base">{row[1]}</p>
+              </article>
+            ))}
           </div>
         </section>
 

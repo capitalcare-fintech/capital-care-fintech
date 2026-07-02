@@ -48,7 +48,7 @@ function calculateEmi(principal: number, annualRatePercent: number, tenureYears:
 
 function getSliderBackground(value: number, min: number, max: number) {
   const percent = ((value - min) / (max - min)) * 100;
-  return `linear-gradient(to right, #1e67ff 0%, #1e67ff ${percent}%, #e5e7eb ${percent}%, #e5e7eb 100%)`;
+  return `linear-gradient(to right, #0369a1 0%, #0369a1 ${percent}%, #e5e7eb ${percent}%, #e5e7eb 100%)`;
 }
 
 function clampValue(value: number, min: number, max: number) {

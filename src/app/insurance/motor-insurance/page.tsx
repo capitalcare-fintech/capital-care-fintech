@@ -298,10 +298,10 @@ export default function MotorInsurancePage() {
                             key={option.id}
                             className="rounded-2xl border border-slate-200 bg-white p-6 shadow-[0_20px_45px_-35px_rgba(15,23,42,0.45)]"
                         >
-                            <div className="mb-4 inline-flex h-12 w-12 items-center justify-center rounded-full bg-cyan-100 text-2xl font-semibold text-cyan-700">
+                            <div className="mb-4 inline-flex h-12 w-12 items-center justify-center rounded-full bg-sky-100 text-2xl font-semibold text-sky-700">
                                 {option.id}
                             </div>
-                            <h3 className="text-base font-bold text-cyan-700 md:text-lg">{option.title}</h3>
+                            <h3 className="text-base font-bold text-sky-700 md:text-lg">{option.title}</h3>
                             <p className="mt-3 text-sm leading-relaxed text-slate-800 md:text-base">{option.description}</p>
                         </article>
                     ))}
@@ -310,7 +310,7 @@ export default function MotorInsurancePage() {
                 <div className="mt-8 flex justify-center">
                     <Link
                         href={applyHref}
-                        className="inline-flex items-center justify-center rounded-xl bg-cyan-500 px-8 py-3 text-sm font-semibold text-white transition hover:bg-cyan-600"
+                        className="inline-flex items-center justify-center rounded-xl bg-sky-700 px-8 py-3 text-sm font-semibold text-white transition hover:brightness-110"
                     >
                         Apply Now
                     </Link>
