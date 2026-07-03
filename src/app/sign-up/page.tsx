@@ -90,6 +90,16 @@ export default function SignUpPage() {
       setErrors((e) => ({ ...e, phone: "Enter a valid 10-digit phone number" }));
       return;
     }
+
+    // DEV BYPASS: skip real OTP when NEXT_PUBLIC_DEV_SKIP_OTP=true in .env.local
+    if (process.env.NEXT_PUBLIC_DEV_SKIP_OTP === "true") {
+      log("sendOtp:dev-bypass-active");
+      setOtpSent(true);
+      setOtpVerified(true);
+      setOtpAccessToken("dev-bypass-token");
+      setErrors((e) => ({ ...e, phone: "", otp: "" }));
+      return;
+    }
     log("sendOtp:clicked", { phone: form.phone, isResend: otpSent });
     setSendLoading(true);
     setOtpVerified(false);

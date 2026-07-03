@@ -5,7 +5,9 @@ import bcrypt from "bcryptjs";
 const MSG91_VERIFY_ACCESS_TOKEN_URL = "https://control.msg91.com/api/v5/widget/verifyAccessToken";
 
 function signupLog(step: string, details?: unknown) {
-  console.log(`[POST /api/signup] ${step}`, details ?? "");
+  if (process.env.NODE_ENV === "development") {
+    console.log(`[POST /api/signup] ${step}`, details ?? "");
+  }
 }
 
 function signupError(step: string, details?: unknown) {
@@ -50,61 +52,88 @@ export async function POST(req: NextRequest) {
       );
     }
 
-    const msg91WidgetAuthKey = process.env.MSG91_WIDGET_AUTH_KEY;
+    // DEV BYPASS: skip MSG91 verification when dev token is used
+    if (otpAccessToken === "dev-bypass-token") {
+      if (process.env.NEXT_PUBLIC_DEV_SKIP_OTP !== "true") {
+        return NextResponse.json({ error: "Dev bypass not allowed in production" }, { status: 401 });
+      }
+      signupLog("msg91-dev-bypass-accepted");
+    } else {
+      const msg91WidgetAuthKey = process.env.MSG91_WIDGET_AUTH_KEY;
 
-    if (!msg91WidgetAuthKey) {
-      signupError("missing-msg91-auth-key");
-      return NextResponse.json(
-        { error: "MSG91 widget auth key is not configured" },
-        { status: 500 }
-      );
-    }
+      if (!msg91WidgetAuthKey) {
+        signupError("missing-msg91-auth-key");
+        return NextResponse.json(
+          { error: "MSG91 widget auth key is not configured" },
+          { status: 500 }
+        );
+      }
 
-    signupLog("verifying-msg91-access-token", {
-      verifyUrl: MSG91_VERIFY_ACCESS_TOKEN_URL,
-      hasAuthKey: Boolean(msg91WidgetAuthKey),
-    });
+      signupLog("verifying-msg91-access-token", {
+        verifyUrl: MSG91_VERIFY_ACCESS_TOKEN_URL,
+        hasAuthKey: Boolean(msg91WidgetAuthKey),
+      });
 
-    const verificationResponse = await fetch(MSG91_VERIFY_ACCESS_TOKEN_URL, {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({
-        authkey: msg91WidgetAuthKey,
-        "access-token": otpAccessToken,
-      }),
-    });
+      const verificationResponse = await fetch(MSG91_VERIFY_ACCESS_TOKEN_URL, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          authkey: msg91WidgetAuthKey,
+          "access-token": otpAccessToken,
+        }),
+      });
 
-    const verificationData = (await verificationResponse.json()) as {
-      type?: string;
-      message?: string;
-      verified?: boolean;
-      code?: number;
-    };
+      const verificationData = (await verificationResponse.json()) as {
+        type?: string;
+        message?: string;
+        verified?: boolean;
+        code?: number;
+      };
 
-    signupLog("msg91-verification-response", {
-      ok: verificationResponse.ok,
-      status: verificationResponse.status,
-      type: verificationData.type,
-      verified: verificationData.verified,
-      message: verificationData.message,
-      code: verificationData.code,
-    });
+      signupLog("msg91-verification-response", {
+        ok: verificationResponse.ok,
+        status: verificationResponse.status,
+        type: verificationData.type,
+        verified: verificationData.verified,
+        message: verificationData.message,
+        code: verificationData.code,
+      });
 
-    const otpVerified = verificationResponse.ok && (verificationData.type === "success" || verificationData.verified === true);
+      // code 703 = "otp already verified" — treat as success
+      const alreadyVerified = verificationData.code === 703;
+      const otpVerified =
+        alreadyVerified ||
+        (verificationResponse.ok &&
+          (verificationData.type === "success" || verificationData.verified === true));
 
-    if (!otpVerified) {
-      signupError("msg91-verification-failed", verificationData);
-      return NextResponse.json(
-        { error: verificationData.message || "OTP verification failed" },
-        { status: 401 }
-      );
-    }
+      if (!otpVerified) {
+        signupError("msg91-verification-failed", verificationData);
+        return NextResponse.json(
+          { error: verificationData.message || "OTP verification failed" },
+          { status: 401 }
+        );
+      }
 
-    signupLog("msg91-verification-passed");
+      if (alreadyVerified) {
+        signupLog("msg91-already-verified-treated-as-success");
+      } else {
+        signupLog("msg91-verification-passed");
+      }
+    } // end OTP verification block
 
     const db = getDB();
+
+    // Auto-create users table if it doesn't exist yet
+    await db.query(`
+      CREATE TABLE IF NOT EXISTS users (
+        id         INT AUTO_INCREMENT PRIMARY KEY,
+        fullName   VARCHAR(255) NOT NULL,
+        phone      VARCHAR(15)  NOT NULL UNIQUE,
+        password   VARCHAR(255) NOT NULL,
+        created_at DATETIME     NOT NULL DEFAULT CURRENT_TIMESTAMP
+      )
+    `);
+
     signupLog("db-lookup-existing-user", { phone });
 
     const [existing] = (await db.query(

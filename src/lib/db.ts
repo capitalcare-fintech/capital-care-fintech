@@ -99,8 +99,21 @@ export function getDB(): Pool {
   const existing = globalForMysql.__mysqlPool;
   if (existing) return existing;
 
-  const pool = mysql.createPool(buildPoolConfig());
+  const config = buildPoolConfig();
+  console.log(`[db] Connecting to ${config.host}:${config.port} / ${config.database} as ${config.user}`);
+  const pool = mysql.createPool(config);
   globalForMysql.__mysqlPool = pool;
+
+  // Test the connection on first pool creation
+  pool.getConnection()
+    .then((conn) => {
+      console.log("[db] ✓ Connection pool established successfully");
+      conn.release();
+    })
+    .catch((err) => {
+      console.error("[db] ✗ Connection pool test failed:", err.message);
+    });
+
   return pool;
 }
 

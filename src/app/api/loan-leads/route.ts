@@ -37,7 +37,6 @@ async function ensureTable() {
 export async function POST(req: NextRequest) {
   try {
     const body = await req.json();
-    console.log("[POST /api/loan-leads] body:", body);
 
     const { fullName, mobile, email, loanType, loanAmount, city, message } = body;
 

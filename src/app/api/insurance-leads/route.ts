@@ -23,7 +23,6 @@ async function ensureTable() {
 export async function POST(req: NextRequest) {
   try {
     const body = await req.json();
-    console.log("[POST /api/insurance-leads] body:", body);
 
     const { fullName, mobile, email, insuranceType, city, message } = body;
 
@@ -81,8 +80,8 @@ export async function POST(req: NextRequest) {
             <div style="padding:16px 24px;background:#f1f5f9;font-size:12px;color:#94a3b8">Sent via CapitalCare Insurance Lead Form</div>
           </div>`,
       });
-    } catch (mailErr) {
-      console.warn("[POST /api/insurance-leads] Email failed (non-fatal):", mailErr);
+    } catch {
+      // email failure is non-fatal
     }
 
     return NextResponse.json(
