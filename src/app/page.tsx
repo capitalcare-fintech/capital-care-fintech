@@ -15,7 +15,7 @@ import InstantLoan from "@/components/home/InstantLoan";
 export default function Home() {
   return (
     <>
-    <InstantLoan />
+    {/* <InstantLoan /> */}
       {/* <CreditScorePopup /> */}
       <HeroSlider />
       {/* <TrendingLoans /> */}
