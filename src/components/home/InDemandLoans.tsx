@@ -1,5 +1,8 @@
+"use client";
+
 import Link from "next/link";
 import Image from "next/image";
+import { useRouter } from "next/navigation";
 import { IN_DEMAND_LOANS } from "@/lib/homeContent";
 
 const CARD_TONES = [
@@ -26,6 +29,8 @@ const CARD_TONES = [
 ] as const;
 
 export function InDemandLoans() {
+  const router = useRouter();
+
   return (
     <section id="in-demand-loans" className="w-full px-4 pt-14 md:px-6">
       <div className="flex items-end justify-between gap-4">
@@ -44,40 +49,54 @@ export function InDemandLoans() {
           const tone = CARD_TONES[index % CARD_TONES.length];
 
           return (
-          <Link
-            key={card.title}
-            href={card.href}
-            className={[
-              "group relative overflow-hidden rounded-3xl border p-4 shadow-sm transition hover:-translate-y-0.5",
-              tone.shell,
-            ].join(" ")}
-          >
-            <div className="relative overflow-hidden rounded-2xl bg-white/90 p-2">
-            {/* <div className="relative h-40 w-full rounded-xl bg-gray-100 flex items-center justify-center"> */}
-              <div className="relative h-40 w-full overflow-hidden rounded-xl">
-                <Image
-                  src={card.image}
-                  alt={card.imageAlt}
-                  fill
-                  sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 25vw"
-                  className="object-contain transition duration-300 group-hover:scale-105"
-                />
-              </div>
-            </div>
-
-            <div className="relative mt-3">
-              <div className="flex items-center justify-between gap-3">
-                <div className={["text-2xl font-semibold", tone.title].join(" ")}>{card.title}</div>
-                <div className={["rounded-full border bg-white px-2.5 py-1 text-[11px] font-semibold", tone.chip].join(" ")}>
-                  Apply now
+            <div
+              key={card.title}
+              className={[
+                "group relative isolate cursor-pointer overflow-hidden rounded-3xl border p-4 shadow-sm transition hover:-translate-y-0.5",
+                tone.shell,
+              ].join(" ")}
+              onClick={() => router.push(card.href)}
+              role="link"
+              tabIndex={0}
+              onKeyDown={(event) => {
+                if (event.key === "Enter" || event.key === " ") {
+                  event.preventDefault();
+                  router.push(card.href);
+                }
+              }}
+            >
+              <div className="relative overflow-hidden rounded-2xl bg-white/90 p-2">
+                <div className="relative h-40 w-full overflow-hidden rounded-xl">
+                  <Image
+                    src={card.image}
+                    alt={card.imageAlt}
+                    fill
+                    sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 25vw"
+                    className="object-contain transition duration-300 group-hover:scale-105"
+                  />
                 </div>
               </div>
-              <div className="mt-2 text-sm text-slate-700">{card.subtitle}</div>
-              <div className="mt-4 text-xs font-semibold uppercase tracking-widest text-slate-600">
-                Explore →
+
+              <div className="relative mt-3">
+                <div className="flex items-center justify-between gap-3">
+                  <div className={["text-2xl font-semibold", tone.title].join(" ")}>{card.title}</div>
+                  <Link
+                    href={card.applyHref}
+                    onClick={(event) => event.stopPropagation()}
+                    className={[
+                      "relative z-20 rounded-full border bg-white px-2.5 py-1 text-[11px] font-semibold",
+                      tone.chip,
+                    ].join(" ")}
+                  >
+                    Apply now
+                  </Link>
+                </div>
+                <div className="mt-2 text-sm text-slate-700">{card.subtitle}</div>
+                <div className="mt-4 text-xs font-semibold uppercase tracking-widest text-slate-600">
+                  Explore →
+                </div>
               </div>
             </div>
-          </Link>
           );
         })}
       </div>

@@ -20,6 +20,10 @@ export default function OtpGateLayout({ title, children }: Props) {
     setChecked(true);
   }, []);
 
+  useEffect(() => {
+    window.scrollTo({ top: 0, left: 0, behavior: "auto" });
+  }, []);
+
   function handleVerified(mobile: string) {
     sessionStorage.setItem(STORAGE_KEY, mobile);
     setVerifiedMobile(mobile);

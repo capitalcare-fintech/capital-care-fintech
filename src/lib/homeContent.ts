@@ -149,6 +149,7 @@ export type InDemandCard = {
   title: string;
   subtitle: string;
   href: string;
+  applyHref: string;
   image: StaticImageData;
   imageAlt: string;
 };
@@ -157,7 +158,8 @@ export const IN_DEMAND_LOANS: InDemandCard[] = [
   {
     title: "Personal Loan",
     subtitle: "Instant to 24h",
-    href: "/loans/personal-loan/apply",
+    href: "/loans/personal-loan",
+    applyHref: "/loans/personal-loan/apply",
     image: inDemandPersonalImage,
     imageAlt: "Personal loan form illustration",
   },
@@ -166,21 +168,24 @@ export const IN_DEMAND_LOANS: InDemandCard[] = [
     // title: "Loan Against Property",
     // subtitle: "Collateral-backed security",
     subtitle: "Loan Against Property",
-    href: "/loans/loan-against-property/apply",
+    href: "/loans/loan-against-property",
+    applyHref: "/loans/loan-against-property/apply",
     image: inDemandEducationImage,
     imageAlt: "Loan against property illustration",
   },
   {
     title: "Business Loan",
     subtitle: "Grow smarter",
-    href: "/loans/business-loan/apply",
+    href: "/loans/business-loan",
+    applyHref: "/loans/business-loan/apply",
     image: inDemandBusinessImage,
     imageAlt: "Business growth financing illustration",
   },
   {
     title: "Home Loan",
     subtitle: "Long-term comfort",
-    href: "/loans/home-loan/apply",
+    href: "/loans/home-loan",
+    applyHref: "/loans/home-loan/apply",
     image: inDemandHomeImage,
     imageAlt: "Home loan and mortgage illustration",
   },
