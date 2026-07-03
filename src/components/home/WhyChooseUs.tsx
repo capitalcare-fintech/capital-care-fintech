@@ -71,7 +71,7 @@ export function WhyChooseUs() {
                 <p className="text-xs font-semibold uppercase tracking-widest text-sky-600">Our advantages</p>
                 <h2 className="mt-2 text-2xl font-bold tracking-tight text-slate-900 md:text-3xl">
                     Why Choose{" "}
-                    <span className="bg-linear-to-r from-sky-500 to-indigo-500 bg-clip-text text-transparent">
+                    <span className="text-sky-700">
                         Capital Care Fintech
                     </span>
                 </h2>

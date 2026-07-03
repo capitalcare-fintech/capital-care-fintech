@@ -18,7 +18,11 @@ import {
   universalSompoLogo,
   magmaIsuranceLogo,
   orientalInsuranceLogo,
-  niva_bupaLogo
+  niva_bupaLogo,
+  finnableLogo,
+  incredLogo,
+  ujjvanBankLogo,
+  werizeLogo,
 } from "@/assets/partners";
 
 const axisBankPartner = {
@@ -121,6 +125,26 @@ const orientalInsurance = {
   logo: orientalInsuranceLogo,
 };
 
+const finnablePartner = {
+  name: "Finnable",
+  logo: finnableLogo,
+};
+
+const incredPartner = {
+  name: "Incred",
+  logo: incredLogo,
+};
+
+const ujjvanBankPartner = {
+  name: "Ujjvan Small Finance Bank",
+  logo: ujjvanBankLogo,
+};
+
+const werizePartner = {
+  name: "Werize",
+  logo: werizeLogo,
+};
+
 export const loanPartners = [
   axisBankPartner,
   hdfcBankPartner,
@@ -132,7 +156,10 @@ export const loanPartners = [
   piramalFinancePartner,
   poonawallaFincorpPartner,
   smfgIndiaCreditPartner,
-  tataCapitalPartner,
+  finnablePartner,
+  incredPartner,
+  ujjvanBankPartner,
+  werizePartner,
 ];
 
 export const insurancePartners = [
@@ -145,6 +172,7 @@ export const insurancePartners = [
   magmaInsurance,
   orientalInsurance,
   nivaBupa,
+  tataCapitalPartner,
 ];
 
 export const partners = [...loanPartners, ...insurancePartners];

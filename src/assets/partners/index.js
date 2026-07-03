@@ -18,6 +18,11 @@ import universalSompoLogo from "./UniversalSompo_LOGO.jpg";
 import magmaIsuranceLogo from "./magmaInsuranceLogo.png";
 import niva_bupaLogo from "./niva-bupaLogo.png";
 import orientalInsuranceLogo from "./oriental-insuranceLogo.png";
+import finnableLogo from "./Finnable.jpg";
+import incredLogo from "./Incred.avif";
+import tataCaptialWebpLogo from "./Tata capital.webp";
+import ujjvanBankLogo from "./Ujjivan-Small-Finance-Bank.webp";
+import werizeLogo from "./werize.webp";
 
 const PARTNER_LOGOS = {
 	magmaIsuranceLogo,
@@ -40,6 +45,11 @@ const PARTNER_LOGOS = {
 	starHealthLogo,
 	tataCapitalLogo,
 	universalSompoLogo,
+	finnableLogo,
+	incredLogo,
+	tataCaptialWebpLogo,
+	ujjvanBankLogo,
+	werizeLogo,
 };
 
 export {
@@ -63,6 +73,11 @@ export {
 	starHealthLogo,
 	tataCapitalLogo,
 	universalSompoLogo,
+	finnableLogo,
+	incredLogo,
+	tataCaptialWebpLogo,
+	ujjvanBankLogo,
+	werizeLogo,
 	PARTNER_LOGOS,
 };
 

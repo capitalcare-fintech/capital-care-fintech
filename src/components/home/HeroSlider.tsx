@@ -250,7 +250,7 @@ export function HeroSlider({
                 <div className="flex flex-wrap items-center gap-3 pt-1">
                   <Link
                     href={active.ctaHref}
-                    className="rounded-full bg-linear-to-r from-sky-500 to-cyan-500 px-6 py-3 text-sm font-semibold text-white shadow-md shadow-sky-200 transition hover:brightness-110"
+                    className="rounded-full bg-sky-700 px-6 py-3 text-sm font-semibold text-white shadow-md shadow-sky-200 transition hover:brightness-110"
                   >
                     {active.ctaLabel}
                   </Link>
@@ -310,7 +310,7 @@ export function HeroSlider({
                     }}
                     className={[
                       "h-2.5 w-2.5 rounded-full transition",
-                      i === index ? "bg-sky-500" : "bg-sky-200 hover:bg-sky-300",
+                      i === index ? "bg-sky-700" : "bg-sky-600 hover:bg-sky-700",
                     ].join(" ")}
                   />
                 ))}

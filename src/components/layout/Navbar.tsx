@@ -187,7 +187,7 @@ export function Navbar() {
                 <Link
                   key={item.label}
                   href={item.href}
-                  className={`rounded-full px-4 py-2 text-sm ${pathname===item.href?"text-blue-700 font-semibold": "text-slate-700 font-medium"} hover:bg-slate-100 hover:text-slate-900 dark:text-slate-300 dark:hover:bg-slate-800 dark:hover:text-white`}
+                  className={`rounded-full px-4 py-2 text-sm ${pathname===item.href?"text-sky-700 font-semibold": "text-slate-700 font-medium"} hover:bg-slate-100 hover:text-slate-900 dark:text-slate-300 dark:hover:bg-slate-800 dark:hover:text-white`}
                 >
                   {item.label}
                 </Link>
@@ -212,13 +212,13 @@ export function Navbar() {
               >
                 <button
                   type="button"
-                  className={`inline-flex cursor-pointer items-center gap-1.5 rounded-full px-4 py-2  hover:bg-slate-100 hover:text-slate-900 dark:text-slate-300 dark:hover:bg-slate-800 dark:hover:text-white ${pathname.startsWith(`/${item.label.toLowerCase()}`) ? "text-blue-700 font-semibold" : "text-sm font-medium text-slate-700"}`}
+                  className={`inline-flex cursor-pointer items-center gap-1.5 rounded-full px-4 py-2  hover:bg-slate-100 hover:text-slate-900 dark:text-slate-300 dark:hover:bg-slate-800 dark:hover:text-white ${pathname.startsWith(`/${item.label.toLowerCase()}`) ? "text-sky-700 font-semibold" : "text-sm font-medium text-slate-700"}`}
                   aria-haspopup="menu"
                   aria-expanded={open}
                   onFocus={() => setOpenLabel(item.label)}
                   onClick={() =>
-                    setOpenLabel((prev) => (prev === item.label ? null : item.label))
-                  }
+                    setOpenLabel((prev) => (prev === item.label ? null : item.label))}
+                  
                 >
                   {item.label}
                   <IconChevronDown
@@ -270,7 +270,7 @@ export function Navbar() {
               <button
                 type="button"
                 onClick={() => signOut()}
-                className="rounded-full bg-linear-to-r from-sky-400 to-indigo-500 px-4 py-2 text-sm font-semibold text-slate-950 hover:brightness-110"
+                className="rounded-full bg-sky-700 px-4 py-2 text-sm font-semibold text-white hover:brightness-110"
               >
                 Sign out
               </button>
@@ -284,7 +284,7 @@ export function Navbar() {
                 </Link>
                 <Link
                   href="/sign-up"
-                  className="rounded-full bg-linear-to-r from-sky-400 to-indigo-500 px-4 py-2 text-sm font-semibold text-slate-950 hover:brightness-110"
+                  className="rounded-full bg-sky-700 px-4 py-2 text-sm font-semibold text-white hover:brightness-110"
                 >
                   Sign up
                 </Link>
@@ -347,7 +347,7 @@ export function Navbar() {
                       signOut();
                       setMobileOpen(false);
                     }}
-                    className="w-full rounded-xl bg-linear-to-r from-sky-400 to-indigo-500 px-4 py-3 text-sm font-semibold text-slate-950 hover:brightness-110"
+                    className="w-full rounded-xl bg-sky-700 px-4 py-3 text-sm font-semibold text-white hover:brightness-110"
                   >
                     Sign out
                   </button>
@@ -363,7 +363,7 @@ export function Navbar() {
                     <Link
                       href="/sign-up"
                       onClick={() => setMobileOpen(false)}
-                      className="rounded-xl bg-linear-to-r from-sky-400 to-indigo-500 px-4 py-3 text-center text-sm font-semibold text-slate-950 hover:brightness-110"
+                      className="rounded-xl bg-sky-700 px-4 py-3 text-center text-sm font-semibold text-white hover:brightness-110"
                     >
                       Sign up
                     </Link>

@@ -99,7 +99,7 @@ export function LoanDetailSection() {
               </ul>
               <Link
                 href={href}
-                className="inline-flex w-fit items-center rounded-xl bg-linear-to-r from-sky-400 to-indigo-500 px-5 py-2.5 text-sm font-semibold text-white transition hover:brightness-110"
+                className="inline-flex w-fit items-center rounded-xl bg-sky-700 px-5 py-2.5 text-sm font-semibold text-white transition hover:brightness-110"
               >
                 Apply Now →
               </Link>

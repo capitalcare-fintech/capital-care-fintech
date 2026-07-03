@@ -23,7 +23,7 @@ export function StatsSection() {
         transition={{ duration: 0.5, ease: easeOut }}
         className="overflow-hidden "
       >
-        <p className="mb-6 text-center text-xs font-semibold uppercase tracking-widest text-sky-600">
+        <p className="mb-6 text-center text-xs font-semibold uppercase tracking-widest text-sky-700">
           Trusted by our customers
         </p>
         <div className="mx-auto flex w-full max-w-6xl flex-wrap justify-center gap-5 sm:gap-6 lg:gap-8">
@@ -36,7 +36,7 @@ export function StatsSection() {
               transition={{ duration: 0.4, delay: i * 0.07, ease: easeOut }}
               className="flex w-full min-w-45 max-w-65 flex-2 flex-col items-center gap-2 rounded-2xl px-4 py-3 text-center"
             >
-              <div className="inline-flex h-10 w-10 items-center justify-center rounded-xl bg-sky-50 text-sky-500">
+              <div className="inline-flex h-10 w-10 items-center justify-center rounded-xl bg-sky-50 text-sky-700">
                 <Icon className="h-5 w-5" />
               </div>
               <p className="text-2xl font-bold text-slate-900">{value}</p>
