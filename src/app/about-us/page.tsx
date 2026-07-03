@@ -1,8 +1,8 @@
 import type { Metadata } from "next";
 import Image from "next/image";
 import Link from "next/link";
-import teamMemberA from "@/assets/profile/risabhbhaiya.jpg";
-import teamMemberB from "@/assets/reviews/manIcon.png";
+import teamMemberA from "@/assets/profile/CEO.jpg";
+import teamMemberB from "@/assets/profile/Marketing Head.jpeg";
 import { aboutUs, mission, whyCapitalCare } from "./content";
 
 export const metadata: Metadata = {
@@ -28,10 +28,10 @@ const team = [
     aboutUs: "/",
   },
   {
-    name: "Manish",
-    role: "Chief Marketing Officer",
+    name: "Shiva Singh",
+    role: "Marketing Head",
     image: teamMemberB,
-    link: "/",
+    link: "https://www.linkedin.com/in/shiva-thakur-7841b2389?utm_source=share_via&utm_content=profile&utm_medium=member_android",
     aboutUs: "/",
   },
 ];
