@@ -50,7 +50,7 @@ export function Footer() {
               >
                 <FaEnvelope className="h-3.5 w-3.5" />
                 <span className="text-xs leading-none font-semibold sm:text-sm">
-                  info@capitalcare.in
+                  capitalcaregroupfbd@gmail.com
                 </span>
               </a>
             </div>
@@ -115,7 +115,7 @@ export function Footer() {
               Capital Care Group,
               {/* Capital Care Fintech Private Limited, */}
               <br />
-              Office No. 337, 3rd Floor Shubham Tower, Neelam Chowk,
+              Office No. 437, 4th Floor Shubham Tower, Neelam Chowk,
               <br />
               Faridabad, Haryana.
             </p>

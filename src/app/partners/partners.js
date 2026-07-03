@@ -136,7 +136,7 @@ const incredPartner = {
 };
 
 const ujjvanBankPartner = {
-  name: "Ujjvan Small Finance Bank",
+  name: "Ujjivan Small Finance Bank",
   logo: ujjvanBankLogo,
 };
 

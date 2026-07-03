@@ -10,8 +10,8 @@ const CARDS = [
   {
     icon: MdEmail,
     label: "Email Id:",
-    value: "info@capitalcare.in",
-    href: "mailto:info@capitalcare.in",
+    value: "capitalcaregroupfbd@gmail.com",
+    href: "mailto:capitalcaregroupfbd@gmail.com",
     description: "If you have any queries, feel free to write to us. Our team will respond within 24 hours.",
     accent: "from-sky-400 to-cyan-400",
     iconBg: "bg-sky-50 text-sky-500",
