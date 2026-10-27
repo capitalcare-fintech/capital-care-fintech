@@ -1,8 +1,9 @@
 import type { Metadata } from "next";
 import Image from "next/image";
 import Link from "next/link";
-import teamMemberA from "@/assets/profile/CEO.jpg";
-import teamMemberB from "@/assets/profile/Marketing Head.jpeg";
+import teamMemberA from "@/assets/profile/CEO.jpeg";
+// import teamMemberB from "@/assets/profile/Marketing Head.jpeg";
+import teamMemberB from "@/assets/reviews/manIcon.png"
 import { aboutUs, mission, whyCapitalCare } from "./content";
 
 export const metadata: Metadata = {
