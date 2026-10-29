@@ -1,4 +1,4 @@
-import { getDB } from "@/lib/db";
+﻿import { getDB } from "@/lib/db";
 import {
   INSURANCE_APPLICATION_CONFIG,
   INSURANCE_APPLICATION_STATUSES,
@@ -6,6 +6,7 @@ import {
   isInsuranceType,
   type InsuranceApplicationStatus,
 } from "@/lib/insurance-application-config";
+import { sendToGoogleSheets } from "@/lib/googleSheets";
 import { sendInsuranceApplicationAdminEmail } from "@/lib/mail/mailer/insurance-application-mailer";
 import { sendUserInsuranceApplicationConfirmationEmail } from "@/lib/mail/mailer/insurance-application-user-mailer";
 import { NextRequest, NextResponse } from "next/server";
@@ -230,6 +231,18 @@ export async function POST(req: NextRequest) {
       fullName,
       email,
       mobile,
+    });
+
+    // Send to Google Sheets (non-fatal ├ö├ç├Â MySQL already succeeded at this point)
+    await sendToGoogleSheets({
+      formType: "InsuranceApplication",
+      applicationId,
+      insuranceType: insuranceTypeRaw,
+      insuranceTypeLabel: INSURANCE_APPLICATION_CONFIG[insuranceTypeRaw].label,
+      fullName,
+      email,
+      mobile,
+      ...formData,
     });
 
     return NextResponse.json(

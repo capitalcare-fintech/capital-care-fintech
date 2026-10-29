@@ -1,4 +1,5 @@
-import { getDB } from "@/lib/db";
+﻿import { getDB } from "@/lib/db";
+import { sendToGoogleSheets } from "@/lib/googleSheets";
 import { NextRequest, NextResponse } from "next/server";
 import nodemailer from "nodemailer";
 
@@ -30,20 +31,26 @@ export async function POST(req: NextRequest) {
             [fullName, email, phone, message]
         );
 
-        // Send admin email
-        const transporter = nodemailer.createTransport({
-            service: "gmail",
-            auth: {
-                user: process.env.EMAIL_USER,
-                pass: process.env.EMAIL_PASS,
-            },
-        });
+        // Send admin email (non-fatal ÔÇö email failure must not return HTTP 500)
+        try {
+            console.log("[contact] EMAIL_USER present:", Boolean(process.env.EMAIL_USER));
+            console.log("[contact] EMAIL_PASS present:", Boolean(process.env.EMAIL_PASS));
 
-        await transporter.sendMail({
-            from: `"CapitalCare Contact" <${process.env.EMAIL_USER}>`,
-            to: process.env.ADMIN_EMAIL ?? process.env.EMAIL_USER,
-            subject: `New Contact Message from ${fullName}`,
-            html: `
+            const transporter = nodemailer.createTransport({
+                host: "smtp.gmail.com",
+                port: 587,
+                secure: false,
+                auth: {
+                    user: process.env.EMAIL_USER,
+                    pass: process.env.EMAIL_PASS,
+                },
+            });
+
+            await transporter.sendMail({
+                from: `"CapitalCare Contact" <${process.env.EMAIL_USER}>`,
+                to: process.env.ADMIN_EMAIL ?? process.env.EMAIL_USER,
+                subject: `New Contact Message from ${fullName}`,
+                html: `
         <div style="font-family:sans-serif;max-width:520px;margin:auto;border:1px solid #e2e8f0;border-radius:12px;overflow:hidden">
           <div style="background:linear-gradient(135deg,#38bdf8,#6366f1);padding:24px">
             <h2 style="color:#fff;margin:0">New Contact Message</h2>
@@ -61,6 +68,20 @@ export async function POST(req: NextRequest) {
           </div>
         </div>
       `,
+            });
+            console.log("[contact] Admin email sent successfully");
+        } catch (mailErr) {
+            // Log but do NOT re-throw ÔÇö the lead is already saved in MySQL
+            console.error("[contact] Admin email failed (non-fatal):", mailErr);
+        }
+
+        // Send to Google Sheets (non-fatal ÔÇö failure must not break the response)
+        await sendToGoogleSheets({
+            formType: "Contact",
+            fullName,
+            email,
+            phone,
+            message,
         });
 
         return NextResponse.json({ message: "Message sent successfully" }, { status: 201 });

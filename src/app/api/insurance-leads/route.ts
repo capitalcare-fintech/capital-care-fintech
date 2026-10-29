@@ -1,4 +1,5 @@
 import { getDB } from "@/lib/db";
+import { sendToGoogleSheets } from "@/lib/googleSheets";
 import { NextRequest, NextResponse } from "next/server";
 import nodemailer from "nodemailer";
 
@@ -55,7 +56,9 @@ export async function POST(req: NextRequest) {
     // Send admin email (non-fatal)
     try {
       const transporter = nodemailer.createTransport({
-        service: "gmail",
+        host: "smtp.gmail.com",
+        port: 587,
+        secure: false,
         auth: { user: process.env.EMAIL_USER, pass: process.env.EMAIL_PASS },
       });
       await transporter.sendMail({
@@ -65,7 +68,7 @@ export async function POST(req: NextRequest) {
         html: `
           <div style="font-family:sans-serif;max-width:520px;margin:auto;border:1px solid #e2e8f0;border-radius:12px;overflow:hidden">
             <div style="background:linear-gradient(135deg,#10b981,#0d9488);padding:24px">
-              <h2 style="color:#fff;margin:0">New Insurance Lead — ${insuranceType}</h2>
+              <h2 style="color:#fff;margin:0">New Insurance Lead Ãƒâ€Ãƒâ€¡ÃƒÂ¶ ${insuranceType}</h2>
             </div>
             <div style="padding:24px;background:#f8fafc">
               <table style="width:100%;border-collapse:collapse;font-size:14px">
@@ -83,6 +86,17 @@ export async function POST(req: NextRequest) {
     } catch {
       // email failure is non-fatal
     }
+
+    // Send to Google Sheets (non-fatal)
+    await sendToGoogleSheets({
+      formType: "InsuranceLead",
+      fullName: fullName.trim(),
+      mobile: mobile.trim(),
+      email: email.trim(),
+      insuranceType: insuranceType.trim(),
+      city: city.trim(),
+      message: (message ?? "").trim(),
+    });
 
     return NextResponse.json(
       { success: true, message: "Insurance lead submitted successfully" },

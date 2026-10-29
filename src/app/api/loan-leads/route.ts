@@ -1,4 +1,5 @@
 import { getDB } from "@/lib/db";
+import { sendToGoogleSheets } from "@/lib/googleSheets";
 import { NextRequest, NextResponse } from "next/server";
 import nodemailer from "nodemailer";
 
@@ -69,7 +70,9 @@ export async function POST(req: NextRequest) {
     // Send admin email (non-fatal)
     try {
       const transporter = nodemailer.createTransport({
-        service: "gmail",
+        host: "smtp.gmail.com",
+        port: 587,
+        secure: false,
         auth: { user: process.env.EMAIL_USER, pass: process.env.EMAIL_PASS },
       });
       await transporter.sendMail({
@@ -79,7 +82,7 @@ export async function POST(req: NextRequest) {
         html: `
           <div style="font-family:sans-serif;max-width:520px;margin:auto;border:1px solid #e2e8f0;border-radius:12px;overflow:hidden">
             <div style="background:linear-gradient(135deg,#38bdf8,#6366f1);padding:24px">
-              <h2 style="color:#fff;margin:0">New Loan Lead — ${loanType}</h2>
+              <h2 style="color:#fff;margin:0">New Loan Lead Ãƒâ€Ãƒâ€¡ÃƒÂ¶ ${loanType}</h2>
             </div>
             <div style="padding:24px;background:#f8fafc">
               <table style="width:100%;border-collapse:collapse;font-size:14px">
@@ -87,7 +90,7 @@ export async function POST(req: NextRequest) {
                 <tr><td style="padding:8px 0;color:#64748b">Mobile</td><td style="padding:8px 0;color:#0f172a">${mobile}</td></tr>
                 <tr><td style="padding:8px 0;color:#64748b">Email</td><td style="padding:8px 0;color:#0f172a">${email}</td></tr>
                 <tr><td style="padding:8px 0;color:#64748b">Loan Type</td><td style="padding:8px 0;color:#0f172a">${loanType}</td></tr>
-                <tr><td style="padding:8px 0;color:#64748b">Loan Amount</td><td style="padding:8px 0;color:#0f172a">₹${loanAmount}</td></tr>
+                <tr><td style="padding:8px 0;color:#64748b">Loan Amount</td><td style="padding:8px 0;color:#0f172a">Ãƒâ€ÃƒÂ©Ã¢â€¢Â£${loanAmount}</td></tr>
                 <tr><td style="padding:8px 0;color:#64748b">City</td><td style="padding:8px 0;color:#0f172a">${city}</td></tr>
                 ${message ? `<tr><td style="padding:8px 0;color:#64748b;vertical-align:top">Message</td><td style="padding:8px 0;color:#0f172a">${String(message).replace(/\n/g, "<br/>")}</td></tr>` : ""}
               </table>
@@ -98,6 +101,18 @@ export async function POST(req: NextRequest) {
     } catch (mailErr) {
       console.warn("[POST /api/loan-leads] Email failed (non-fatal):", mailErr);
     }
+
+    // Send to Google Sheets (non-fatal)
+    await sendToGoogleSheets({
+      formType: "LoanLead",
+      fullName: fullName.trim(),
+      mobile: mobile.trim(),
+      email: email.trim(),
+      loanType: loanType.trim(),
+      loanAmount: loanAmount.trim(),
+      city: city.trim(),
+      message: (message ?? "").trim(),
+    });
 
     return NextResponse.json(
       { success: true, message: "Loan lead submitted successfully" },

@@ -1,4 +1,4 @@
-import { getDB } from "@/lib/db";
+﻿import { getDB } from "@/lib/db";
 import {
   APPLICATION_STATUSES,
   isApplicationStatus,
@@ -6,6 +6,7 @@ import {
   LOAN_APPLICATION_CONFIG,
   type ApplicationStatus,
 } from "@/lib/loan-application-config";
+import { sendToGoogleSheets } from "@/lib/googleSheets";
 import { sendLoanApplicationAdminEmail } from "@/lib/mail/mailer/loan-application-mailer";
 import { sendUserApplicationConfirmationEmail } from "@/lib/mail/mailer/loan-application-user-mailer";
 import { NextRequest, NextResponse } from "next/server";
@@ -243,6 +244,19 @@ export async function POST(req: NextRequest) {
       email,
       mobile,
       panNumber,
+    });
+
+    // Send to Google Sheets (non-fatal ├ö├ç├Â MySQL already succeeded at this point)
+    await sendToGoogleSheets({
+      formType: "LoanApplication",
+      applicationId,
+      loanType: loanTypeRaw,
+      loanTypeLabel: LOAN_APPLICATION_CONFIG[loanTypeRaw].label,
+      loanSubtype: loanSubtypeRaw,
+      fullName,
+      email,
+      mobile,
+      ...formData,
     });
 
     return NextResponse.json(

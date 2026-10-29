@@ -1,4 +1,5 @@
 import { getDB } from "@/lib/db";
+import { sendToGoogleSheets } from "@/lib/googleSheets";
 import { NextRequest, NextResponse } from "next/server";
 import bcrypt from "bcryptjs";
 import nodemailer from "nodemailer";
@@ -59,7 +60,7 @@ export async function POST(req: NextRequest) {
       attempts++;
     }
 
-    // Default password = mobile number (hashed) — partner must change on first login
+    // Default password = mobile number (hashed) Ãƒâ€Ãƒâ€¡ÃƒÂ¶ partner must change on first login
     const hashedPassword = await bcrypt.hash(mobile, 10);
 
     await db.query(
@@ -70,7 +71,9 @@ export async function POST(req: NextRequest) {
 
     // Send credentials email to partner
     const transporter = nodemailer.createTransport({
-      service: "gmail",
+      host: "smtp.gmail.com",
+      port: 587,
+      secure: false,
       auth: { user: process.env.EMAIL_USER, pass: process.env.EMAIL_PASS },
     });
 
@@ -91,7 +94,7 @@ export async function POST(req: NextRequest) {
               <tr><td style="padding:10px 0;color:#64748b">Default Password</td><td style="padding:10px 0;color:#0f172a;font-family:monospace">${mobile}</td></tr>
             </table>
             <div style="margin-top:20px;padding:12px;background:#fef3c7;border-radius:8px;font-size:13px;color:#92400e">
-              ⚠️ Please change your password after first login for security.
+              Ãƒâ€ÃƒÅ“ÃƒÂ¡Ã‚Â´Ã‚Â©Ãƒâ€¦ Please change your password after first login for security.
             </div>
           </div>
           <div style="padding:16px 24px;background:#f1f5f9;font-size:12px;color:#94a3b8">
@@ -127,9 +130,21 @@ export async function POST(req: NextRequest) {
       `,
     });
 
+    // Send to Google Sheets (non-fatal)
+    await sendToGoogleSheets({
+      formType: "PartnerRegistration",
+      fullName,
+      mobile,
+      email,
+      city,
+      businessName: businessName ?? "",
+      experience: experience ?? "",
+      reason,
+      partnerId,
+    });
+
     return NextResponse.json({ message: "Application submitted", partnerId }, { status: 201 });
-  } catch (error) {
-    console.error("[POST /api/partner-apply]", error);
+  } catch (error) {    console.error("[POST /api/partner-apply]", error);
     return NextResponse.json({ error: "Internal server error" }, { status: 500 });
   }
 }
