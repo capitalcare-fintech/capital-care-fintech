@@ -1,6 +1,5 @@
+
 import {
-  axisBankLogo,
-  hdfcBankLogo,
   hdfcErgoLogo,
   heroFinCorpLogo,
   iciciBankLogo,
@@ -25,14 +24,11 @@ import {
   werizeLogo,
 } from "@/assets/partners";
 
-const axisBankPartner = {
-  name: "Axis Bank",
-  logo: axisBankLogo,
-};
+import adityaBirlaLogo from "@/assets/partners/adityaBirlaLogo.png";
 
-const hdfcBankPartner = {
-  name: "HDFC Bank",
-  logo: hdfcBankLogo,
+const adityaBirlaPartner = {
+  name: "Aditya Birla",
+  logo: adityaBirlaLogo,
 };
 
 const hdfcErgoPartner = {
@@ -146,8 +142,7 @@ const werizePartner = {
 };
 
 export const loanPartners = [
-  axisBankPartner,
-  hdfcBankPartner,
+  adityaBirlaPartner,
   heroFinCorpPartner,
   iciciBankPartner,
   idfcFirstBankPartner,
@@ -176,6 +171,11 @@ export const insurancePartners = [
 ];
 
 export const partners = [...loanPartners, ...insurancePartners];
-const hp=[...loanPartners.slice(0,4),...insurancePartners.slice(0,4)];
+
+const hp = [
+  ...loanPartners.slice(0, 4),
+  ...insurancePartners.slice(0, 4),
+];
+
 // export const homePartners = partners.slice(0, 8);
 export const homePartners = hp;
